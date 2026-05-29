@@ -128,7 +128,7 @@ export default function LogIn() {
 
         {/* GitHub Login */}
         <button className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
-          <Github className="w-5 h-5" />
+          <Code className="w-5 h-5" />
           Log in with GitHub
         </button>
 
