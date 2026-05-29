@@ -66,7 +66,7 @@ export class UserService {
     // Get total downloads for user's agents
     const { data: agentsData } = await supabase
       .from('agents')
-      .select('downloads_count')
+      .select('id, downloads_count')
       .eq('creator_id', userId)
       .is('deleted_at', null);
 
