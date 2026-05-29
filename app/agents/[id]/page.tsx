@@ -10,7 +10,6 @@ import {
   Star,
   Eye,
   Code,
-  Github,
   Globe,
   Send,
   Heart,
@@ -400,7 +399,7 @@ export default function AgentDetail() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 text-blue-500 hover:text-blue-400 p-3 bg-slate-900/50 rounded-lg transition"
                   >
-                    <Github className="w-5 h-5" />
+                    <Code className="w-5 h-5" />
                     <span>View Repository</span>
                   </a>
                 )}
