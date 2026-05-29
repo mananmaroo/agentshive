@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Mail, Lock, User, Github } from 'lucide-react';
+import { Mail, Lock, User, Code } from 'lucide-react';
 import { supabase } from '@/app/lib/supabase-client';
 import { useRouter } from 'next/navigation';
 

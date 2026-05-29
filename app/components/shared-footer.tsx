@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Github, Twitter, Mail } from 'lucide-react';
+import { Code, Share2, Mail } from 'lucide-react';
 
 export function SharedFooter() {
   return (
@@ -105,10 +105,10 @@ export function SharedFooter() {
             </p>
             <div className="flex items-center gap-4">
               <a href="https://github.com" className="text-slate-400 hover:text-white transition">
-                <Github className="w-5 h-5" />
+                <Code className="w-5 h-5" />
               </a>
               <a href="https://twitter.com" className="text-slate-400 hover:text-white transition">
-                <Twitter className="w-5 h-5" />
+                <Share2 className="w-5 h-5" />
               </a>
               <a href="mailto:support@agentshive.net" className="text-slate-400 hover:text-white transition">
                 <Mail className="w-5 h-5" />
