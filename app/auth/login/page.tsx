@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Mail, Lock, Code } from 'lucide-react';
 import { supabase } from '@/app/lib/supabase-client';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function LogIn() {
+function LoginContent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -141,5 +141,13 @@ export default function LogIn() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LogIn() {
+  return (
+    <Suspense>
+      <LoginContent />
+    </Suspense>
   );
 }
