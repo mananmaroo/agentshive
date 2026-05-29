@@ -151,7 +151,7 @@ export class AgentService {
 
     const categoryMap = new Map<string, number>();
     data?.forEach((agent) => {
-      agent.category?.forEach((cat) => {
+      agent.category?.forEach((cat: string) => {
         categoryMap.set(cat, (categoryMap.get(cat) || 0) + 1);
       });
     });
