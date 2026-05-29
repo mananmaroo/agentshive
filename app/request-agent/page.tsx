@@ -226,7 +226,7 @@ export default function RequestAgentPage() {
                 Email us directly to discuss your needs with our team
               </p>
               <a
-                href="mailto:requests@agentstack.dev"
+                href="mailto:requests@agentshive.net"
                 className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition font-semibold text-sm"
               >
                 Email Us

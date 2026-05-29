@@ -187,7 +187,7 @@ export default function LearnVideosPage() {
             Submit your agent tutorial video and help the community learn
           </p>
           <a
-            href="mailto:videos@agentstack.dev"
+            href="mailto:videos@agentshive.net"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition font-semibold"
           >
             Submit Your Video

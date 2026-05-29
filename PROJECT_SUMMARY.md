@@ -1,4 +1,4 @@
-# 🚀 AgentStack - Complete Project Summary
+# 🚀 Agentshive - Complete Project Summary
 
 ## What We Built
 
@@ -265,7 +265,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGci...
 ```bash
 git init
 git add .
-git commit -m "Initial AgentStack deployment"
+git commit -m "Initial Agentshive deployment"
 git remote add origin https://github.com/YOUR_USERNAME/agentstack.git
 git push -u origin main
 ```

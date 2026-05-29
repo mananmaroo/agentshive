@@ -14,10 +14,10 @@ export function SharedFooter() {
               <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
                 AS
               </div>
-              <h3 className="text-lg font-bold text-white">AgentStack</h3>
+              <h3 className="text-lg font-bold text-white">Agentshive</h3>
             </div>
             <p className="text-slate-400 text-sm">
-              Open registry for Claude agents. Discover, share, and learn.
+              The open registry for Claude agents. Discover, share, and learn.
             </p>
           </div>
 
@@ -90,7 +90,7 @@ export function SharedFooter() {
                 </Link>
               </li>
               <li>
-                <a href="mailto:support@agentstack.dev" className="text-slate-400 hover:text-white text-sm transition">
+                <a href="mailto:support@agentshive.net" className="text-slate-400 hover:text-white text-sm transition">
                   Contact
                 </a>
               </li>
@@ -101,7 +101,7 @@ export function SharedFooter() {
         <div className="border-t border-slate-700 pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
             <p className="text-slate-400 text-sm">
-              © 2026 AgentStack. Open source agent registry.
+              © 2026 Agentshive. Open source agent registry.
             </p>
             <div className="flex items-center gap-4">
               <a href="https://github.com" className="text-slate-400 hover:text-white transition">
@@ -110,7 +110,7 @@ export function SharedFooter() {
               <a href="https://twitter.com" className="text-slate-400 hover:text-white transition">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="mailto:support@agentstack.dev" className="text-slate-400 hover:text-white transition">
+              <a href="mailto:support@agentshive.net" className="text-slate-400 hover:text-white transition">
                 <Mail className="w-5 h-5" />
               </a>
             </div>

@@ -114,7 +114,7 @@ export default function FAQPage() {
             Can't find the answer you're looking for? Please reach out to our community.
           </p>
           <a
-            href="mailto:support@agentstack.dev"
+            href="mailto:support@agentshive.net"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition"
           >
             Contact Support

@@ -134,7 +134,7 @@ export default function AboutPage() {
             We'd love to hear from you. Get in touch with the AgentStack team.
           </p>
           <a
-            href="mailto:hello@agentstack.dev"
+            href="mailto:hello@agentshive.net"
             className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition font-semibold"
           >
             Contact Us

@@ -1,8 +1,8 @@
-# AgentStack Code Organization & Architecture
+# Agentshive Code Organization & Architecture
 
 ## Overview
 
-AgentStack has been refactored with a clean separation of concerns:
+Agentshive has been refactored with a clean separation of concerns:
 - **Frontend Components**: Reusable React components in `/app/components/`
 - **Backend Services**: Business logic in `/app/lib/services/`
 - **API Routes**: Thin route handlers that delegate to services
@@ -58,7 +58,7 @@ app/
 │   ├── faq/page.tsx               # FAQ with expandable Q&A
 │   ├── categories/page.tsx        # Browse by category
 │   ├── top-agents/page.tsx        # Trending/featured agents
-│   ├── about/page.tsx             # About AgentStack
+│   ├── about/page.tsx             # About Agentshive
 │   ├── learn-videos/page.tsx      # YouTube videos (categorized)
 │   ├── support/page.tsx           # Donation/support info
 │   ├── request-agent/page.tsx     # Custom agent request form

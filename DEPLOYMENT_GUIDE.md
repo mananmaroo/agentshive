@@ -108,7 +108,7 @@ Click **"Deploy"** and wait 2-3 minutes!
 2. Navigate to **Settings** → **API**
 3. Update **URL Prefixes** under **Allowed URLs**:
    ```
-   https://agentstack.vercel.app
+   https://agentshive.net
    ```
 
 ### Update OAuth Redirect URLs
@@ -116,14 +116,14 @@ Click **"Deploy"** and wait 2-3 minutes!
 1. Supabase Dashboard → **Authentication** → **Providers** → **GitHub**
 2. Set Authorization callback URL:
    ```
-   https://agentstack.vercel.app/auth/callback
+   https://agentshive.net/auth/callback
    ```
 
 ### Verify Domain
 
 Your app will be live at:
 ```
-https://agentstack.vercel.app
+https://agentshive.net
 ```
 
 (or custom domain if configured)
@@ -164,7 +164,7 @@ https://agentstack.vercel.app
 
 ## Post-Deployment Checklist
 
-- [ ] App loads at https://agentstack.vercel.app
+- [ ] App loads at https://agentshive.net
 - [ ] Login works (test with demo account)
 - [ ] Can create new agent
 - [ ] API routes respond (test with curl)

@@ -64,7 +64,7 @@ Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imls
 Your app is now deployed at:
 
 ```
-https://agentstack.vercel.app
+https://agentshive.net
 ```
 
 (or whatever Vercel assigns)
@@ -79,7 +79,7 @@ https://agentstack.vercel.app
    Email: aluminus99@gmail.com
    Password: Abcde@12345
    ```
-3. **Test API**: `https://agentstack.vercel.app/api/agents`
+3. **Test API**: `https://agentshive.net/api/agents`
 4. **Check Dashboard**: Browse agents and dashboard
 
 ---

@@ -188,7 +188,7 @@ export default function SupportPage() {
             Whether you contribute financially, with code, or just by using AgentStack, you're helping shape the future of AI agent development. We're grateful for every single supporter.
           </p>
           <p className="text-slate-400">
-            Questions? Email us at <a href="mailto:support@agentstack.dev" className="text-blue-400 hover:text-blue-300">support@agentstack.dev</a>
+            Questions? Email us at <a href="mailto:support@agentshive.net" className="text-blue-400 hover:text-blue-300">support@agentshive.net</a>
           </p>
         </section>
       </main>

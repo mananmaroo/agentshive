@@ -23,7 +23,7 @@ export default function Home() {
             <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
               AS
             </div>
-            <h1 className="text-xl font-bold text-white">AgentStack</h1>
+            <h1 className="text-xl font-bold text-white">Agentshive</h1>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/learn" className="text-slate-300 hover:text-white transition text-sm">
