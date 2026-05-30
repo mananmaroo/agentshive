@@ -1,9 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AgentService } from '@/app/lib/services/agent-service';
+import { supabaseAnon } from '@/app/lib/supabase-anon';
 
 export async function GET(request: NextRequest) {
   try {
-    const categories = await AgentService.getCategories();
+    const { data: agents, error } = await supabaseAnon
+      .from('agents')
+      .select('category');
+
+    if (error) throw error;
+
+    const categoryMap = new Map<string, number>();
+    agents?.forEach((agent) => {
+      agent.category?.forEach((cat: string) => {
+        categoryMap.set(cat, (categoryMap.get(cat) || 0) + 1);
+      });
+    });
+
+    const categories = Array.from(categoryMap.entries()).map(([name, count]) => ({
+      name,
+      count,
+    }));
 
     return NextResponse.json(categories);
   } catch (error) {
