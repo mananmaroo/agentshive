@@ -43,22 +43,20 @@ export default function CategoriesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
-      
-
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 flex flex-col">
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-4xl font-bold text-amber-900 mb-4">
             Browse by Category
           </h1>
-          <p className="text-xl text-slate-400">
+          <p className="text-xl text-amber-700">
             Explore agents organized by category
           </p>
         </div>
 
         {loading ? (
           <div className="text-center py-12">
-            <div className="text-slate-400">Loading categories...</div>
+            <div className="text-amber-700">Loading categories...</div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -66,20 +64,20 @@ export default function CategoriesPage() {
               <Link
                 key={category.name}
                 href={`/agents?category=${encodeURIComponent(category.name)}`}
-                className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 hover:border-blue-500 hover:bg-slate-800/80 transition group"
+                className="bg-white border border-amber-300 rounded-lg p-6 hover:border-amber-500 hover:bg-amber-50 transition group"
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center group-hover:bg-blue-500/30 transition">
-                    <Folder className="w-6 h-6 text-blue-400" />
+                  <div className="w-12 h-12 bg-amber-200 rounded-lg flex items-center justify-center group-hover:bg-amber-300 transition">
+                    <Folder className="w-6 h-6 text-amber-700" />
                   </div>
-                  <div className="bg-slate-700/50 px-3 py-1 rounded-full">
-                    <span className="text-sm text-slate-300">{category.count}</span>
+                  <div className="bg-amber-100 px-3 py-1 rounded-full">
+                    <span className="text-sm text-amber-900 font-semibold">{category.count}</span>
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-white group-hover:text-blue-400 transition">
+                <h3 className="text-lg font-semibold text-amber-900 group-hover:text-amber-700 transition">
                   {category.name}
                 </h3>
-                <p className="text-slate-400 text-sm mt-2">
+                <p className="text-amber-700 text-sm mt-2">
                   {category.count} agent{category.count !== 1 ? 's' : ''}
                 </p>
               </Link>
@@ -88,23 +86,21 @@ export default function CategoriesPage() {
         )}
 
         {/* Featured Section */}
-        <div className="mt-16 bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-700/50 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-white mb-4">
+        <div className="mt-16 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 rounded-lg p-8">
+          <h2 className="text-2xl font-bold text-amber-900 mb-4">
             Can't find what you're looking for?
           </h2>
-          <p className="text-slate-300 mb-6">
+          <p className="text-amber-800 mb-6">
             Request a custom agent built to your specifications. Our team will help bring your vision to life.
           </p>
           <Link
             href="/request-agent"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition font-semibold"
+            className="inline-block bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg transition font-semibold"
           >
             Request a Custom Agent
           </Link>
         </div>
       </main>
-
-      
     </div>
   );
 }

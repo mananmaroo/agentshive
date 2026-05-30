@@ -58,15 +58,13 @@ export default function RequestAgentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
-      
-
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 flex flex-col">
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-4xl font-bold text-amber-900 mb-4">
             Request a Custom Agent
           </h1>
-          <p className="text-xl text-slate-400">
+          <p className="text-xl text-amber-700">
             Can't find what you need? Request a custom agent built to your specifications
           </p>
         </div>
@@ -74,86 +72,86 @@ export default function RequestAgentPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           {/* Form */}
           <div>
-            <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-8">
-              <h2 className="text-2xl font-bold text-white mb-6">Tell Us What You Need</h2>
+            <div className="bg-white border border-amber-300 rounded-lg p-8">
+              <h2 className="text-2xl font-bold text-amber-900 mb-6">Tell Us What You Need</h2>
 
               {submitted && (
-                <div className="bg-green-900/30 border border-green-700/50 rounded-lg p-4 mb-6 flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <div className="bg-green-100 border border-green-300 rounded-lg p-4 mb-6 flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-green-300 font-semibold">Request submitted!</p>
-                    <p className="text-green-200 text-sm">We'll review your request and get back to you soon.</p>
+                    <p className="text-green-900 font-semibold">Request submitted!</p>
+                    <p className="text-green-800 text-sm">We'll review your request and get back to you soon.</p>
                   </div>
                 </div>
               )}
 
               {error && (
-                <div className="bg-red-900/30 border border-red-700/50 rounded-lg p-4 mb-6 flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-red-300">{error}</p>
+                <div className="bg-red-100 border border-red-300 rounded-lg p-4 mb-6 flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-red-900">{error}</p>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-white font-semibold mb-2">Name *</label>
+                  <label className="block text-amber-900 font-semibold mb-2">Name *</label>
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:border-blue-500 outline-none transition"
+                    className="w-full bg-amber-50 border border-amber-300 rounded-lg px-4 py-2 text-amber-900 placeholder-amber-500 focus:border-amber-500 outline-none transition"
                     placeholder="Your name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white font-semibold mb-2">Email *</label>
+                  <label className="block text-amber-900 font-semibold mb-2">Email *</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:border-blue-500 outline-none transition"
+                    className="w-full bg-amber-50 border border-amber-300 rounded-lg px-4 py-2 text-amber-900 placeholder-amber-500 focus:border-amber-500 outline-none transition"
                     placeholder="your@email.com"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white font-semibold mb-2">Agent Description *</label>
+                  <label className="block text-amber-900 font-semibold mb-2">Agent Description *</label>
                   <textarea
                     name="description"
                     value={formData.description}
                     onChange={handleChange}
                     required
                     rows={4}
-                    className="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:border-blue-500 outline-none transition resize-none"
+                    className="w-full bg-amber-50 border border-amber-300 rounded-lg px-4 py-2 text-amber-900 placeholder-amber-500 focus:border-amber-500 outline-none transition resize-none"
                     placeholder="Describe the agent you need. What should it do?"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white font-semibold mb-2">Use Case *</label>
+                  <label className="block text-amber-900 font-semibold mb-2">Use Case *</label>
                   <textarea
                     name="useCase"
                     value={formData.useCase}
                     onChange={handleChange}
                     required
                     rows={3}
-                    className="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:border-blue-500 outline-none transition resize-none"
+                    className="w-full bg-amber-50 border border-amber-300 rounded-lg px-4 py-2 text-amber-900 placeholder-amber-500 focus:border-amber-500 outline-none transition resize-none"
                     placeholder="How will you use this agent? What problem does it solve?"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white font-semibold mb-2">Budget (Optional)</label>
+                  <label className="block text-amber-900 font-semibold mb-2">Budget (Optional)</label>
                   <select
                     name="budget"
                     value={formData.budget}
                     onChange={handleChange}
-                    className="w-full bg-slate-900/50 border border-slate-600 rounded-lg px-4 py-2 text-white focus:border-blue-500 outline-none transition"
+                    className="w-full bg-amber-50 border border-amber-300 rounded-lg px-4 py-2 text-amber-900 focus:border-amber-500 outline-none transition"
                   >
                     <option value="">Not specified</option>
                     <option value="500">$0 - $500</option>
@@ -167,7 +165,7 @@ export default function RequestAgentPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white font-semibold py-3 rounded-lg transition"
+                  className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-amber-600/50 text-white font-semibold py-3 rounded-lg transition"
                 >
                   {loading ? 'Submitting...' : 'Submit Request'}
                 </button>
@@ -177,39 +175,39 @@ export default function RequestAgentPage() {
 
           {/* Info */}
           <div className="space-y-6">
-            <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-white mb-3">What Happens Next?</h3>
+            <div className="bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-amber-900 mb-3">What Happens Next?</h3>
               <ol className="space-y-3">
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                  <span className="bg-amber-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
                     1
                   </span>
-                  <span className="text-slate-300">We review your request and assess feasibility</span>
+                  <span className="text-amber-800">We review your request and assess feasibility</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                  <span className="bg-amber-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
                     2
                   </span>
-                  <span className="text-slate-300">Our team discusses the scope and timeline</span>
+                  <span className="text-amber-800">Our team discusses the scope and timeline</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                  <span className="bg-amber-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
                     3
                   </span>
-                  <span className="text-slate-300">We'll contact you with a proposal or estimate</span>
+                  <span className="text-amber-800">We'll contact you with a proposal or estimate</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
+                  <span className="bg-amber-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
                     4
                   </span>
-                  <span className="text-slate-300">Once approved, development begins and updates are shared</span>
+                  <span className="text-amber-800">Once approved, development begins and updates are shared</span>
                 </li>
               </ol>
             </div>
 
-            <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-white mb-3">✨ Tips for Your Request</h3>
-              <ul className="space-y-2 text-slate-300 text-sm">
+            <div className="bg-white border border-amber-300 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-amber-900 mb-3">✨ Tips for Your Request</h3>
+              <ul className="space-y-2 text-amber-800 text-sm">
                 <li>• Be specific about agent behavior and expected outputs</li>
                 <li>• Include examples of what success looks like</li>
                 <li>• Mention any integrations needed (APIs, tools, etc.)</li>
@@ -218,14 +216,14 @@ export default function RequestAgentPage() {
               </ul>
             </div>
 
-            <div className="bg-purple-900/30 border border-purple-700/50 rounded-lg p-6">
-              <h3 className="text-lg font-bold text-white mb-3">📞 Prefer to Discuss?</h3>
-              <p className="text-slate-300 mb-4">
+            <div className="bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-amber-900 mb-3">📞 Prefer to Discuss?</h3>
+              <p className="text-amber-800 mb-4">
                 Email us directly to discuss your needs with our team
               </p>
               <a
                 href="mailto:requests@agentshive.net"
-                className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition font-semibold text-sm"
+                className="inline-block bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg transition font-semibold text-sm"
               >
                 Email Us
               </a>
@@ -233,8 +231,6 @@ export default function RequestAgentPage() {
           </div>
         </div>
       </main>
-
-      
     </div>
   );
 }

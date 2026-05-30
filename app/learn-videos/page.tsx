@@ -88,15 +88,13 @@ export default function LearnVideosPage() {
       : videos.filter((v) => v.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
-      
-
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 flex flex-col">
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-4xl font-bold text-amber-900 mb-4">
             Learn About Agents
           </h1>
-          <p className="text-xl text-slate-400">
+          <p className="text-xl text-amber-700">
             Video tutorials from developers and AI experts
           </p>
         </div>
@@ -109,8 +107,8 @@ export default function LearnVideosPage() {
               onClick={() => setSelectedCategory(category)}
               className={`px-4 py-2 rounded-lg transition font-medium ${
                 selectedCategory === category
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                  ? 'bg-amber-600 text-white'
+                  : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
               }`}
             >
               {category}
@@ -128,9 +126,9 @@ export default function LearnVideosPage() {
               rel="noopener noreferrer"
               className="group"
             >
-              <div className="bg-slate-800/50 border border-slate-700 rounded-lg overflow-hidden hover:border-blue-500 transition">
+              <div className="bg-white border border-amber-300 rounded-lg overflow-hidden hover:border-amber-500 transition">
                 {/* Thumbnail */}
-                <div className="relative h-40 bg-slate-900 overflow-hidden">
+                <div className="relative h-40 bg-amber-50 overflow-hidden">
                   <img
                     src={video.thumbnail}
                     alt={video.title}
@@ -147,20 +145,20 @@ export default function LearnVideosPage() {
                 {/* Info */}
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="text-white font-semibold group-hover:text-blue-400 transition line-clamp-2">
+                    <h3 className="text-amber-900 font-semibold group-hover:text-amber-700 transition line-clamp-2">
                       {video.title}
                     </h3>
                   </div>
 
-                  <p className="text-slate-400 text-sm mb-3 line-clamp-2">
+                  <p className="text-amber-700 text-sm mb-3 line-clamp-2">
                     {video.description}
                   </p>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500 text-xs">
+                    <span className="text-amber-600 text-xs">
                       {video.channel}
                     </span>
-                    <span className="bg-slate-700/50 text-slate-300 px-2 py-1 rounded text-xs">
+                    <span className="bg-amber-100 text-amber-900 px-2 py-1 rounded text-xs">
                       {video.category}
                     </span>
                   </div>
@@ -172,28 +170,26 @@ export default function LearnVideosPage() {
 
         {filteredVideos.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-slate-400">No videos found in this category</p>
+            <p className="text-amber-700">No videos found in this category</p>
           </div>
         )}
 
         {/* CTA Section */}
-        <section className="bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-700/50 rounded-lg p-8 text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
+        <section className="bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 rounded-lg p-8 text-center">
+          <h2 className="text-2xl font-bold text-amber-900 mb-4">
             Have a Tutorial to Share?
           </h2>
-          <p className="text-slate-300 mb-6">
+          <p className="text-amber-800 mb-6">
             Submit your agent tutorial video and help the community learn
           </p>
           <a
             href="mailto:videos@agentshive.net"
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition font-semibold"
+            className="inline-block bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg transition font-semibold"
           >
             Submit Your Video
           </a>
         </section>
       </main>
-
-      
     </div>
   );
 }
