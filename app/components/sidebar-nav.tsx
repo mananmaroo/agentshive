@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Zap, BookOpen, Github, HelpCircle, Coffee, FileText, Users, LogOut } from 'lucide-react';
+import { Home, Zap, BookOpen, Folder, HelpCircle, Coffee, FileText, Users, LogOut } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
 
 export function SidebarNav() {
@@ -21,7 +21,7 @@ export function SidebarNav() {
     { icon: Zap, label: 'Browse Agents', href: '/agents' },
     { icon: BookOpen, label: 'Learn', href: '/learn-videos' },
     { icon: FileText, label: 'Blog', href: '/blog' },
-    { icon: Github, label: 'Categories', href: '/categories' },
+    { icon: Folder, label: 'Categories', href: '/categories' },
     { icon: HelpCircle, label: 'FAQ', href: '/faq' },
     { icon: Users, label: 'Request Agent', href: '/request-agent' },
     { icon: Coffee, label: 'Donate', href: '/donate' },
