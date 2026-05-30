@@ -71,6 +71,10 @@ function LandingPage() {
             Discover, download, and share AI agent templates. Save tokens. Build faster. Join the community.
           </p>
 
+          <p className="text-lg text-indigo-300 mb-12 font-semibold">
+            GitHub is for code and files • <span className="text-indigo-400">Agentshive is for your day to day automations</span>
+          </p>
+
           {/* CTA Buttons */}
           <div className="flex gap-4 justify-center flex-wrap mb-12">
             <Link
