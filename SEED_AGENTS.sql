@@ -1,10 +1,9 @@
 -- Create system user for seed agents
-INSERT INTO users (username, email, bio, created_at, updated_at)
+INSERT INTO users (username, email, bio, created_at)
 VALUES (
   'agentshive_team',
   'team@agentshive.net',
   'Official Agentshive seed agents',
-  CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP
 )
 ON CONFLICT (email) DO NOTHING;
