@@ -1,6 +1,4 @@
--- First, create a system user for seed agents
--- Copy the UUID generated for user_id and use it below
-
+-- Create system user for seed agents
 INSERT INTO users (username, email, bio, created_at, updated_at)
 VALUES (
   'agentshive_team',
@@ -9,9 +7,8 @@ VALUES (
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP
 )
-ON CONFLICT DO NOTHING;
+ON CONFLICT (email) DO NOTHING;
 
--- Get the user ID (you can also manually replace this with the UUID from above)
 -- Agent 1: Customer Feedback Agent
 INSERT INTO agents (
   title,
@@ -73,3 +70,25 @@ INSERT INTO agents (
   CURRENT_TIMESTAMP,
   CURRENT_TIMESTAMP
 );
+
+-- Add Claude.md files for agents (references to markdown files)
+-- Note: File URLs should point to GitHub raw content or Supabase storage
+INSERT INTO agent_files (agent_id, file_url, file_type, file_name, created_at, updated_at)
+SELECT
+  (SELECT id FROM agents WHERE title = 'Customer Feedback Distributor' LIMIT 1),
+  'https://raw.githubusercontent.com/mananmaroo/agentshive/main/AGENTS_CLAUDE_MD/customer-feedback-agent.md',
+  'claude_md',
+  'customer-feedback-agent.md',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP
+WHERE EXISTS (SELECT 1 FROM agents WHERE title = 'Customer Feedback Distributor' LIMIT 1);
+
+INSERT INTO agent_files (agent_id, file_url, file_type, file_name, created_at, updated_at)
+SELECT
+  (SELECT id FROM agents WHERE title = 'AI Job Application Automation' LIMIT 1),
+  'https://raw.githubusercontent.com/mananmaroo/agentshive/main/AGENTS_CLAUDE_MD/job-application-agent.md',
+  'claude_md',
+  'job-application-agent.md',
+  CURRENT_TIMESTAMP,
+  CURRENT_TIMESTAMP
+WHERE EXISTS (SELECT 1 FROM agents WHERE title = 'AI Job Application Automation' LIMIT 1);
