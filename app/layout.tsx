@@ -30,16 +30,18 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-white flex flex-col">
+      <body className="bg-white">
         <AuthProvider>
-          <SidebarNav />
-          <div className="flex flex-col flex-1">
-            <main className="ml-64 flex-1 bg-gradient-to-br from-amber-50 via-white to-orange-50">
-              {children}
-            </main>
-            <footer className="ml-64">
-              <SiteFooter />
-            </footer>
+          <div className="flex min-h-screen">
+            <SidebarNav />
+            <div className="flex flex-col flex-1 ml-64">
+              <main className="flex-1 bg-gradient-to-br from-amber-50 via-white to-orange-50">
+                {children}
+              </main>
+              <footer>
+                <SiteFooter />
+              </footer>
+            </div>
           </div>
         </AuthProvider>
       </body>
