@@ -36,54 +36,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-amber-50 to-orange-50">
-      {/* Navbar */}
-      <nav className="bg-amber-50/95 border-b border-amber-200 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-800 to-amber-600 bg-clip-text text-transparent">Agentshive</h1>
-          </Link>
-          <div className="flex items-center gap-6">
-            <Link href="/" className="text-amber-900 hover:text-amber-700 transition text-sm font-medium">
-              Home
-            </Link>
-            <Link href="/learn-videos" className="text-amber-900 hover:text-amber-700 transition text-sm">
-              Videos
-            </Link>
-            <Link href="/agents" className="text-amber-900 hover:text-amber-700 transition text-sm">
-              Browse
-            </Link>
-            {loading ? (
-              <div className="text-amber-700 text-sm">Loading...</div>
-            ) : user ? (
-              <>
-                <Link href="/profile" className="text-amber-900 hover:text-amber-700 transition text-sm">
-                  @{user.username}
-                </Link>
-                <Link href="/agents/upload" className="bg-amber-600 hover:bg-amber-700 text-amber-900 px-4 py-2 rounded-lg transition text-sm">
-                  Upload
-                </Link>
-                <button
-                  onClick={handleLogOut}
-                  className="text-amber-900 hover:text-amber-700 transition text-sm flex items-center gap-1"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/auth/signup" className="text-amber-900 hover:text-amber-700 transition text-sm">
-                  Sign Up
-                </Link>
-                <Link href="/auth/login" className="text-amber-900 hover:text-amber-700 transition text-sm">
-                  Log In
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50">
+      {/* Spacer for sidebar */}
+      <div className="h-0" />
 
       {/* Token Saving Banner */}
       <div className="bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 mx-4 mt-4 rounded-lg p-4">

@@ -1,0 +1,115 @@
+'use client';
+
+import Link from 'next/link';
+import { Coffee, Heart, Zap } from 'lucide-react';
+
+export default function Donate() {
+  return (
+    <div className="min-h-screen pt-20 pb-20">
+      <div className="max-w-2xl mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <div className="flex justify-center mb-6">
+            <Heart className="w-12 h-12 text-red-500" />
+          </div>
+          <h1 className="text-4xl font-bold text-amber-900 mb-4">Support Agentshive</h1>
+          <p className="text-lg text-amber-700 mb-2">
+            Help keep the platform alive and growing
+          </p>
+          <p className="text-amber-600">
+            Our servers cost $250/month to maintain. Your support helps us continue providing free access to everyone.
+          </p>
+        </div>
+
+        {/* Donation Options */}
+        <div className="grid md:grid-cols-2 gap-6 mb-16">
+          {/* Buy Me a Coffee */}
+          <div className="bg-white border border-amber-200 rounded-lg p-8 hover:border-amber-400 transition">
+            <div className="flex items-center gap-3 mb-4">
+              <Coffee className="w-6 h-6 text-amber-600" />
+              <h2 className="text-xl font-bold text-amber-900">Buy Me a Coffee</h2>
+            </div>
+            <p className="text-amber-700 mb-6">
+              One-time or recurring donations directly support server costs and platform development.
+            </p>
+            <a
+              href="https://buymeacoffee.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block w-full bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-semibold text-center transition"
+            >
+              Support on Buy Me a Coffee
+            </a>
+          </div>
+
+          {/* GitHub Sponsors */}
+          <div className="bg-white border border-amber-200 rounded-lg p-8 hover:border-amber-400 transition">
+            <div className="flex items-center gap-3 mb-4">
+              <Zap className="w-6 h-6 text-amber-600" />
+              <h2 className="text-xl font-bold text-amber-900">GitHub Sponsors</h2>
+            </div>
+            <p className="text-amber-700 mb-6">
+              Sponsor the project on GitHub and get recognized as a supporter of open-source AI tools.
+            </p>
+            <a
+              href="https://github.com/sponsors/mananmaroo"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block w-full bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-semibold text-center transition"
+            >
+              Become a Sponsor
+            </a>
+          </div>
+        </div>
+
+        {/* Other Ways to Support */}
+        <div className="bg-amber-100/50 border border-amber-300 rounded-lg p-8">
+          <h2 className="text-2xl font-bold text-amber-900 mb-6">Other Ways to Support</h2>
+          <ul className="space-y-4 text-amber-800">
+            <li className="flex items-start gap-3">
+              <span className="text-amber-600 font-bold mt-1">•</span>
+              <span>
+                <strong>Spread the word:</strong> Share Agentshive with your network. Word-of-mouth helps us grow.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-amber-600 font-bold mt-1">•</span>
+              <span>
+                <strong>Contribute code:</strong> Check out our{' '}
+                <a
+                  href="https://github.com/mananmaroo/agentshive"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-600 hover:text-amber-700 font-semibold underline"
+                >
+                  GitHub repository
+                </a>{' '}
+                and contribute features or fixes.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-amber-600 font-bold mt-1">•</span>
+              <span>
+                <strong>Upload agents:</strong> Share your own agents and help the community grow smarter together.
+              </span>
+            </li>
+            <li className="flex items-start gap-3">
+              <span className="text-amber-600 font-bold mt-1">•</span>
+              <span>
+                <strong>Provide feedback:</strong> Help us improve by sharing suggestions and reporting bugs.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Thank You */}
+        <div className="text-center mt-16 p-8 bg-gradient-to-r from-amber-100 to-orange-100 rounded-lg border border-amber-300">
+          <Heart className="w-8 h-8 text-red-500 mx-auto mb-4" />
+          <p className="text-lg text-amber-900 font-semibold">
+            Thank you for supporting the open agent ecosystem! 💜
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}

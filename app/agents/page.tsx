@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Search, Star, Download, TrendingUp, Clock, Eye, Filter, X } from 'lucide-react';
-import { supabase } from '@/app/lib/supabase-client';
+import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
 
 interface Agent {
   id: string;
