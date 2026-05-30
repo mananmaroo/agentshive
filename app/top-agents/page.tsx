@@ -3,8 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Star, TrendingUp, Download } from 'lucide-react';
-import { SharedNavbar } from '@/app/components/shared-navbar';
-import { SharedFooter } from '@/app/components/shared-footer';
 
 interface Agent {
   id: string;
@@ -45,7 +43,7 @@ export default function TopAgentsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
-      <SharedNavbar />
+      
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-12">
         <div className="text-center mb-12">
@@ -161,7 +159,7 @@ export default function TopAgentsPage() {
         )}
       </main>
 
-      <SharedFooter />
+      
     </div>
   );
 }

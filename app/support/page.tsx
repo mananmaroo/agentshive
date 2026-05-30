@@ -1,13 +1,11 @@
 'use client';
 
 import { Heart, Coffee, Server } from 'lucide-react';
-import { SharedNavbar } from '@/app/components/shared-navbar';
-import { SharedFooter } from '@/app/components/shared-footer';
 
 export default function SupportPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex flex-col">
-      <SharedNavbar />
+      
 
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-12">
         <div className="text-center mb-12">
@@ -193,7 +191,7 @@ export default function SupportPage() {
         </section>
       </main>
 
-      <SharedFooter />
+      
     </div>
   );
 }

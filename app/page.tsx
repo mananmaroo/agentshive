@@ -123,25 +123,6 @@ export default function Home() {
           })}
         </div>
 
-        {/* Supported Formats Section */}
-        <div className="mt-16 bg-amber-100/30 border border-amber-300 rounded-lg p-8">
-          <h3 className="text-2xl font-bold text-amber-900 mb-6 text-center">Supported Agent Formats</h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {[
-              { name: 'Claude.md', icon: '🤖', color: 'blue' },
-              { name: 'n8n Templates', icon: '⚙️', color: 'orange' },
-              { name: 'Codex Agents', icon: '💻', color: 'purple' },
-              { name: 'Tutorial Videos', icon: '🎥', color: 'red' },
-              { name: 'Code Snippets', icon: '📝', color: 'green' },
-            ].map((format, i) => (
-              <div key={i} className="bg-amber-200/50 rounded-lg p-4 text-center hover:bg-amber-300 transition">
-                <div className="text-3xl mb-2">{format.icon}</div>
-                <p className="text-amber-900 font-semibold text-sm">{format.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Stats Section */}
         <div className="grid md:grid-cols-3 gap-8 mt-20 text-center">
           <div>
@@ -187,13 +168,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-amber-300 bg-amber-50 mt-20 py-8">
-        <div className="max-w-7xl mx-auto px-4 text-center text-amber-800">
-          <p className="font-semibold">Agentshive — Open Registry for Claude Agents</p>
-          <p className="text-sm mt-2">Built with Next.js, Supabase, and Tailwind CSS</p>
-        </div>
-      </footer>
     </div>
   );
 }
