@@ -20,6 +20,8 @@ export const metadata: Metadata = {
   description: "Open registry for Claude agents",
 };
 
+// Force rebuild - version 2
+
 export default function RootLayout({
   children,
 }: Readonly<{
