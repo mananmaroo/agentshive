@@ -28,21 +28,21 @@ export function SidebarNav() {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-64 bg-amber-50 border-r border-amber-200 overflow-y-auto pt-6">
+    <aside className="fixed left-0 top-0 h-screen w-64 bg-[#0d0d1a] border-r border-slate-800 overflow-y-auto pt-6">
       {/* Logo */}
       <Link href="/" className="px-6 mb-8 block">
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-amber-800 to-amber-600 bg-clip-text text-transparent">
+        <h1 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">
           Agentshive
         </h1>
       </Link>
 
       {/* User Section */}
       {user && (
-        <div className="px-6 mb-6 pb-6 border-b border-amber-200">
-          <p className="text-sm font-semibold text-amber-900">@{user.username}</p>
+        <div className="px-6 mb-6 pb-6 border-b border-slate-800">
+          <p className="text-sm font-semibold text-indigo-300">@{user.username}</p>
           <Link
             href="/agents/upload"
-            className="text-sm bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded-lg block text-center mt-2 transition"
+            className="text-sm bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg block text-center mt-2 transition"
           >
             Upload Agent
           </Link>
@@ -60,8 +60,8 @@ export function SidebarNav() {
               href={item.href}
               className={`flex items-center gap-3 px-3 py-2 rounded-lg transition ${
                 active
-                  ? 'bg-amber-200 text-amber-900 font-semibold'
-                  : 'text-amber-700 hover:bg-amber-100'
+                  ? 'bg-indigo-900/50 text-indigo-300 font-semibold'
+                  : 'text-slate-300 hover:bg-slate-800'
               }`}
             >
               <Icon className="w-5 h-5" />
@@ -72,11 +72,11 @@ export function SidebarNav() {
       </nav>
 
       {/* Auth Section */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-amber-200 bg-amber-50">
+      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-800 bg-[#0d0d1a]">
         {user ? (
           <button
             onClick={handleLogOut}
-            className="w-full flex items-center gap-2 text-amber-900 hover:text-amber-700 transition text-sm font-medium"
+            className="w-full flex items-center gap-2 text-slate-300 hover:text-indigo-400 transition text-sm font-medium"
           >
             <LogOut className="w-4 h-4" />
             Logout
@@ -85,13 +85,13 @@ export function SidebarNav() {
           <div className="space-y-2">
             <Link
               href="/auth/login"
-              className="w-full bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded-lg block text-center transition text-sm"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg block text-center transition text-sm"
             >
               Log In
             </Link>
             <Link
               href="/auth/signup"
-              className="w-full bg-amber-100 hover:bg-amber-200 text-amber-900 px-3 py-2 rounded-lg block text-center transition text-sm border border-amber-300"
+              className="w-full bg-slate-800 hover:bg-slate-700 text-indigo-300 px-3 py-2 rounded-lg block text-center transition text-sm border border-slate-700"
             >
               Sign Up
             </Link>

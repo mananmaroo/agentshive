@@ -60,13 +60,13 @@ export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex flex-col">
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-amber-900 mb-4">
+          <h1 className="text-4xl font-bold text-white mb-4">
             Frequently Asked Questions
           </h1>
-          <p className="text-xl text-amber-700">
+          <p className="text-xl text-slate-400">
             Find answers to common questions about Agentshive
           </p>
         </div>
@@ -75,25 +75,25 @@ export default function FAQPage() {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white border border-amber-300 rounded-lg overflow-hidden hover:border-amber-500 transition"
+              className="bg-white border border-slate-700 rounded-lg overflow-hidden hover:border-amber-500 transition"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-amber-50 transition"
+                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-slate-800 transition"
               >
-                <span className="font-semibold text-amber-900 text-lg">
+                <span className="font-semibold text-white text-lg">
                   {faq.question}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-amber-600 transition-transform ${
+                  className={`w-5 h-5 text-indigo-400 transition-transform ${
                     openIndex === index ? 'rotate-180' : ''
                   }`}
                 />
               </button>
 
               {openIndex === index && (
-                <div className="px-6 py-4 border-t border-amber-300 bg-amber-50">
-                  <p className="text-amber-800 leading-relaxed">
+                <div className="px-6 py-4 border-t border-slate-700 bg-slate-800">
+                  <p className="text-slate-300 leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
@@ -102,16 +102,16 @@ export default function FAQPage() {
           ))}
         </div>
 
-        <div className="mt-12 bg-gradient-to-r from-amber-100 to-orange-100 border border-amber-300 rounded-lg p-8 text-center">
-          <h3 className="text-xl font-bold text-amber-900 mb-2">
+        <div className="mt-12 bg-gradient-to-r from-indigo-900/50 to-indigo-800/50 border border-slate-700 rounded-lg p-8 text-center">
+          <h3 className="text-xl font-bold text-white mb-2">
             Still have questions?
           </h3>
-          <p className="text-amber-800 mb-4">
+          <p className="text-slate-300 mb-4">
             Can't find the answer you're looking for? Please reach out to our community.
           </p>
           <a
             href="mailto:support@agentshive.net"
-            className="inline-block bg-amber-600 hover:bg-amber-700 text-white px-6 py-2 rounded-lg transition"
+            className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition"
           >
             Contact Support
           </a>

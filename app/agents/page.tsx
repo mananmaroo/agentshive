@@ -134,12 +134,12 @@ export default function BrowseAgents() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Header */}
       <section className="max-w-7xl mx-auto px-4 py-12">
         <div className="mb-10">
-          <h1 className="text-4xl font-bold text-amber-900 mb-4">Browse Agents</h1>
-          <p className="text-lg text-amber-700">
+          <h1 className="text-4xl font-bold text-white mb-4">Browse Agents</h1>
+          <p className="text-lg text-slate-400">
             Discover {agents.length}+ AI agents created by the community
           </p>
         </div>
@@ -148,7 +148,7 @@ export default function BrowseAgents() {
         <div className="space-y-4 mb-8">
           {/* Search Bar */}
           <div className="relative">
-            <Search className="absolute left-4 top-3 text-amber-600 w-5 h-5" />
+            <Search className="absolute left-4 top-3 text-indigo-400 w-5 h-5" />
             <input
               type="text"
               placeholder="Search agents by name, tags, or description..."
@@ -157,7 +157,7 @@ export default function BrowseAgents() {
                 setSearchQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full bg-white border border-amber-300 rounded-lg pl-12 pr-4 py-3 text-amber-900 placeholder-amber-600 focus:outline-none focus:border-amber-500"
+              className="w-full bg-white border border-slate-700 rounded-lg pl-12 pr-4 py-3 text-white placeholder-amber-600 focus:outline-none focus:border-indigo-500"
             />
           </div>
 
@@ -165,12 +165,12 @@ export default function BrowseAgents() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 bg-amber-100 hover:bg-amber-200 border border-amber-300 text-amber-900 px-4 py-2 rounded-lg transition"
+              className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white px-4 py-2 rounded-lg transition"
             >
               <Filter className="w-4 h-4" />
               Filters
               {(selectedCategory || selectedSort !== 'trending') && (
-                <span className="ml-2 bg-amber-600 text-white text-xs px-2 py-1 rounded">
+                <span className="ml-2 bg-indigo-600 text-white text-xs px-2 py-1 rounded">
                   {selectedCategory ? 1 : 0 + (selectedSort !== 'trending' ? 1 : 0)}
                 </span>
               )}
@@ -179,10 +179,10 @@ export default function BrowseAgents() {
 
           {/* Filters Panel */}
           {showFilters && (
-            <div className="bg-amber-100/50 border border-amber-300 rounded-lg p-6 space-y-4">
+            <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 space-y-4">
               {/* Category Filter */}
               <div>
-                <h3 className="text-sm font-semibold text-amber-900 mb-3">Category</h3>
+                <h3 className="text-sm font-semibold text-white mb-3">Category</h3>
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => {
@@ -191,8 +191,8 @@ export default function BrowseAgents() {
                     }}
                     className={`px-3 py-1 rounded-lg text-sm transition ${
                       selectedCategory === ''
-                        ? 'bg-amber-600 text-white'
-                        : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                        ? 'bg-indigo-600 text-white'
+                        : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
                     }`}
                   >
                     All
@@ -206,8 +206,8 @@ export default function BrowseAgents() {
                       }}
                       className={`px-3 py-1 rounded-lg text-sm transition ${
                         selectedCategory === cat
-                          ? 'bg-amber-600 text-white'
-                          : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                          ? 'bg-indigo-600 text-white'
+                          : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
                       }`}
                     >
                       {cat}
@@ -218,7 +218,7 @@ export default function BrowseAgents() {
 
               {/* Sort Filter */}
               <div>
-                <h3 className="text-sm font-semibold text-amber-900 mb-3">Sort By</h3>
+                <h3 className="text-sm font-semibold text-white mb-3">Sort By</h3>
                 <div className="flex flex-wrap gap-2">
                   {[
                     { value: 'trending', label: 'Trending' },
@@ -234,8 +234,8 @@ export default function BrowseAgents() {
                       }}
                       className={`px-3 py-1 rounded-lg text-sm transition ${
                         selectedSort === option.value
-                          ? 'bg-amber-600 text-white'
-                          : 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                          ? 'bg-indigo-600 text-white'
+                          : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
                       }`}
                     >
                       {option.label}
@@ -252,7 +252,7 @@ export default function BrowseAgents() {
                     setSelectedSort('trending');
                     setCurrentPage(1);
                   }}
-                  className="text-amber-700 hover:text-amber-800 text-sm flex items-center gap-1 font-semibold"
+                  className="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1 font-semibold"
                 >
                   <X className="w-4 h-4" />
                   Clear filters
@@ -263,7 +263,7 @@ export default function BrowseAgents() {
         </div>
 
         {/* Results Count */}
-        <div className="text-amber-700 text-sm mb-6">
+        <div className="text-slate-400 text-sm mb-6">
           {filteredAgents.length === 0 ? (
             'No agents found'
           ) : (
@@ -278,14 +278,14 @@ export default function BrowseAgents() {
         {/* Agents Grid */}
         {loading ? (
           <div className="flex justify-center items-center py-20">
-            <div className="text-amber-700">Loading agents...</div>
+            <div className="text-slate-400">Loading agents...</div>
           </div>
         ) : paginatedAgents.length === 0 ? (
           <div className="text-center py-20">
-            <p className="text-amber-700 text-lg">No agents found matching your criteria</p>
+            <p className="text-slate-400 text-lg">No agents found matching your criteria</p>
             <Link
               href="/agents/upload"
-              className="text-amber-600 hover:text-amber-700 mt-4 inline-block font-semibold"
+              className="text-indigo-400 hover:text-slate-400 mt-4 inline-block font-semibold"
             >
               Be the first to upload an agent →
             </Link>
@@ -296,16 +296,16 @@ export default function BrowseAgents() {
               <Link
                 key={agent.id}
                 href={`/agents/${agent.id}`}
-                className="bg-white border border-amber-200 rounded-lg p-6 hover:border-amber-400 shadow-sm hover:shadow-md transition group"
+                className="bg-white border border-slate-700 rounded-lg p-6 hover:border-amber-400 shadow-sm hover:shadow-md transition group"
               >
                 {/* Header */}
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-amber-900 group-hover:text-amber-600 transition mb-1">
+                    <h3 className="text-lg font-semibold text-white group-hover:text-indigo-400 transition mb-1">
                       {agent.title}
                     </h3>
                     {agent.verified && (
-                      <span className="inline-block bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded mb-2">
+                      <span className="inline-block bg-slate-800 text-slate-400 text-xs px-2 py-1 rounded mb-2">
                         ✓ Verified
                       </span>
                     )}
@@ -313,7 +313,7 @@ export default function BrowseAgents() {
                 </div>
 
                 {/* Description */}
-                <p className="text-amber-700 text-sm mb-4 line-clamp-2">
+                <p className="text-slate-400 text-sm mb-4 line-clamp-2">
                   {agent.description}
                 </p>
 
@@ -322,13 +322,13 @@ export default function BrowseAgents() {
                   {agent.tags.slice(0, 3).map((tag) => (
                     <span
                       key={tag}
-                      className="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded"
+                      className="bg-slate-800 text-slate-400 text-xs px-2 py-1 rounded"
                     >
                       {tag}
                     </span>
                   ))}
                   {agent.tags.length > 3 && (
-                    <span className="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded">
+                    <span className="bg-slate-800 text-slate-400 text-xs px-2 py-1 rounded">
                       +{agent.tags.length - 3}
                     </span>
                   )}
@@ -337,21 +337,21 @@ export default function BrowseAgents() {
                 {/* Category Badge */}
                 <div className="mb-4">
                   {agent.category.length > 0 && (
-                    <span className="inline-block bg-amber-200 text-amber-900 text-xs px-2 py-1 rounded font-medium">
+                    <span className="inline-block bg-slate-700 text-white text-xs px-2 py-1 rounded font-medium">
                       {agent.category[0]}
                     </span>
                   )}
                 </div>
 
                 {/* Creator */}
-                <div className="border-t border-amber-200 pt-3 mb-3">
-                  <p className="text-xs text-amber-700">
-                    By <span className="text-amber-900 font-semibold">{getCreatorName(agent.creator_id)}</span>
+                <div className="border-t border-slate-700 pt-3 mb-3">
+                  <p className="text-xs text-slate-400">
+                    By <span className="text-white font-semibold">{getCreatorName(agent.creator_id)}</span>
                   </p>
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center justify-between text-xs text-amber-700 pt-3 border-t border-amber-200">
+                <div className="flex items-center justify-between text-xs text-slate-400 pt-3 border-t border-slate-700">
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 text-amber-500" />
                     <span>
@@ -359,11 +359,11 @@ export default function BrowseAgents() {
                     </span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Download className="w-4 h-4 text-amber-600" />
+                    <Download className="w-4 h-4 text-indigo-400" />
                     <span>{agent.downloads_count}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Eye className="w-4 h-4 text-amber-700" />
+                    <Eye className="w-4 h-4 text-slate-400" />
                     <span>{agent.views_count}</span>
                   </div>
                 </div>
@@ -378,7 +378,7 @@ export default function BrowseAgents() {
             <button
               onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-2 rounded-lg bg-amber-100 text-amber-900 disabled:opacity-50 hover:bg-amber-200 transition"
+              className="px-3 py-2 rounded-lg bg-slate-800 text-white disabled:opacity-50 hover:bg-slate-700 transition"
             >
               Previous
             </button>
@@ -389,8 +389,8 @@ export default function BrowseAgents() {
                 onClick={() => setCurrentPage(page)}
                 className={`px-3 py-2 rounded-lg transition ${
                   page === currentPage
-                    ? 'bg-amber-600 text-white'
-                    : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-slate-800 text-white hover:bg-slate-700'
                 }`}
               >
                 {page}
@@ -400,7 +400,7 @@ export default function BrowseAgents() {
             <button
               onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
               disabled={currentPage === totalPages}
-              className="px-3 py-2 rounded-lg bg-amber-100 text-amber-900 disabled:opacity-50 hover:bg-amber-200 transition"
+              className="px-3 py-2 rounded-lg bg-slate-800 text-white disabled:opacity-50 hover:bg-slate-700 transition"
             >
               Next
             </button>
