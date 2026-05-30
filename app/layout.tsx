@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./lib/auth-context";
-import { SidebarNav } from "./components/sidebar-nav";
-import { SiteFooter } from "./components/site-footer";
+import { LayoutWrapper } from "./components/layout-wrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,8 +19,6 @@ export const metadata: Metadata = {
   description: "Open registry for Claude agents",
 };
 
-// Force rebuild - version 2
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,13 +31,9 @@ export default function RootLayout({
     >
       <body className="bg-white">
         <AuthProvider>
-          <SidebarNav />
-          <div className="ml-64 min-h-screen flex flex-col bg-gradient-to-br from-amber-50 via-white to-orange-50">
-            <main className="flex-1">
-              {children}
-            </main>
-            <SiteFooter />
-          </div>
+          <LayoutWrapper>
+            {children}
+          </LayoutWrapper>
         </AuthProvider>
       </body>
     </html>
