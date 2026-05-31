@@ -8,7 +8,7 @@ export function LayoutWrapper({ children }: { children: ReactNode }) {
   return (
     <>
       <SidebarNav />
-      <div className="ml-64 min-h-screen flex flex-col bg-slate-950">
+      <div className="ml-16 min-h-screen flex flex-col bg-slate-950">
         <main className="flex-1">
           {children}
         </main>

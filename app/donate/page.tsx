@@ -24,7 +24,7 @@ export default function Donate() {
         {/* Donation Options */}
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           {/* Buy Me a Coffee */}
-          <div className="bg-white border border-slate-700 rounded-lg p-8 hover:border-amber-400 transition">
+          <div className="border border-slate-800 hover:border-slate-600 rounded-lg p-8 transition-colors duration-200">
             <div className="flex items-center gap-3 mb-4">
               <Coffee className="w-6 h-6 text-indigo-400" />
               <h2 className="text-xl font-bold text-white">Buy Me a Coffee</h2>
@@ -43,7 +43,7 @@ export default function Donate() {
           </div>
 
           {/* GitHub Sponsors */}
-          <div className="bg-white border border-slate-700 rounded-lg p-8 hover:border-amber-400 transition">
+          <div className="border border-slate-800 hover:border-slate-600 rounded-lg p-8 transition-colors duration-200">
             <div className="flex items-center gap-3 mb-4">
               <Zap className="w-6 h-6 text-indigo-400" />
               <h2 className="text-xl font-bold text-white">GitHub Sponsors</h2>

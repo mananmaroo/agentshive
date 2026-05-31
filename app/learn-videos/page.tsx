@@ -126,7 +126,7 @@ export default function LearnVideosPage() {
               rel="noopener noreferrer"
               className="group"
             >
-              <div className="bg-white border border-slate-700 rounded-lg overflow-hidden hover:border-amber-500 transition">
+              <div className="border border-slate-800 hover:border-slate-600 rounded-lg overflow-hidden transition-colors duration-200">
                 {/* Thumbnail */}
                 <div className="relative h-40 bg-slate-800 overflow-hidden">
                   <img

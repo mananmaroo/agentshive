@@ -88,7 +88,7 @@ export default function TopAgentsPage() {
               <Link
                 key={agent.id}
                 href={`/agents/${agent.id}`}
-                className="bg-white border border-slate-700 rounded-lg p-6 hover:border-amber-500 hover:bg-slate-800 transition block group"
+                className="border border-slate-800 hover:border-slate-600 rounded-lg p-6 transition-colors duration-200 block group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>

@@ -172,7 +172,7 @@ export default function BlogPage() {
                 href={`/blog/${post.slug}`}
                 className="group"
               >
-                <div className="bg-white border border-slate-700 rounded-lg overflow-hidden hover:border-amber-500 hover:bg-slate-800 transition">
+                <div className="border border-slate-800 hover:border-slate-600 rounded-lg overflow-hidden transition-colors duration-200">
                   <div className="flex flex-col md:flex-row">
                     {/* Image */}
                     {post.featured_image_url && (

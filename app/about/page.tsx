@@ -14,7 +14,7 @@ export default function AboutPage() {
         </div>
 
         {/* Mission Section */}
-        <section className="bg-white border border-slate-700 rounded-lg p-8 mb-12">
+        <section className="border border-slate-800 rounded-lg p-8 mb-12">
           <h2 className="text-2xl font-bold text-white mb-4">Our Mission</h2>
           <p className="text-slate-300 leading-relaxed mb-4">
             Agentshive exists to democratize AI agent development. We believe that the best agents are built collaboratively, shared openly, and improved continuously by the community.
@@ -28,7 +28,7 @@ export default function AboutPage() {
         <section className="mb-12">
           <h2 className="text-2xl font-bold text-white mb-8 text-center">Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white border border-slate-700 rounded-lg p-6">
+            <div className="border border-slate-800 rounded-lg p-6">
               <div className="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center mb-4">
                 <Zap className="w-6 h-6 text-slate-400" />
               </div>
@@ -38,7 +38,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-white border border-slate-700 rounded-lg p-6">
+            <div className="border border-slate-800 rounded-lg p-6">
               <div className="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center mb-4">
                 <Users className="w-6 h-6 text-slate-400" />
               </div>
@@ -48,7 +48,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="bg-white border border-slate-700 rounded-lg p-6">
+            <div className="border border-slate-800 rounded-lg p-6">
               <div className="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center mb-4">
                 <Heart className="w-6 h-6 text-slate-400" />
               </div>
@@ -61,7 +61,7 @@ export default function AboutPage() {
         </section>
 
         {/* Features Section */}
-        <section className="bg-white border border-slate-700 rounded-lg p-8 mb-12">
+        <section className="border border-slate-800 rounded-lg p-8 mb-12">
           <h2 className="text-2xl font-bold text-white mb-6">What You Can Do</h2>
           <ul className="space-y-3">
             <li className="flex items-start gap-3">

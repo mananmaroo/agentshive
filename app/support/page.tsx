@@ -17,7 +17,7 @@ export default function SupportPage() {
         </div>
 
         {/* Server Costs */}
-        <section className="bg-white border border-slate-700 rounded-lg p-8 mb-12">
+        <section className="border border-slate-800 rounded-lg p-8 mb-12">
           <div className="flex items-start gap-4 mb-6">
             <Server className="w-8 h-8 text-indigo-400 flex-shrink-0 mt-1" />
             <div>
@@ -175,7 +175,7 @@ export default function SupportPage() {
         </section>
 
         {/* Thank You Message */}
-        <section className="bg-white border border-slate-700 rounded-lg p-8 text-center">
+        <section className="border border-slate-800 rounded-lg p-8 text-center">
           <Heart className="w-12 h-12 text-indigo-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-4">
             Thank You!

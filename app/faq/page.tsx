@@ -75,7 +75,7 @@ export default function FAQPage() {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="bg-white border border-slate-700 rounded-lg overflow-hidden hover:border-amber-500 transition"
+              className="border border-slate-800 hover:border-slate-600 rounded-lg overflow-hidden transition-colors duration-200"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}

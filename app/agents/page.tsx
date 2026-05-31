@@ -2,7 +2,35 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, Star, Download, TrendingUp, Clock, Eye, Filter, X } from 'lucide-react';
+import { Search, Star, Download, TrendingUp, Clock, Eye, Filter, X, Code, Database, FileText, MessageSquare, Cog, GraduationCap, FlaskConical, Bot } from 'lucide-react';
+
+const categoryIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+  'Research': FlaskConical,
+  'Data Analysis': Database,
+  'Content Creation': FileText,
+  'Code Generation': Code,
+  'Customer Support': MessageSquare,
+  'Automation': Cog,
+  'Education': GraduationCap,
+};
+
+const getCategoryIcon = (categories: string[]) => {
+  const first = categories?.[0];
+  return (first && categoryIcons[first]) || Bot;
+};
+
+const categoryColors: Record<string, string> = {
+  'Research': 'text-fuchsia-400 bg-fuchsia-500/10',
+  'Data Analysis': 'text-emerald-400 bg-emerald-500/10',
+  'Content Creation': 'text-amber-400 bg-amber-500/10',
+  'Code Generation': 'text-indigo-400 bg-indigo-500/10',
+  'Customer Support': 'text-sky-400 bg-sky-500/10',
+  'Automation': 'text-rose-400 bg-rose-500/10',
+  'Education': 'text-teal-400 bg-teal-500/10',
+};
+
+const getCategoryColor = (categories: string[]) =>
+  categoryColors[categories?.[0]] || 'text-slate-400 bg-slate-500/10';
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
 
 interface Agent {
@@ -157,7 +185,7 @@ export default function BrowseAgents() {
                 setSearchQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full bg-white border border-slate-700 rounded-lg pl-12 pr-4 py-3 text-white placeholder-amber-600 focus:outline-none focus:border-indigo-500"
+              className="w-full bg-slate-900/60 border border-slate-800 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
 
@@ -296,16 +324,24 @@ export default function BrowseAgents() {
               <Link
                 key={agent.id}
                 href={`/agents/${agent.id}`}
-                className="bg-white border border-slate-700 rounded-lg p-6 hover:border-amber-400 shadow-sm hover:shadow-md transition group"
+                className="border border-slate-800 hover:border-slate-600 rounded-lg p-6 transition-colors duration-200 group"
               >
                 {/* Header */}
-                <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start gap-3 mb-3">
+                  {(() => {
+                    const Icon = getCategoryIcon(agent.category);
+                    return (
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${getCategoryColor(agent.category)}`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                    );
+                  })()}
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white group-hover:text-indigo-400 transition mb-1">
+                    <h3 className="text-base font-semibold text-white group-hover:text-indigo-400 transition mb-1">
                       {agent.title}
                     </h3>
                     {agent.verified && (
-                      <span className="inline-block bg-slate-800 text-slate-400 text-xs px-2 py-1 rounded mb-2">
+                      <span className="inline-block bg-slate-800/60 text-slate-400 text-xs px-2 py-0.5 rounded">
                         ✓ Verified
                       </span>
                     )}

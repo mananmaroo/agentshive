@@ -72,7 +72,7 @@ export default function RequestAgentPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
           {/* Form */}
           <div>
-            <div className="bg-white border border-slate-700 rounded-lg p-8">
+            <div className="border border-slate-800 rounded-lg p-8">
               <h2 className="text-2xl font-bold text-white mb-6">Tell Us What You Need</h2>
 
               {submitted && (
@@ -205,7 +205,7 @@ export default function RequestAgentPage() {
               </ol>
             </div>
 
-            <div className="bg-white border border-slate-700 rounded-lg p-6">
+            <div className="border border-slate-800 rounded-lg p-6">
               <h3 className="text-lg font-bold text-white mb-3">✨ Tips for Your Request</h3>
               <ul className="space-y-2 text-slate-300 text-sm">
                 <li>• Be specific about agent behavior and expected outputs</li>

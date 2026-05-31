@@ -64,7 +64,7 @@ export default function CategoriesPage() {
               <Link
                 key={category.name}
                 href={`/agents?category=${encodeURIComponent(category.name)}`}
-                className="bg-white border border-slate-700 rounded-lg p-6 hover:border-amber-500 hover:bg-slate-800 transition group"
+                className="border border-slate-800 hover:border-slate-600 rounded-lg p-6 transition-colors duration-200 group"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-slate-700 rounded-lg flex items-center justify-center group-hover:bg-amber-300 transition">
