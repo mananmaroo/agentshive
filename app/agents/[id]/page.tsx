@@ -242,14 +242,21 @@ export default function AgentDetail() {
     }
   };
 
-  const handleDownload = async () => {
-    if (!agent?.claude_md_file) {
-      alert('No file available for download');
-      return;
-    }
+  const handleDownload = () => {
+    if (!agent) return;
+    window.location.href = `/api/agents/${agent.id}/raw`;
+  };
 
-    // TODO: Implement actual file download from Supabase Storage
-    alert('Download functionality coming soon!');
+  const [copied, setCopied] = useState(false);
+  const installUrl = typeof window !== 'undefined' && agent
+    ? `${window.location.origin}/api/agents/${agent.id}/raw`
+    : '';
+  const curlCommand = `curl -fsSL ${installUrl} -o .claude/agents/${(agent?.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-')}.md`;
+
+  const copyInstall = async () => {
+    await navigator.clipboard.writeText(curlCommand);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   if (loading) {
@@ -415,6 +422,26 @@ export default function AgentDetail() {
                   </a>
                 )}
               </div>
+            </div>
+
+            {/* Install in Claude Code / Codex */}
+            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-white mb-2">Use this agent</h2>
+              <p className="text-slate-400 text-sm mb-4">
+                Drop this file into your <code className="text-indigo-300">.claude/agents/</code> directory, or tell Claude Code: <em>&quot;fetch {installUrl} and save it as .claude/agents/{(agent.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-')}.md&quot;</em>
+              </p>
+              <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
+                <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-all">{curlCommand}</pre>
+                <button
+                  onClick={copyInstall}
+                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
+                >
+                  {copied ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mt-3">
+                Raw file URL: <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline break-all">{installUrl}</a>
+              </p>
             </div>
 
             {/* Rating Section */}

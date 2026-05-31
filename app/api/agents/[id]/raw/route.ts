@@ -1,0 +1,54 @@
+import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { NextRequest, NextResponse } from 'next/server';
+
+// GET /api/agents/[id]/raw — returns the agent's claude.md content as plain text.
+// Designed for Claude Code / Codex to fetch directly:
+//   curl https://www.agentshive.net/api/agents/<id>/raw > .claude/agents/foo.md
+export async function GET(
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params;
+
+    const { data: agent, error: agentError } = await supabase
+      .from('agents')
+      .select('id, title')
+      .eq('id', id)
+      .single();
+
+    if (agentError || !agent) {
+      return new NextResponse('Agent not found', { status: 404 });
+    }
+
+    const { data: file, error: fileError } = await supabase
+      .from('agent_files')
+      .select('file_content')
+      .eq('agent_id', id)
+      .eq('file_type', 'claude_md')
+      .maybeSingle();
+
+    if (fileError || !file?.file_content) {
+      return new NextResponse('No claude.md available for this agent', { status: 404 });
+    }
+
+    supabase
+      .from('agents')
+      .update({ downloads_count: undefined })
+      .eq('id', id)
+      .then(() => {});
+
+    return new NextResponse(file.file_content, {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/markdown; charset=utf-8',
+        'Cache-Control': 'public, max-age=300, s-maxage=300',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Disposition': `inline; filename="${agent.title.replace(/[^a-z0-9-_]+/gi, '-').toLowerCase()}.md"`,
+      },
+    });
+  } catch (error: any) {
+    console.error('Error fetching raw agent file:', error);
+    return new NextResponse('Internal error', { status: 500 });
+  }
+}
