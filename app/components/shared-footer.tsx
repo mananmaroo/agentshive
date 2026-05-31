@@ -17,7 +17,7 @@ export function SharedFooter() {
               <h3 className="text-lg font-bold text-white">Agentshive</h3>
             </div>
             <p className="text-slate-400 text-sm">
-              The open registry for Claude agents. Discover, share, and learn.
+              The open registry for AI agents. Discover, share, and learn.
             </p>
           </div>
 

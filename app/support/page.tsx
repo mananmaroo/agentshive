@@ -161,7 +161,7 @@ export default function SupportPage() {
                     Share Agentshive with your network. Tweet about us, recommend us to friends, and help grow the community.
                   </p>
                   <a
-                    href="https://twitter.com/intent/tweet?text=Check%20out%20Agentshive%20-%20the%20open%20registry%20for%20Claude%20agents!"
+                    href="https://twitter.com/intent/tweet?text=Check%20out%20Agentshive%20-%20the%20open%20registry%20for%20AI%20agents!"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition font-semibold"

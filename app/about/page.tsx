@@ -9,7 +9,7 @@ export default function AboutPage() {
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold text-white mb-4">About Agentshive</h1>
           <p className="text-xl text-slate-400">
-            Building the open registry for Claude agents
+            Building the open registry for AI agents
           </p>
         </div>
 
@@ -20,7 +20,7 @@ export default function AboutPage() {
             Agentshive exists to democratize AI agent development. We believe that the best agents are built collaboratively, shared openly, and improved continuously by the community.
           </p>
           <p className="text-slate-300 leading-relaxed">
-            By creating a centralized registry for Claude agents, we enable developers to discover proven solutions, share their innovations, and build faster together. Every agent uploaded saves someone else hours of development time and tokens.
+            By creating a centralized registry for AI agents, we enable developers to discover proven solutions, share their innovations, and build faster together. Every agent uploaded saves someone else hours of development time and tokens.
           </p>
         </section>
 
@@ -73,7 +73,7 @@ export default function AboutPage() {
             <li className="flex items-start gap-3">
               <span className="text-indigo-400 font-bold">✓</span>
               <span className="text-slate-300">
-                <strong>Upload</strong> your agents in multiple formats (claude.md, n8n, code, video)
+                <strong>Upload</strong> your agents in any format (markdown, n8n, code, video)
               </span>
             </li>
             <li className="flex items-start gap-3">

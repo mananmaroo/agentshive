@@ -19,10 +19,10 @@ interface BlogPost {
 const samplePosts: BlogPost[] = [
   {
     id: '1',
-    title: 'Getting Started with Claude Agents: A Beginner\'s Guide',
-    slug: 'getting-started-claude-agents',
+    title: 'Getting Started with AI Agents: A Beginner\'s Guide',
+    slug: 'getting-started-ai-agents',
     excerpt:
-      'Learn how to build your first Claude agent from scratch. We\'ll cover the basics, best practices, and common pitfalls to avoid.',
+      'Learn how to build your first AI agent from scratch — whether you use Claude Code, Codex, n8n, or LangChain. Basics, best practices, and common pitfalls.',
     category: 'Tutorial',
     author: { username: 'alexchen', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex' },
     featured_image_url:
@@ -71,7 +71,7 @@ const samplePosts: BlogPost[] = [
   },
   {
     id: '5',
-    title: 'Integrating External APIs with Your Claude Agents',
+    title: 'Integrating External APIs with Your AI Agents',
     slug: 'integrating-apis',
     excerpt:
       'Step-by-step guide to connecting your agents with external APIs. Includes examples with popular services like Stripe and GitHub.',

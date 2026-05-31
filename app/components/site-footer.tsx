@@ -12,11 +12,11 @@ export function SiteFooter() {
           <h3 className="text-xl font-bold text-white mb-6 text-center">Supported Agent Formats</h3>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {[
-              { name: 'Claude.md', icon: '🤖' },
+              { name: 'Claude Code', icon: '🤖' },
+              { name: 'Codex / OpenAI', icon: '💻' },
               { name: 'n8n Templates', icon: '⚙️' },
-              { name: 'Codex Agents', icon: '💻' },
-              { name: 'Videos', icon: '🎥' },
-              { name: 'Code Snippets', icon: '📝' },
+              { name: 'LangChain / Code', icon: '🐍' },
+              { name: 'Videos & Guides', icon: '🎥' },
             ].map((format) => (
               <div key={format.name} className="bg-slate-800 rounded-lg p-3 text-center hover:bg-slate-700 transition border border-slate-700">
                 <div className="text-2xl mb-1">{format.icon}</div>
@@ -34,7 +34,7 @@ export function SiteFooter() {
             {/* Brand */}
             <div>
               <h4 className="font-bold text-white mb-4">Agentshive</h4>
-              <p className="text-sm text-slate-400">Open registry for Claude agents. Discover, share, and download agent templates.</p>
+              <p className="text-sm text-slate-400">Open registry for AI agents. Discover, share, and download agent templates for any runtime.</p>
             </div>
 
             {/* Product */}
@@ -134,7 +134,7 @@ export function SiteFooter() {
           {/* Bottom */}
           <div className="border-t border-slate-800 pt-8 text-center">
             <p className="text-sm text-slate-400 mb-2">
-              Agentshive — Open Registry for Claude Agents
+              Agentshive — Open Registry for AI Agents
             </p>
             <p className="text-xs text-slate-500">
               Created by <span className="text-indigo-400 font-semibold">Mikro-kosmos</span> • Built with Next.js, Supabase, and Tailwind CSS

@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Agentshive",
-  description: "Open registry for Claude agents",
+  description: "The open registry for AI agents — discover, share, and install agents for any runtime",
 };
 
 export default function RootLayout({

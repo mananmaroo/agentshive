@@ -65,7 +65,7 @@ function LandingPage() {
       <section className="stars-bg min-h-screen flex flex-col items-center justify-center px-4 py-20 relative">
         <div className="max-w-4xl mx-auto text-center z-10">
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-            The Open Registry for <span className="bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">Claude Agents</span>
+            The Open Registry for <span className="bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">AI Agents</span>
           </h1>
           <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto">
             Discover, download, and share AI agent templates. Save tokens. Build faster. Join the community.
@@ -151,7 +151,7 @@ function LandingPage() {
           <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 text-center">
             <Upload className="w-10 h-10 text-indigo-400 mx-auto mb-3" />
             <h3 className="text-white font-semibold mb-2">Upload Any Format</h3>
-            <p className="text-slate-400 text-sm">Claude.md, n8n, videos, code — share what you build</p>
+            <p className="text-slate-400 text-sm">Markdown, n8n, code, videos — any agent runtime</p>
           </div>
           <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 text-center">
             <Star className="w-10 h-10 text-indigo-400 mx-auto mb-3" />
@@ -176,7 +176,7 @@ function LandingPage() {
             </div>
             <div className="p-8 flex flex-col justify-center">
               <h3 className="text-2xl font-bold text-white mb-3">
-                Getting Started with Claude Agents
+                Getting Started with AI Agents
               </h3>
               <p className="text-slate-400 mb-6">
                 Learn the fundamentals of building powerful AI agents, from setup to deployment. Discover best practices and common patterns.

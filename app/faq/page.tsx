@@ -7,7 +7,7 @@ const faqs = [
   {
     question: 'What is AgentStack?',
     answer:
-      'AgentStack is an open registry for Claude agents. It allows developers to discover, share, and download AI agents built with Claude, n8n templates, Codex, and other formats.',
+      'Agentshive is an open registry for AI agents. It allows developers to discover, share, and download agents built for Claude Code, Codex, OpenAI, n8n, LangChain, custom code, and any other runtime.',
   },
   {
     question: 'How do I upload my agent?',

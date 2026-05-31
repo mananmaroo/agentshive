@@ -17,13 +17,13 @@ interface Video {
 const videos: Video[] = [
   {
     id: '1',
-    title: 'Getting Started with Claude Agents',
+    title: 'Getting Started with AI Agents',
     channel: 'Anthropic',
     category: 'Beginner',
     duration: '12:34',
     thumbnail: 'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400&h=225&fit=crop',
     url: 'https://youtube.com/embed/example1',
-    description: 'Learn the fundamentals of building Claude agents from scratch',
+    description: 'Learn the fundamentals of building AI agents from scratch — works with any runtime',
   },
   {
     id: '2',
