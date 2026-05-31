@@ -22,7 +22,7 @@ function LoginContent() {
     }
   }, [searchParams]);
 
-  const handleOAuth = async (provider: 'github' | 'google' | 'apple' | 'linkedin_oidc') => {
+  const handleOAuth = async (provider: 'github' | 'google') => {
     setError('');
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider,
@@ -143,12 +143,6 @@ function LoginContent() {
           </button>
           <button onClick={() => handleOAuth('google')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
             Log in with Google
-          </button>
-          <button onClick={() => handleOAuth('apple')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
-            Log in with Apple
-          </button>
-          <button onClick={() => handleOAuth('linkedin_oidc')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
-            Log in with LinkedIn
           </button>
         </div>
 

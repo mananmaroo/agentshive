@@ -14,7 +14,7 @@ export default function SignUp() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleOAuth = async (provider: 'github' | 'google' | 'apple' | 'linkedin_oidc') => {
+  const handleOAuth = async (provider: 'github' | 'google') => {
     setError('');
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider,
@@ -159,12 +159,6 @@ export default function SignUp() {
           </button>
           <button onClick={() => handleOAuth('google')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
             Sign up with Google
-          </button>
-          <button onClick={() => handleOAuth('apple')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
-            Sign up with Apple
-          </button>
-          <button onClick={() => handleOAuth('linkedin_oidc')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
-            Sign up with LinkedIn
           </button>
         </div>
 
