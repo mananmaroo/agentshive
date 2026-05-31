@@ -33,7 +33,7 @@ export default function Donate() {
               One-time or recurring donations directly support server costs and platform development.
             </p>
             <a
-              href="https://buymeacoffee.com"
+              href="https://buymeacoffee.com/maroomanan3"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block w-full bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold text-center transition"
