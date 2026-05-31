@@ -14,6 +14,15 @@ export default function SignUp() {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  const handleGitHub = async () => {
+    setError('');
+    const { error: oauthError } = await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (oauthError) setError(oauthError.message);
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -143,7 +152,7 @@ export default function SignUp() {
         </div>
 
         {/* GitHub Sign Up */}
-        <button className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+        <button onClick={handleGitHub} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
           <Code className="w-5 h-5" />
           Sign up with GitHub
         </button>
