@@ -22,10 +22,10 @@ function LoginContent() {
     }
   }, [searchParams]);
 
-  const handleGitHub = async () => {
+  const handleOAuth = async (provider: 'github' | 'google' | 'apple' | 'linkedin_oidc') => {
     setError('');
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
-      provider: 'github',
+      provider,
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (oauthError) setError(oauthError.message);
@@ -136,10 +136,21 @@ function LoginContent() {
         </div>
 
         {/* GitHub Login */}
-        <button onClick={handleGitHub} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
-          <Code className="w-5 h-5" />
-          Log in with GitHub
-        </button>
+        <div className="space-y-2">
+          <button onClick={() => handleOAuth('github')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+            <Code className="w-5 h-5" />
+            Log in with GitHub
+          </button>
+          <button onClick={() => handleOAuth('google')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+            Log in with Google
+          </button>
+          <button onClick={() => handleOAuth('apple')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+            Log in with Apple
+          </button>
+          <button onClick={() => handleOAuth('linkedin_oidc')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+            Log in with LinkedIn
+          </button>
+        </div>
 
         {/* Sign Up Link */}
         <p className="text-center text-slate-400 mt-6">

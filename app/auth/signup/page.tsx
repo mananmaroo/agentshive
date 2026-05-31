@@ -14,10 +14,10 @@ export default function SignUp() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleGitHub = async () => {
+  const handleOAuth = async (provider: 'github' | 'google' | 'apple' | 'linkedin_oidc') => {
     setError('');
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
-      provider: 'github',
+      provider,
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (oauthError) setError(oauthError.message);
@@ -152,10 +152,21 @@ export default function SignUp() {
         </div>
 
         {/* GitHub Sign Up */}
-        <button onClick={handleGitHub} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
-          <Code className="w-5 h-5" />
-          Sign up with GitHub
-        </button>
+        <div className="space-y-2">
+          <button onClick={() => handleOAuth('github')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+            <Code className="w-5 h-5" />
+            Sign up with GitHub
+          </button>
+          <button onClick={() => handleOAuth('google')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+            Sign up with Google
+          </button>
+          <button onClick={() => handleOAuth('apple')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+            Sign up with Apple
+          </button>
+          <button onClick={() => handleOAuth('linkedin_oidc')} type="button" className="w-full bg-slate-800 hover:bg-slate-700 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center gap-2 border border-slate-700">
+            Sign up with LinkedIn
+          </button>
+        </div>
 
         {/* Login Link */}
         <p className="text-center text-slate-400 mt-6">
