@@ -33,7 +33,7 @@ async function searchAgents(args: {
   const params = new URLSearchParams();
   if (args.query) params.set('search', args.query);
   if (args.category) params.set('category', args.category);
-  if (args.sortBy) params.set('sortBy', args.sortBy);
+  if (args.sortBy) params.set('sort', args.sortBy);
   if (args.limit) params.set('limit', String(args.limit));
 
   const res = await fetch(`${API_BASE}/api/agents?${params.toString()}`);
