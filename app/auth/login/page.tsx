@@ -59,12 +59,12 @@ function LoginContent() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
-              AS
+              A
             </div>
-            <span className="text-2xl font-bold text-white">AgentStack</span>
+            <span className="text-2xl font-bold text-white">Agentshive</span>
           </Link>
           <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-slate-400">Log in to your AgentStack account</p>
+          <p className="text-slate-400">Log in to your Agentshive account</p>
         </div>
 
         {/* Success Message */}

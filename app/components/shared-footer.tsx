@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Code, Share2, Mail, Coffee } from 'lucide-react';
+import { Code, Mail, Coffee } from 'lucide-react';
 
 export function SharedFooter() {
   return (
@@ -12,7 +12,7 @@ export function SharedFooter() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
-                AS
+                A
               </div>
               <h3 className="text-lg font-bold text-white">Agentshive</h3>
             </div>
@@ -113,11 +113,8 @@ export function SharedFooter() {
               Buy me a coffee
             </a>
             <div className="flex items-center gap-4">
-              <a href="https://github.com" className="text-slate-400 hover:text-white transition">
+              <a href="https://github.com/mananmaroo/agentshive" className="text-slate-400 hover:text-white transition">
                 <Code className="w-5 h-5" />
-              </a>
-              <a href="https://twitter.com" className="text-slate-400 hover:text-white transition">
-                <Share2 className="w-5 h-5" />
               </a>
               <a href="mailto:support@agentshive.net" className="text-slate-400 hover:text-white transition">
                 <Mail className="w-5 h-5" />

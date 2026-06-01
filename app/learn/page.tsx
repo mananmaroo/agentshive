@@ -11,9 +11,9 @@ export default function Learn() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
-              AS
+              A
             </div>
-            <h1 className="text-xl font-bold text-white">AgentStack</h1>
+            <h1 className="text-xl font-bold text-white">Agentshive</h1>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/learn" className="text-white transition text-sm font-semibold">
@@ -143,7 +143,7 @@ export default function Learn() {
                   </div>
                 </div>
                 <div className="flex-grow">
-                  <h3 className="text-xl font-semibold text-white mb-3">Upload to AgentStack</h3>
+                  <h3 className="text-xl font-semibold text-white mb-3">Upload to Agentshive</h3>
                   <p className="text-slate-300 mb-4">
                     Share your agent with the community and enable others to use it instantly.
                   </p>
@@ -344,7 +344,7 @@ export default function Learn() {
         <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-lg p-12 text-center mb-20">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to Build?</h2>
           <p className="text-lg text-slate-300 mb-8">
-            Create your agent and share it with thousands of developers
+            Create your agent and share it with the community
           </p>
           <Link
             href="/agents/upload"
@@ -358,8 +358,8 @@ export default function Learn() {
       {/* Footer */}
       <footer className="border-t border-slate-700 bg-slate-900/50 py-8">
         <div className="max-w-7xl mx-auto px-4 text-center text-slate-400">
-          <p>AgentStack — Learn, Build, and Share AI Agents</p>
-          <p className="text-sm mt-2">Join thousands of developers creating the future of automation</p>
+          <p>Agentshive — Learn, Build, and Share AI Agents</p>
+          <p className="text-sm mt-2">Join the community creating the future of automation</p>
         </div>
       </footer>
     </div>

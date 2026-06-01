@@ -25,7 +25,7 @@ export default function SupportPage() {
                 Server & Infrastructure Costs
               </h2>
               <p className="text-slate-300 leading-relaxed">
-                Running Agentshive requires reliable infrastructure, database storage, and CDN capacity to serve thousands of agents to millions of users worldwide.
+                Running Agentshive requires reliable infrastructure, database storage, and CDN capacity to serve agents to users worldwide.
               </p>
             </div>
           </div>
@@ -158,15 +158,13 @@ export default function SupportPage() {
                     Spread the Word 🗣️
                   </h3>
                   <p className="text-slate-300 mb-4">
-                    Share Agentshive with your network. Tweet about us, recommend us to friends, and help grow the community.
+                    Share Agentshive with your network. Post about us, recommend us to friends, and help grow the community.
                   </p>
                   <a
-                    href="https://twitter.com/intent/tweet?text=Check%20out%20Agentshive%20-%20the%20open%20registry%20for%20AI%20agents!"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="mailto:?subject=Check%20out%20Agentshive&body=Agentshive%20is%20an%20open%20registry%20for%20AI%20agents%20%E2%80%94%20discover%2C%20share%2C%20and%20download%20agent%20templates%20for%20any%20runtime%3A%20https%3A%2F%2Fwww.agentshive.net"
                     className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg transition font-semibold"
                   >
-                    Share on Twitter
+                    Share Agentshive
                   </a>
                 </div>
               </div>

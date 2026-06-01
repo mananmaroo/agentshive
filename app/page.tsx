@@ -196,7 +196,7 @@ function LandingPage() {
       <section className="max-w-7xl mx-auto px-4 py-20">
         <div className="bg-gradient-to-r from-indigo-900 to-indigo-800 rounded-lg p-12 text-center border border-indigo-700">
           <h2 className="text-3xl font-bold text-white mb-4">
-            Join 1000+ developers sharing agents
+            Join the community sharing agents
           </h2>
           <p className="text-indigo-200 mb-8 max-w-2xl mx-auto">
             Start uploading your agents, discovering new tools, and building with the community today.

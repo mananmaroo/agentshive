@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Code, Share2, Mail } from 'lucide-react';
+import { Code, Mail } from 'lucide-react';
 
 export function SiteFooter() {
   return (
@@ -93,17 +93,6 @@ export function SiteFooter() {
                   >
                     <Code className="w-4 h-4" />
                     GitHub
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://twitter.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-400 hover:text-indigo-400 transition flex items-center gap-1"
-                  >
-                    <Share2 className="w-4 h-4" />
-                    Twitter
                   </a>
                 </li>
                 <li>

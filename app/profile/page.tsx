@@ -264,7 +264,7 @@ export default function Profile() {
       {/* Footer */}
       <footer className="border-t border-slate-700 bg-slate-900/50 py-8 mt-20">
         <div className="max-w-7xl mx-auto px-4 text-center text-slate-400">
-          <p>AgentStack — Build and Share AI Agents</p>
+          <p>Agentshive — Build and Share AI Agents</p>
         </div>
       </footer>
     </div>

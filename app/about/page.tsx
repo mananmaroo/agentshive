@@ -106,13 +106,13 @@ export default function AboutPage() {
         {/* Stats Section */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <div className="bg-gradient-to-br from-indigo-900/50 to-indigo-800/50 border border-slate-700 rounded-lg p-6 text-center">
-            <div className="text-3xl font-bold text-slate-400 mb-2">100+</div>
+            <div className="text-3xl font-bold text-slate-400 mb-2">10+</div>
             <div className="text-slate-300">Agents in Registry</div>
           </div>
 
           <div className="bg-gradient-to-br from-indigo-900/50 to-indigo-800/50 border border-slate-700 rounded-lg p-6 text-center">
-            <div className="text-3xl font-bold text-slate-400 mb-2">1000+</div>
-            <div className="text-slate-300">Community Members</div>
+            <div className="text-3xl font-bold text-slate-400 mb-2">5</div>
+            <div className="text-slate-300">Runtimes Supported</div>
           </div>
 
           <div className="bg-gradient-to-br from-indigo-900/50 to-indigo-800/50 border border-slate-700 rounded-lg p-6 text-center">

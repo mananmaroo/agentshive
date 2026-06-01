@@ -16,6 +16,8 @@ import {
   ChevronLeft,
   Share2,
   Flag,
+  Terminal,
+  Lock,
 } from 'lucide-react';
 
 interface Agent {
@@ -286,24 +288,13 @@ export default function AgentDetail() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Navbar */}
-      <nav className="bg-slate-900/50 border-b border-slate-700 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/agents" className="flex items-center gap-2 text-blue-500 hover:text-blue-400 font-semibold">
-            <ChevronLeft className="w-5 h-5" />
-            Back to Agents
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/learn" className="text-slate-300 hover:text-white transition text-sm">
-              Learn
-            </Link>
-            <Link href="/agents/upload" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition text-sm">
-              Upload Agent
-            </Link>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-slate-950">
+      <div className="max-w-7xl mx-auto px-4 pt-6">
+        <Link href="/agents" className="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 text-sm font-semibold">
+          <ChevronLeft className="w-5 h-5" />
+          Back to Agents
+        </Link>
+      </div>
 
       {/* Content */}
       <div className="max-w-4xl mx-auto px-4 py-12">
@@ -443,6 +434,78 @@ export default function AgentDetail() {
               </div>
               <p className="text-xs text-slate-500 mt-3">
                 Raw file URL: <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline break-all">{installUrl}</a>
+              </p>
+            </div>
+
+            {/* How to install & run (beginner-friendly) */}
+            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <Terminal className="w-5 h-5 text-indigo-400" />
+                <h2 className="text-xl font-semibold text-white">How to install &amp; run this agent</h2>
+              </div>
+              <p className="text-slate-400 text-sm mb-4">
+                New to this? Here&apos;s the whole thing in three steps — no experience needed.
+              </p>
+
+              {/* Pro account requirement */}
+              <div className="flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-6">
+                <Lock className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-amber-200/90">
+                  <span className="font-semibold text-amber-300">A Pro account is required to run agents.</span>{' '}
+                  Downloading the file here is free, but actually running it needs a paid plan on your AI tool —
+                  a <span className="font-medium">Claude Pro or Max</span> plan for Claude Code, or a{' '}
+                  <span className="font-medium">ChatGPT Plus</span> plan for Codex.
+                </p>
+              </div>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    n: 1,
+                    title: 'Install Claude Code (or Codex) and sign in',
+                    desc: 'Install the tool once, then sign in with your Pro/Max account.',
+                    img: '/install/step1.png',
+                    alt: 'Terminal installing Claude Code and signing in',
+                  },
+                  {
+                    n: 2,
+                    title: 'Add this agent',
+                    desc: 'Copy the install command above and paste it into your terminal. It saves the agent into your .claude/agents/ folder.',
+                    img: '/install/step2.png',
+                    alt: 'Terminal downloading the agent file with curl',
+                  },
+                  {
+                    n: 3,
+                    title: 'Run it',
+                    desc: 'Start your tool and just ask it to use the agent in plain English. That\'s it.',
+                    img: '/install/step3.png',
+                    alt: 'Terminal running the agent and showing the result',
+                  },
+                ].map((step) => (
+                  <div key={step.n} className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center">
+                      {step.n}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-white font-semibold mb-1">{step.title}</h3>
+                      <p className="text-slate-400 text-sm mb-3">{step.desc}</p>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={step.img}
+                        alt={step.alt}
+                        loading="lazy"
+                        className="w-full rounded-lg border border-slate-700"
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-xs text-slate-500 mt-5">
+                Don&apos;t have a tool yet? Get{' '}
+                <a href="https://claude.com/claude-code" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 underline">Claude Code</a>{' '}
+                or{' '}
+                <a href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 underline">Codex</a>.
               </p>
             </div>
 
@@ -616,7 +679,7 @@ export default function AgentDetail() {
       {/* Footer */}
       <footer className="border-t border-slate-700 bg-slate-900/50 py-8 mt-20">
         <div className="max-w-7xl mx-auto px-4 text-center text-slate-400">
-          <p>AgentStack — Discover and Share AI Agents</p>
+          <p>Agentshive — Discover and Share AI Agents</p>
         </div>
       </footer>
     </div>

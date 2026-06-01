@@ -5,9 +5,14 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    question: 'What is AgentStack?',
+    question: 'What is Agentshive?',
     answer:
       'Agentshive is an open registry for AI agents. It allows developers to discover, share, and download agents built for Claude Code, Codex, OpenAI, n8n, LangChain, custom code, and any other runtime.',
+  },
+  {
+    question: 'Do I need a paid account to run an agent?',
+    answer:
+      'Yes. Downloading an agent file from Agentshive is free, but to actually run it you need a Pro account with the runtime you use — for example a Claude Pro or Max plan for Claude Code, or a ChatGPT Plus plan for Codex. Each agent\'s detail page has a step-by-step "How to install & run" guide.',
   },
   {
     question: 'How do I upload my agent?',
@@ -17,7 +22,7 @@ const faqs = [
   {
     question: 'Is uploading agents free?',
     answer:
-      'Yes! Uploading and sharing agents on AgentStack is completely free. We believe in open-source collaboration.',
+      'Yes! Uploading and sharing agents on Agentshive is completely free. We believe in open-source collaboration.',
   },
   {
     question: 'Can I edit or delete my agent?',
@@ -42,7 +47,7 @@ const faqs = [
   {
     question: 'How much does the service cost?',
     answer:
-      'AgentStack is free to use. We run on donations and support from the community. Server costs are $250/month — consider supporting us if you find value.',
+      'Agentshive is free to use. We run on donations and support from the community. Server costs are $250/month — consider supporting us if you find value.',
   },
   {
     question: 'Can I use agents commercially?',
