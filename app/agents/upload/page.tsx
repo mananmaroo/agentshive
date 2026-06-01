@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Upload, FileText, Code, Video, BarChart3, ArrowLeft, BookOpen, ExternalLink } from 'lucide-react';
+import { supabase } from '@/app/lib/supabase-client';
+import { useAuth } from '@/app/lib/auth-context';
 
 const recommendedReading = [
   {
@@ -38,18 +41,102 @@ const recommendedReading = [
 ];
 
 export default function UploadAgent() {
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
+
   const [agentName, setAgentName] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState('');
   const [uploadFormat, setUploadFormat] = useState('claude-md');
+  const [fileName, setFileName] = useState('');
+  const [fileContent, setFileContent] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
+  const [repositoryUrl, setRepositoryUrl] = useState('');
+  const [homepageUrl, setHomepageUrl] = useState('');
+  const [license, setLicense] = useState('MIT');
+  const [terms, setTerms] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleFile = async (file: File | undefined) => {
+    if (!file) return;
+    setFileName(file.name);
+    setFileContent(await file.text());
+  };
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+
+    if (!user) {
+      setError('Please log in to upload an agent.');
+      return;
+    }
+    if (!terms) {
+      setError('Please confirm the agent is safe and yours to share.');
+      return;
+    }
+    const isVideo = uploadFormat === 'video';
+    if (isVideo && !videoUrl.trim()) {
+      setError('Please provide a video URL.');
+      return;
+    }
+    if (!isVideo && !fileContent.trim()) {
+      setError('Please choose a file to upload.');
+      return;
+    }
+
     setLoading(true);
-    // TODO: Implement file upload to Supabase
-    setTimeout(() => setLoading(false), 1500);
+    try {
+      const { data: agent, error: agentError } = await supabase
+        .from('agents')
+        .insert({
+          title: agentName.trim(),
+          description: description.trim(),
+          category: [category],
+          tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+          creator_id: user.id,
+          license,
+          version: '1.0.0',
+          repository_url: repositoryUrl.trim() || null,
+          homepage_url: homepageUrl.trim() || null,
+          downloads_count: 0,
+          views_count: 0,
+          average_rating: 0,
+          rating_count: 0,
+          verified: false,
+          featured: false,
+        })
+        .select()
+        .single();
+
+      if (agentError) throw agentError;
+
+      if (isVideo) {
+        const { error: fileError } = await supabase.from('agent_files').insert({
+          agent_id: agent.id,
+          file_url: videoUrl.trim(),
+          file_type: 'video_url',
+          file_name: 'demo-video',
+        });
+        if (fileError) throw fileError;
+      } else {
+        const { error: fileError } = await supabase.from('agent_files').insert({
+          agent_id: agent.id,
+          file_url: `agent-${agent.id}-claude.md`,
+          file_type: 'claude_md',
+          file_name: fileName || 'claude.md',
+          file_content: fileContent,
+        });
+        if (fileError) throw fileError;
+      }
+
+      router.push(`/agents/${agent.id}`);
+    } catch (err: any) {
+      setError(err.message || 'Failed to upload agent. Please try again.');
+      setLoading(false);
+    }
   };
 
   const formats = [
@@ -244,18 +331,27 @@ export default function UploadAgent() {
               <input
                 type="url"
                 placeholder="https://youtube.com/watch?v=..."
+                value={videoUrl}
+                onChange={(e) => setVideoUrl(e.target.value)}
                 className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
-                required
               />
             ) : (
-              <div className="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center hover:border-blue-500 transition cursor-pointer bg-slate-800/50">
+              <label
+                htmlFor="agent-file"
+                className="block border-2 border-dashed border-slate-700 rounded-lg p-8 text-center hover:border-blue-500 transition cursor-pointer bg-slate-800/50"
+              >
                 <Upload className="w-8 h-8 text-slate-400 mx-auto mb-3" />
-                <p className="text-white font-semibold mb-1">Drop your file here</p>
-                <p className="text-sm text-slate-400 mb-4">or click to browse</p>
+                <p className="text-white font-semibold mb-1">
+                  {fileName ? fileName : 'Drop your file here'}
+                </p>
+                <p className="text-sm text-slate-400 mb-4">
+                  {fileName ? 'Click to choose a different file' : 'or click to browse'}
+                </p>
                 <input
+                  id="agent-file"
                   type="file"
                   className="hidden"
-                  required
+                  onChange={(e) => handleFile(e.target.files?.[0])}
                   accept={
                     uploadFormat === 'code' ? '.py,.js,.ts' : uploadFormat === 'n8n' ? '.json' : '.txt,.md'
                   }
@@ -265,7 +361,7 @@ export default function UploadAgent() {
                   {uploadFormat === 'n8n' && 'Accepted: .json'}
                   {uploadFormat === 'claude-md' && 'Accepted: .md, .txt'}
                 </p>
-              </div>
+              </label>
             )}
           </div>
 
@@ -276,6 +372,8 @@ export default function UploadAgent() {
               <input
                 type="url"
                 placeholder="https://github.com/username/repo"
+                value={repositoryUrl}
+                onChange={(e) => setRepositoryUrl(e.target.value)}
                 className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -284,6 +382,8 @@ export default function UploadAgent() {
               <input
                 type="url"
                 placeholder="https://example.com"
+                value={homepageUrl}
+                onChange={(e) => setHomepageUrl(e.target.value)}
                 className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -292,7 +392,11 @@ export default function UploadAgent() {
           {/* License */}
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">License</label>
-            <select className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500">
+            <select
+              value={license}
+              onChange={(e) => setLicense(e.target.value)}
+              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+            >
               <option>MIT</option>
               <option>Apache 2.0</option>
               <option>GPL 3.0</option>
@@ -306,7 +410,8 @@ export default function UploadAgent() {
             <label className="flex items-start gap-3 cursor-pointer">
               <input
                 type="checkbox"
-                required
+                checked={terms}
+                onChange={(e) => setTerms(e.target.checked)}
                 className="mt-1 w-4 h-4 rounded border-slate-600 focus:ring-blue-500"
               />
               <span className="text-sm text-slate-300">
@@ -315,11 +420,28 @@ export default function UploadAgent() {
             </label>
           </div>
 
+          {/* Not-logged-in notice */}
+          {!authLoading && !user && (
+            <div className="bg-amber-500/10 border border-amber-500/30 text-amber-200 px-4 py-3 rounded-lg text-sm">
+              You need to be logged in to upload.{' '}
+              <Link href="/auth/login" className="font-semibold text-amber-300 underline">Log in</Link>{' '}
+              or{' '}
+              <Link href="/auth/signup" className="font-semibold text-amber-300 underline">create an account</Link>.
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
+
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50 flex items-center justify-center gap-2"
+            disabled={loading || authLoading || !user}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Upload className="w-5 h-5" />
             {loading ? 'Uploading...' : 'Upload Agent'}
