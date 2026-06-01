@@ -121,6 +121,31 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* Supported Formats */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">Supported Agent Formats</h2>
+          <p className="text-slate-400 text-center mb-8 max-w-2xl mx-auto">
+            Agentshive is runtime-agnostic. Whatever you use to build agents, you can share it here.
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {[
+              { name: 'Claude Code', icon: '🤖' },
+              { name: 'Codex / OpenAI', icon: '💻' },
+              { name: 'n8n Templates', icon: '⚙️' },
+              { name: 'LangChain / Code', icon: '🐍' },
+              { name: 'Videos & Guides', icon: '🎥' },
+            ].map((format) => (
+              <div
+                key={format.name}
+                className="border border-slate-800 hover:border-slate-600 rounded-lg p-4 text-center transition-colors duration-200"
+              >
+                <div className="text-3xl mb-2">{format.icon}</div>
+                <p className="text-slate-300 font-medium text-sm">{format.name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Contact Section */}
         <section className="bg-gradient-to-r from-indigo-900/50 to-indigo-800/50 border border-slate-700 rounded-lg p-8 text-center">
           <h2 className="text-2xl font-bold text-white mb-4">

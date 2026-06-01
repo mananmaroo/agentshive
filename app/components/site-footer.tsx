@@ -1,32 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { Code, Share2 } from 'lucide-react';
+import { Code, Share2, Mail } from 'lucide-react';
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-slate-800 bg-slate-950 mt-20">
-      {/* Supported Formats Section */}
-      <div className="bg-slate-900/50 border-b border-slate-800 px-4 py-12">
-        <div className="max-w-7xl mx-auto">
-          <h3 className="text-xl font-bold text-white mb-6 text-center">Supported Agent Formats</h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            {[
-              { name: 'Claude Code', icon: '🤖' },
-              { name: 'Codex / OpenAI', icon: '💻' },
-              { name: 'n8n Templates', icon: '⚙️' },
-              { name: 'LangChain / Code', icon: '🐍' },
-              { name: 'Videos & Guides', icon: '🎥' },
-            ].map((format) => (
-              <div key={format.name} className="bg-slate-800 rounded-lg p-3 text-center hover:bg-slate-700 transition border border-slate-700">
-                <div className="text-2xl mb-1">{format.icon}</div>
-                <p className="text-slate-300 font-medium text-xs">{format.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer */}
       <div className="px-4 py-12">
         <div className="max-w-7xl mx-auto">
@@ -125,6 +104,15 @@ export function SiteFooter() {
                   >
                     <Share2 className="w-4 h-4" />
                     Twitter
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="mailto:aluminus99@gmail.com?subject=Agentshive%20feedback"
+                    className="text-slate-400 hover:text-indigo-400 transition flex items-center gap-1"
+                  >
+                    <Mail className="w-4 h-4" />
+                    Send feedback
                   </a>
                 </li>
               </ul>
