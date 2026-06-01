@@ -354,10 +354,17 @@ export default function Dashboard() {
                               <Eye className="w-4 h-4" />
                               View Agent
                             </Link>
+                            <Link
+                              href={`/agents/${agent.id}/edit`}
+                              className="flex items-center gap-2 px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800 transition text-sm"
+                            >
+                              <Edit className="w-4 h-4" />
+                              Edit Agent
+                            </Link>
                             <button
                               onClick={() => {
                                 navigator.clipboard.writeText(
-                                  `http://localhost:3000/agents/${agent.id}`
+                                  `${window.location.origin}/agents/${agent.id}`
                                 );
                                 alert('Link copied!');
                               }}
