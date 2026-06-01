@@ -155,7 +155,7 @@ export default function AboutPage() {
             We'd love to hear from you. Get in touch with the Agentshive team.
           </p>
           <a
-            href="mailto:hello@agentshive.net"
+            href="mailto:agentshive26@gmail.com"
             className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition font-semibold"
           >
             Contact Us

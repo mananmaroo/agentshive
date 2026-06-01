@@ -182,7 +182,7 @@ export default function SupportPage() {
             Whether you contribute financially, with code, or just by using Agentshive, you're helping shape the future of AI agent development. We're grateful for every single supporter.
           </p>
           <p className="text-slate-400">
-            Questions? Email us at <a href="mailto:support@agentshive.net" className="text-indigo-400 hover:text-slate-400 font-semibold">support@agentshive.net</a>
+            Questions? Email us at <a href="mailto:agentshive26@gmail.com" className="text-indigo-400 hover:text-slate-400 font-semibold">agentshive26@gmail.com</a>
           </p>
         </section>
       </main>

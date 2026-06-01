@@ -163,7 +163,7 @@ export default function BlogPage() {
             Write a blog post about your agent, tips, or experiences and join our community of writers.
           </p>
           <a
-            href="mailto:blog@agentshive.net"
+            href="mailto:agentshive26@gmail.com"
             className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition font-semibold"
           >
             Submit a Post

@@ -90,7 +90,7 @@ export function SharedFooter() {
                 </Link>
               </li>
               <li>
-                <a href="mailto:support@agentshive.net" className="text-slate-400 hover:text-white text-sm transition">
+                <a href="mailto:agentshive26@gmail.com" className="text-slate-400 hover:text-white text-sm transition">
                   Contact
                 </a>
               </li>
@@ -116,7 +116,7 @@ export function SharedFooter() {
               <a href="https://github.com/mananmaroo/agentshive" className="text-slate-400 hover:text-white transition">
                 <Code className="w-5 h-5" />
               </a>
-              <a href="mailto:support@agentshive.net" className="text-slate-400 hover:text-white transition">
+              <a href="mailto:agentshive26@gmail.com" className="text-slate-400 hover:text-white transition">
                 <Mail className="w-5 h-5" />
               </a>
             </div>

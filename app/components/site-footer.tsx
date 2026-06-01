@@ -97,7 +97,7 @@ export function SiteFooter() {
                 </li>
                 <li>
                   <a
-                    href="mailto:aluminus99@gmail.com?subject=Agentshive%20feedback"
+                    href="mailto:agentshive26@gmail.com?subject=Agentshive%20feedback"
                     className="text-slate-400 hover:text-indigo-400 transition flex items-center gap-1"
                   >
                     <Mail className="w-4 h-4" />
