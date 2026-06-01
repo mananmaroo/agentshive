@@ -396,6 +396,7 @@ export default function AgentDetail() {
           {/* Left Column - Details */}
           <div className="lg:col-span-2 space-y-8">
             {/* Links */}
+            {(agent.repository_url || agent.homepage_url) && (
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h2 className="text-xl font-semibold text-white mb-4">Links</h2>
               <div className="space-y-3">
@@ -423,6 +424,7 @@ export default function AgentDetail() {
                 )}
               </div>
             </div>
+            )}
 
             {/* Install in Claude Code / Codex */}
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">

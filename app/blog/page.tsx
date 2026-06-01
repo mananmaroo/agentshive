@@ -3,104 +3,14 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Calendar, User, ArrowRight } from 'lucide-react';
+import { samplePosts as sharedSamplePosts, BlogPost as SharedBlogPost } from './sample-posts';
 
-interface BlogPost {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string;
-  category: string;
-  author: { username: string; avatar_url?: string };
-  featured_image_url?: string;
-  published_at: string;
-  view_count: number;
-}
-
-const samplePosts: BlogPost[] = [
-  {
-    id: '1',
-    title: 'Getting Started with AI Agents: A Beginner\'s Guide',
-    slug: 'getting-started-ai-agents',
-    excerpt:
-      'Learn how to build your first AI agent from scratch — whether you use Claude Code, Codex, n8n, or LangChain. Basics, best practices, and common pitfalls.',
-    category: 'Tutorial',
-    author: { username: 'alexchen', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex' },
-    featured_image_url:
-      'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=600&h=300&fit=crop',
-    published_at: '2026-05-25',
-    view_count: 234,
-  },
-  {
-    id: '2',
-    title: 'Building Production-Ready Agents: Lessons From 6 Months in Prod',
-    slug: 'production-ready-agents',
-    excerpt:
-      'A deep dive into what we learned after deploying agents to production. Error handling, monitoring, and scaling considerations.',
-    category: 'Engineering',
-    author: { username: 'sarahdev', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah' },
-    featured_image_url:
-      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&h=300&fit=crop',
-    published_at: '2026-05-20',
-    view_count: 456,
-  },
-  {
-    id: '3',
-    title: 'Prompt Engineering Tips for Better Agent Performance',
-    slug: 'prompt-engineering-tips',
-    excerpt:
-      'Master the art of writing effective prompts. These techniques have helped our community build agents with 90%+ accuracy.',
-    category: 'Tips & Tricks',
-    author: { username: 'promptmaster', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Master' },
-    featured_image_url:
-      'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=600&h=300&fit=crop',
-    published_at: '2026-05-15',
-    view_count: 678,
-  },
-  {
-    id: '4',
-    title: 'AgentStack v2.0 Released: What\'s New',
-    slug: 'agentstack-v2-release',
-    excerpt:
-      'We\'ve completely redesigned AgentStack. Check out the new features, improved performance, and what\'s coming next.',
-    category: 'Announcement',
-    author: { username: 'agentstack_team', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Team' },
-    featured_image_url:
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=300&fit=crop',
-    published_at: '2026-05-10',
-    view_count: 1230,
-  },
-  {
-    id: '5',
-    title: 'Integrating External APIs with Your AI Agents',
-    slug: 'integrating-apis',
-    excerpt:
-      'Step-by-step guide to connecting your agents with external APIs. Includes examples with popular services like Stripe and GitHub.',
-    category: 'Integration',
-    author: { username: 'apiintegrator', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=API' },
-    featured_image_url:
-      'https://images.unsplash.com/photo-1516534775068-bb57c960209f?w=600&h=300&fit=crop',
-    published_at: '2026-05-05',
-    view_count: 345,
-  },
-  {
-    id: '6',
-    title: 'Community Spotlight: Amazing Agents Built With AgentStack',
-    slug: 'community-spotlight-may',
-    excerpt:
-      'We showcase 5 incredible agents created by our community this month. From automation to data analysis, they\'re all amazing.',
-    category: 'Community',
-    author: { username: 'community_manager', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Community' },
-    featured_image_url:
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=300&fit=crop',
-    published_at: '2026-05-01',
-    view_count: 567,
-  },
-];
+type BlogPost = SharedBlogPost;
 
 const categories = ['All', 'Tutorial', 'Engineering', 'Tips & Tricks', 'Announcement', 'Integration', 'Community'];
 
 export default function BlogPage() {
-  const [posts, setPosts] = useState<BlogPost[]>(samplePosts);
+  const [posts, setPosts] = useState<BlogPost[]>(sharedSamplePosts);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(false);
 
@@ -211,11 +121,13 @@ export default function BlogPage() {
                           </div>
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
-                            {new Date(post.published_at).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}
+                            <time dateTime={post.published_at} suppressHydrationWarning>
+                              {new Date(post.published_at).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                              })}
+                            </time>
                           </div>
                           <div className="text-xs">
                             {post.view_count.toLocaleString()} views

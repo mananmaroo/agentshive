@@ -22,7 +22,7 @@ const videos: Video[] = [
     category: 'Beginner',
     duration: '12:34',
     thumbnail: 'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=400&h=225&fit=crop',
-    url: 'https://youtube.com/embed/example1',
+    url: 'https://www.youtube.com/results?search_query=getting+started+with+ai+agents+anthropic',
     description: 'Learn the fundamentals of building AI agents from scratch — works with any runtime',
   },
   {
@@ -32,7 +32,7 @@ const videos: Video[] = [
     category: 'Advanced',
     duration: '28:15',
     thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=225&fit=crop',
-    url: 'https://youtube.com/embed/example2',
+    url: 'https://www.youtube.com/results?search_query=building+production+ai+agents',
     description: 'Deep dive into production patterns and best practices',
   },
   {
@@ -42,7 +42,7 @@ const videos: Video[] = [
     category: 'Tips',
     duration: '15:42',
     thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=400&h=225&fit=crop',
-    url: 'https://youtube.com/embed/example3',
+    url: 'https://www.youtube.com/results?search_query=prompt+engineering+for+ai+agents',
     description: 'Master effective prompt writing for better agent performance',
   },
   {
@@ -52,7 +52,7 @@ const videos: Video[] = [
     category: 'Integration',
     duration: '21:10',
     thumbnail: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=225&fit=crop',
-    url: 'https://youtube.com/embed/example4',
+    url: 'https://www.youtube.com/results?search_query=ai+agent+api+integration+tutorial',
     description: 'Connect your agents to external APIs and services',
   },
   {
@@ -62,7 +62,7 @@ const videos: Video[] = [
     category: 'Testing',
     duration: '18:55',
     thumbnail: 'https://images.unsplash.com/photo-1516534775068-bb57c960209f?w=400&h=225&fit=crop',
-    url: 'https://youtube.com/embed/example5',
+    url: 'https://www.youtube.com/results?search_query=testing+debugging+ai+agents',
     description: 'Strategies for testing and debugging your agents effectively',
   },
   {
@@ -72,7 +72,7 @@ const videos: Video[] = [
     category: 'Deployment',
     duration: '19:32',
     thumbnail: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=225&fit=crop',
-    url: 'https://youtube.com/embed/example6',
+    url: 'https://www.youtube.com/results?search_query=deploying+ai+agents+to+production',
     description: 'Learn how to deploy agents safely and scale them for production',
   },
 ];

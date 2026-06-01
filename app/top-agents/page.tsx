@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Star, TrendingUp, Download } from 'lucide-react';
+import { supabaseAnon } from '@/app/lib/supabase-anon';
 
 interface Agent {
   id: string;
   title: string;
   description: string;
-  creator: { username: string };
+  creator_id: string;
+  creator?: { username: string };
   average_rating: number;
   rating_count: number;
   downloads_count: number;
@@ -24,20 +26,29 @@ export default function TopAgentsPage() {
 
   useEffect(() => {
     const fetchTopAgents = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(`/api/agents?sortBy=${sortBy}&limit=20`);
-        if (response.ok) {
-          const data = await response.json();
-          setAgents(data.agents);
-        }
+        const column =
+          sortBy === 'rating' ? 'average_rating'
+          : sortBy === 'downloads' ? 'downloads_count'
+          : 'views_count';
+
+        const { data, error } = await supabaseAnon
+          .from('agents')
+          .select('*, creator:users(username)')
+          .order(column, { ascending: false })
+          .limit(20);
+
+        if (error) throw error;
+        setAgents((data ?? []) as Agent[]);
       } catch (error) {
         console.error('Failed to fetch top agents:', error);
+        setAgents([]);
       } finally {
         setLoading(false);
       }
     };
 
-    setLoading(true);
     fetchTopAgents();
   }, [sortBy]);
 
@@ -106,7 +117,7 @@ export default function TopAgentsPage() {
                       )}
                     </div>
                     <p className="text-slate-400 text-sm mt-2">
-                      by @{agent.creator.username}
+                      by @{agent.creator?.username ?? 'unknown'}
                     </p>
                   </div>
                 </div>
