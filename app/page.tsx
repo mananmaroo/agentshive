@@ -68,11 +68,11 @@ function LandingPage() {
             The Open Registry for <span className="bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">AI Agents</span>
           </h1>
           <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto">
-            Discover, download, and share AI agent templates. Save tokens. Build faster. Join the community.
+            Discover, download, and share ready-made AI agents. Save time, skip the setup, and build faster — together.
           </p>
 
           <p className="text-lg text-indigo-300 mb-12 font-semibold">
-            GitHub is for code and files • <span className="text-indigo-400">Agentshive is for your day to day automations</span>
+            Ready-made AI agents for your day-to-day tasks • <span className="text-indigo-400">install one in seconds</span>
           </p>
 
           {/* CTA Buttons */}
