@@ -31,7 +31,7 @@ export default function EditAgent() {
   const [repositoryUrl, setRepositoryUrl] = useState('');
   const [homepageUrl, setHomepageUrl] = useState('');
   const [content, setContent] = useState('');
-  const [fileId, setFileId] = useState<string | null>(null);
+  const [hasFile, setHasFile] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -53,7 +53,7 @@ export default function EditAgent() {
       const { data: file } = await supabase
         .from('agent_files').select('id, file_content')
         .eq('agent_id', id).eq('file_type', 'claude_md').maybeSingle();
-      if (file) { setFileId(file.id); setContent(file.file_content || ''); }
+      if (file) { setHasFile(true); setContent(file.file_content || ''); }
 
       setLoading(false);
     })();
@@ -80,16 +80,17 @@ export default function EditAgent() {
       if (agentError) throw agentError;
 
       if (content.trim()) {
-        if (fileId) {
-          const { error: fe } = await supabase.from('agent_files').update({ file_content: content }).eq('id', fileId);
-          if (fe) throw fe;
-        } else {
-          const { error: fe } = await supabase.from('agent_files').insert({
-            agent_id: id, file_url: `agent-${id}-claude.md`, file_type: 'claude_md',
-            file_name: 'claude.md', file_content: content,
-          });
-          if (fe) throw fe;
+        // agent_files has no UPDATE policy for owners (update is a silent no-op),
+        // but DELETE + INSERT are allowed — so replace the claude.md row.
+        if (hasFile) {
+          await supabase.from('agent_files').delete().eq('agent_id', id).eq('file_type', 'claude_md');
         }
+        const { error: fe } = await supabase.from('agent_files').insert({
+          agent_id: id, file_url: `agent-${id}-claude.md`, file_type: 'claude_md',
+          file_name: 'claude.md', file_content: content,
+        });
+        if (fe) throw fe;
+        setHasFile(true);
       }
 
       router.push(`/agents/${id}`);
@@ -159,7 +160,7 @@ export default function EditAgent() {
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              claude.md content {content || fileId ? '' : '(none yet — add it here)'}
+              claude.md content {content || hasFile ? '' : '(none yet — add it here)'}
             </label>
             <textarea
               value={content}
