@@ -12,6 +12,7 @@ export default function SignUp() {
   const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
   const router = useRouter();
 
   const handleOAuth = async (provider: 'github' | 'google') => {
@@ -27,6 +28,7 @@ export default function SignUp() {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setNotice('');
 
     try {
       if (!username.trim()) {
@@ -35,23 +37,26 @@ export default function SignUp() {
         return;
       }
 
+      // The username is stored in auth metadata; a database trigger
+      // (handle_new_user) creates the public.users profile row on signup,
+      // so it works for email and OAuth alike and isn't blocked by RLS.
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: { username: username.trim() },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
       });
 
       if (authError) throw authError;
 
-      if (authData.user) {
-        const { error: profileError } = await supabase.from('users').insert({
-          id: authData.user.id,
-          username: username.trim(),
-          email,
-        });
-
-        if (profileError) throw profileError;
-
-        router.push('/auth/login?message=Account created successfully. Please log in.');
+      if (authData.session) {
+        // Email confirmation is off — user is signed in immediately.
+        router.push('/');
+      } else {
+        // Email confirmation is on — tell them to check their inbox.
+        setNotice(`Almost there! We sent a confirmation link to ${email}. Click it, then log in.`);
       }
     } catch (err: any) {
       setError(err.message || 'Failed to create account');
@@ -79,6 +84,13 @@ export default function SignUp() {
         {error && (
           <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-lg mb-6 text-sm">
             {error}
+          </div>
+        )}
+
+        {/* Success Notice */}
+        {notice && (
+          <div className="bg-green-500/15 border border-green-500/40 text-green-300 px-4 py-3 rounded-lg mb-6 text-sm">
+            {notice}
           </div>
         )}
 
