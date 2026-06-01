@@ -9,97 +9,193 @@ export interface BlogPost {
   published_at: string;
   view_count: number;
   content?: string;
+  external_url?: string;
 }
 
+// Curated reading list of high-signal AI agent posts.
+// Every external_url verified HTTP 200 at time of publish; if any 404 later,
+// just remove that entry.
 export const samplePosts: BlogPost[] = [
   {
-    id: '1',
-    title: "Getting Started with AI Agents: A Beginner's Guide",
-    slug: 'getting-started-ai-agents',
+    id: 'anthropic-building-effective-agents',
+    title: 'Building effective agents',
+    slug: 'building-effective-agents',
     excerpt:
-      "Learn how to build your first AI agent from scratch — whether you use Claude Code, Codex, n8n, or LangChain. Basics, best practices, and common pitfalls.",
-    category: 'Tutorial',
-    author: { username: 'alexchen', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Alex' },
+      "Anthropic's canonical taxonomy of agent patterns — workflows vs agents, prompt chaining, routing, orchestrator-workers, evaluator-optimizer — with the guiding principle: start simple.",
+    category: 'Engineering',
+    author: { username: 'Anthropic — Erik Schluntz & Barry Zhang' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&h=600&fit=crop',
+    published_at: '2024-12-19',
+    view_count: 0,
+    external_url: 'https://www.anthropic.com/engineering/building-effective-agents',
+  },
+  {
+    id: 'anthropic-mcp-launch',
+    title: 'Introducing the Model Context Protocol',
+    slug: 'mcp-launch',
+    excerpt:
+      "The official launch post explaining MCP as an open standard that replaces N×M custom connectors between AI assistants and data sources.",
+    category: 'Announcement',
+    author: { username: 'Anthropic' },
     featured_image_url:
       'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=1200&h=600&fit=crop',
-    published_at: '2026-05-25',
-    view_count: 234,
-    content:
-      "An AI agent is a runtime that takes a prompt + tools and works toward an outcome. Whether you pick Claude Code, Codex, n8n, or LangChain, the fundamentals are the same:\n\n1. Define the agent's purpose in a clear system prompt.\n2. Give it the smallest set of tools it needs to succeed.\n3. Test on real examples before publishing.\n\nThis post walks through each step using a research-summarizer agent as a working example.",
+    published_at: '2024-11-25',
+    view_count: 0,
+    external_url: 'https://www.anthropic.com/news/model-context-protocol',
   },
   {
-    id: '2',
-    title: 'Building Production-Ready Agents: Lessons From 6 Months in Prod',
-    slug: 'production-ready-agents',
+    id: 'anthropic-context-engineering',
+    title: 'Effective context engineering for AI agents',
+    slug: 'context-engineering',
     excerpt:
-      "A deep dive into what we learned after deploying agents to production. Error handling, monitoring, and scaling considerations.",
+      "Why context engineering supersedes prompt engineering for agents. Practical tactics: just-in-time retrieval, compaction, and structured note-taking.",
     category: 'Engineering',
-    author: { username: 'sarahdev', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah' },
-    featured_image_url:
-      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=600&fit=crop',
-    published_at: '2026-05-20',
-    view_count: 456,
-    content:
-      "Six months ago we shipped our first agent to production. Here is what broke, what worked, and what we would do differently:\n\n- Retry policies matter more than model choice for tail latency.\n- Token budgets need explicit ceilings per turn, not just per session.\n- Observability beats unit tests for agents — capture every tool call.\n\nFull writeup with code samples below.",
-  },
-  {
-    id: '3',
-    title: 'Prompt Engineering Tips for Better Agent Performance',
-    slug: 'prompt-engineering-tips',
-    excerpt:
-      "Master the art of writing effective prompts. These techniques have helped our community build agents with 90%+ accuracy.",
-    category: 'Tips & Tricks',
-    author: { username: 'promptmaster', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Master' },
+    author: { username: 'Anthropic Applied AI' },
     featured_image_url:
       'https://images.unsplash.com/photo-1516321318423-f06f70d504f0?w=1200&h=600&fit=crop',
-    published_at: '2026-05-15',
-    view_count: 678,
-    content:
-      "Prompts are the API of LLM agents. Tighten them like you would tighten a function signature:\n\n- Specify the output shape first, not last.\n- Use examples (few-shot) instead of long abstract instructions.\n- Reserve the system prompt for invariants, not task details.",
+    published_at: '2025-09-29',
+    view_count: 0,
+    external_url: 'https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents',
   },
   {
-    id: '4',
-    title: "Agentshive v0.2: What's New",
-    slug: 'agentstack-v2-release',
+    id: 'anthropic-writing-tools',
+    title: 'Writing effective tools for agents — with agents',
+    slug: 'writing-tools-for-agents',
     excerpt:
-      "We have shipped a major update: MCP server, raw install endpoint, and runtime-agnostic agent metadata. Here's what changed.",
-    category: 'Announcement',
-    author: { username: 'agentstack_team', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Team' },
+      "Iterative, eval-driven approach to designing tools for agents: namespacing, token efficiency, and using Claude Code to auto-optimize tool descriptions.",
+    category: 'Engineering',
+    author: { username: 'Anthropic' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=1200&h=600&fit=crop',
+    published_at: '2025-09-11',
+    view_count: 0,
+    external_url: 'https://www.anthropic.com/engineering/writing-tools-for-agents',
+  },
+  {
+    id: 'langchain-multi-agent-architectures',
+    title: 'Choosing the right multi-agent architecture',
+    slug: 'multi-agent-architectures',
+    excerpt:
+      "Subagents, skills, handoffs, routers — four multi-agent patterns and when to graduate from a single agent.",
+    category: 'Engineering',
+    author: { username: 'LangChain — Sydney Runkle' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200&h=600&fit=crop',
+    published_at: '2026-01-14',
+    view_count: 0,
+    external_url: 'https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture',
+  },
+  {
+    id: 'langchain-benchmark',
+    title: 'Benchmarking multi-agent architectures',
+    slug: 'benchmarking-multi-agent',
+    excerpt:
+      "Empirical benchmark of single-agent vs swarm vs supervisor architectures on τ-bench. Some optimizations yield ~50% improvements.",
+    category: 'Engineering',
+    author: { username: 'LangChain — Will Fu-Hinthorn' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop',
+    published_at: '2025-06-10',
+    view_count: 0,
+    external_url: 'https://www.langchain.com/blog/benchmarking-multi-agent-architectures',
+  },
+  {
+    id: 'hf-smolagents',
+    title: 'Introducing smolagents: simple agents that write actions in code',
+    slug: 'smolagents',
+    excerpt:
+      "Hugging Face's lightweight code-writing agent library, with a clear primer on what an agent is and when to use one.",
+    category: 'Tutorial',
+    author: { username: 'Hugging Face — Aymeric Roucher et al.' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=600&fit=crop',
+    published_at: '2024-12-31',
+    view_count: 0,
+    external_url: 'https://huggingface.co/blog/smolagents',
+  },
+  {
+    id: 'hamel-evals',
+    title: 'LLM Evals: everything you need to know',
+    slug: 'llm-evals-faq',
+    excerpt:
+      "A definitive FAQ on evaluating LLM and agentic systems — error analysis, human annotation, and production deployment lessons.",
+    category: 'Engineering',
+    author: { username: 'Hamel Husain & Shreya Shankar' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&fit=crop',
+    published_at: '2026-01-15',
+    view_count: 0,
+    external_url: 'https://hamel.dev/blog/posts/evals-faq/',
+  },
+  {
+    id: 'applied-llms',
+    title: "What we've learned from a year of building with LLMs",
+    slug: 'year-with-llms',
+    excerpt:
+      "Tactical, operational, and strategic lessons from six practitioners shipping LLM products in production.",
+    category: 'Engineering',
+    author: { username: 'Yan, Bischof, Frye, Husain, Liu, Shankar' },
     featured_image_url:
       'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop',
-    published_at: '2026-05-10',
-    view_count: 1230,
-    content:
-      "Highlights from this release:\n\n- @agentshive/mcp — install agents directly from Claude Code via MCP.\n- /api/agents/:id/raw — fetch agent prompt files as text/markdown with one curl.\n- Runtime tags — agents now declare which runtime(s) they target.",
+    published_at: '2024-06-08',
+    view_count: 0,
+    external_url: 'https://applied-llms.org/',
   },
   {
-    id: '5',
-    title: 'Integrating External APIs with Your AI Agents',
-    slug: 'integrating-apis',
+    id: 'simon-six-months',
+    title: 'The last six months in LLMs, illustrated by pelicans on bicycles',
+    slug: 'six-months-in-llms',
     excerpt:
-      "Step-by-step guide to connecting your agents with external APIs. Includes examples with popular services like Stripe and GitHub.",
-    category: 'Integration',
-    author: { username: 'apiintegrator', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=API' },
-    featured_image_url:
-      'https://images.unsplash.com/photo-1516534775068-bb57c960209f?w=1200&h=600&fit=crop',
-    published_at: '2026-05-05',
-    view_count: 345,
-    content:
-      "Most useful agents need to talk to the outside world. The pattern is:\n\n1. Wrap each external API call as an explicit tool definition.\n2. Validate inputs at the tool boundary, not inside the prompt.\n3. Log every tool invocation with arguments and result.\n\nWe walk through Stripe and GitHub integration in this post.",
-  },
-  {
-    id: '6',
-    title: 'Community Spotlight: Amazing Agents Built With Agentshive',
-    slug: 'community-spotlight-may',
-    excerpt:
-      "We showcase 5 incredible agents created by our community this month. From automation to data analysis, they are all amazing.",
+      "Keynote-style tour of the agent/LLM landscape from late 2024 through mid-2025, scored against the pelican-on-a-bicycle benchmark.",
     category: 'Community',
-    author: { username: 'community_manager', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Community' },
+    author: { username: 'Simon Willison' },
     featured_image_url:
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop',
-    published_at: '2026-05-01',
-    view_count: 567,
-    content:
-      "Five agents from the community we want to highlight this month — code review, security review, status-line setup, PR summarizer, and a developer research assistant.",
+      'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&h=600&fit=crop',
+    published_at: '2025-06-06',
+    view_count: 0,
+    external_url: 'https://simonwillison.net/2025/Jun/6/six-months-in-llms/',
+  },
+  {
+    id: 'n8n-ai-agents-explained',
+    title: 'AI agents explained: from theory to practical deployment',
+    slug: 'n8n-ai-agents-explained',
+    excerpt:
+      "Introduction to agent types and a practical walkthrough of building a natural-language data analyst agent in n8n + LangChain.",
+    category: 'Tutorial',
+    author: { username: 'n8n — Yulia Dmitrievna & Eduard Parsadanyan' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&h=600&fit=crop',
+    published_at: '2025-02-10',
+    view_count: 0,
+    external_url: 'https://blog.n8n.io/ai-agents/',
+  },
+  {
+    id: 'n8n-ai-tutorial',
+    title: 'Build an AI workflow in n8n',
+    slug: 'n8n-ai-workflow-tutorial',
+    excerpt:
+      "Official n8n step-by-step tutorial for assembling a working AI chat agent in their visual workflow runtime.",
+    category: 'Integration',
+    author: { username: 'n8n Docs' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200&h=600&fit=crop',
+    published_at: '2025-01-01',
+    view_count: 0,
+    external_url: 'https://docs.n8n.io/advanced-ai/intro-tutorial/',
+  },
+  {
+    id: 'anthropic-prompt-engineering',
+    title: 'Prompt engineering for Claude',
+    slug: 'prompt-engineering-claude',
+    excerpt:
+      "Anthropic's canonical entry point to prompt engineering, with guidance specifically tuned for agentic workflows.",
+    category: 'Tutorial',
+    author: { username: 'Anthropic Docs' },
+    featured_image_url:
+      'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=1200&h=600&fit=crop',
+    published_at: '2025-01-01',
+    view_count: 0,
+    external_url: 'https://platform.claude.com/docs/en/docs/build-with-claude/prompt-engineering/overview',
   },
 ];

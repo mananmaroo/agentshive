@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { Calendar, User, ChevronLeft } from 'lucide-react';
 import { samplePosts } from '../sample-posts';
 
@@ -15,6 +15,7 @@ export default async function BlogPostPage({
   const { slug } = await params;
   const post = samplePosts.find((p) => p.slug === slug);
   if (!post) notFound();
+  if (post.external_url) redirect(post.external_url);
 
   return (
     <div className="min-h-screen bg-slate-950">

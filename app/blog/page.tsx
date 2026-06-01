@@ -76,11 +76,18 @@ export default function BlogPage() {
           </div>
         ) : (
           <div className="space-y-6 mb-12">
-            {filteredPosts.map((post) => (
-              <Link
+            {filteredPosts.map((post) => {
+              const href = post.external_url ?? `/blog/${post.slug}`;
+              const isExternal = Boolean(post.external_url);
+              const linkProps = isExternal
+                ? { href, target: '_blank' as const, rel: 'noopener noreferrer' }
+                : { href };
+              const LinkTag = isExternal ? 'a' : Link;
+              return (
+              <LinkTag
                 key={post.id}
-                href={`/blog/${post.slug}`}
-                className="group"
+                {...linkProps}
+                className="group block"
               >
                 <div className="border border-slate-800 hover:border-slate-600 rounded-lg overflow-hidden transition-colors duration-200">
                   <div className="flex flex-col md:flex-row">
@@ -129,9 +136,11 @@ export default function BlogPage() {
                               })}
                             </time>
                           </div>
-                          <div className="text-xs">
-                            {post.view_count.toLocaleString()} views
-                          </div>
+                          {post.view_count > 0 && (
+                            <div className="text-xs">
+                              {post.view_count.toLocaleString()} views
+                            </div>
+                          )}
                         </div>
 
                         <ArrowRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-400 transition" />
@@ -139,8 +148,9 @@ export default function BlogPage() {
                     </div>
                   </div>
                 </div>
-              </Link>
-            ))}
+              </LinkTag>
+              );
+            })}
           </div>
         )}
 

@@ -2,7 +2,40 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Upload, FileText, Code, Video, BarChart3, ArrowLeft } from 'lucide-react';
+import { Upload, FileText, Code, Video, BarChart3, ArrowLeft, BookOpen, ExternalLink } from 'lucide-react';
+
+const recommendedReading = [
+  {
+    title: 'Building effective agents',
+    source: 'Anthropic',
+    url: 'https://www.anthropic.com/engineering/building-effective-agents',
+    note: 'Start here. Decide whether you actually need an agent or a workflow.',
+  },
+  {
+    title: 'Writing effective tools for agents',
+    source: 'Anthropic',
+    url: 'https://www.anthropic.com/engineering/writing-tools-for-agents',
+    note: 'How to design the tools your agent calls — naming, descriptions, token cost.',
+  },
+  {
+    title: 'Effective context engineering for AI agents',
+    source: 'Anthropic',
+    url: 'https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents',
+    note: 'Just-in-time retrieval, compaction, and structured note-taking patterns.',
+  },
+  {
+    title: 'Prompt engineering for Claude',
+    source: 'Anthropic Docs',
+    url: 'https://platform.claude.com/docs/en/docs/build-with-claude/prompt-engineering/overview',
+    note: 'Canonical reference for system prompts that work with agentic workflows.',
+  },
+  {
+    title: 'LLM Evals: everything you need to know',
+    source: 'Hamel Husain & Shreya Shankar',
+    url: 'https://hamel.dev/blog/posts/evals-faq/',
+    note: "Don't publish an agent you haven't evaluated. This is the eval playbook.",
+  },
+];
 
 export default function UploadAgent() {
   const [agentName, setAgentName] = useState('');
@@ -293,18 +326,42 @@ export default function UploadAgent() {
           </button>
         </form>
 
-        {/* Help Section */}
-        <div className="mt-16 bg-slate-800/30 border border-slate-700 rounded-lg p-8">
-          <h3 className="text-xl font-semibold text-white mb-4">Need Help?</h3>
-          <p className="text-slate-300 mb-4">
-            Visit our <Link href="/learn" className="text-blue-500 hover:text-blue-400">learning guide</Link> to see examples and best practices for each format.
+        {/* Recommended reading */}
+        <div className="mt-16 border border-slate-800 rounded-lg p-8">
+          <div className="flex items-center gap-2 mb-2">
+            <BookOpen className="w-5 h-5 text-indigo-400" />
+            <h3 className="text-xl font-semibold text-white">Read this before you upload</h3>
+          </div>
+          <p className="text-slate-400 text-sm mb-6">
+            A short reading list from the people who build agents for a living. Twenty minutes here
+            will save you hours of debugging later.
           </p>
-          <ul className="space-y-2 text-slate-400 text-sm">
-            <li>• Your agent will be reviewed for safety before appearing publicly</li>
-            <li>• Add relevant tags to help others discover your agent</li>
-            <li>• Include clear instructions and examples in your agent</li>
-            <li>• Monitor feedback and ratings to improve your agent</li>
+          <ul className="space-y-4">
+            {recommendedReading.map((r) => (
+              <li key={r.url}>
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block border border-slate-800 hover:border-slate-600 rounded-lg p-4 transition-colors duration-200"
+                >
+                  <div className="flex items-start justify-between gap-3 mb-1">
+                    <h4 className="text-white font-semibold group-hover:text-indigo-400 transition">
+                      {r.title}
+                    </h4>
+                    <ExternalLink className="w-4 h-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                  </div>
+                  <p className="text-xs text-indigo-300 mb-1">{r.source}</p>
+                  <p className="text-sm text-slate-400">{r.note}</p>
+                </a>
+              </li>
+            ))}
           </ul>
+          <p className="text-xs text-slate-500 mt-6">
+            More on the <Link href="/blog" className="text-indigo-400 hover:text-indigo-300">curated blog</Link>.
+            Best practices for this site: review for safety before publishing, add tags so others can find it,
+            include clear examples, and iterate from feedback.
+          </p>
         </div>
       </div>
 
