@@ -78,6 +78,11 @@ export default function BrowseAgents() {
   ];
 
   useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q) setSearchQuery(q);
+  }, []);
+
+  useEffect(() => {
     fetchAgents();
   }, [selectedCategory, selectedSort, searchQuery]);
 

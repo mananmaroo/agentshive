@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, Upload, TrendingUp, Users, BookOpen, Zap, LogOut, ArrowRight, Star, Download } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Search, Upload, TrendingUp, Users, BookOpen, Zap, LogOut, ArrowRight, Star, Download, Terminal } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
 import { createClient } from '@supabase/supabase-js';
 
@@ -35,8 +36,31 @@ interface Creator {
 function LandingPage() {
   const [demoAgents, setDemoAgents] = useState<(Agent & { creator: Creator })[]>([]);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<{ agents: number; creators: number; downloads: number } | null>(null);
 
   useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [agentsRes, creatorsRes, downloadsRes] = await Promise.all([
+          supabaseAnon.from('agents').select('id', { count: 'exact', head: true }),
+          supabaseAnon.from('users').select('id', { count: 'exact', head: true }),
+          supabaseAnon.from('agents').select('downloads_count'),
+        ]);
+        const totalDownloads = (downloadsRes.data || []).reduce(
+          (sum: number, a: { downloads_count: number }) => sum + (a.downloads_count || 0),
+          0
+        );
+        setStats({
+          agents: agentsRes.count || 0,
+          creators: creatorsRes.count || 0,
+          downloads: totalDownloads,
+        });
+      } catch {
+        // stats strip simply doesn't render if the fetch fails
+      }
+    };
+    fetchStats();
+
     const fetchDemoAgents = async () => {
       try {
         // Fetch the 2 demo agents: Customer Feedback Distributor and AI Job Application Automation
@@ -72,7 +96,7 @@ function LandingPage() {
           </p>
 
           <p className="text-lg text-indigo-300 mb-12 font-semibold">
-            Ready-made AI agents for your day-to-day tasks • <span className="text-indigo-400">install one in seconds</span>
+            Works with Claude Code, Codex, n8n & LangChain • <span className="text-indigo-400">install an agent in seconds</span>
           </p>
 
           {/* CTA Buttons */}
@@ -91,6 +115,39 @@ function LandingPage() {
               Sign Up Free
             </Link>
           </div>
+
+          {/* One-command install snippet */}
+          <div className="max-w-2xl mx-auto text-left bg-slate-900/80 border border-slate-700 rounded-lg overflow-hidden mb-12">
+            <div className="flex items-center gap-2 px-4 py-2 border-b border-slate-800 bg-slate-900">
+              <Terminal className="w-4 h-4 text-indigo-400" />
+              <span className="text-xs text-slate-400 font-mono">install any agent in one command</span>
+            </div>
+            <pre className="px-4 py-4 text-sm font-mono text-indigo-300 overflow-x-auto">
+              <span className="text-slate-500">$ </span>curl -o CLAUDE.md https://agentshive.net/api/agents/&lt;agent-id&gt;/raw
+            </pre>
+          </div>
+
+          {/* Live stats */}
+          {stats && stats.agents > 0 && (
+            <div className="flex gap-8 md:gap-14 justify-center flex-wrap text-center">
+              <div>
+                <p className="text-3xl font-bold text-white">{stats.agents.toLocaleString()}+</p>
+                <p className="text-sm text-slate-400">Agents</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">{stats.downloads.toLocaleString()}+</p>
+                <p className="text-sm text-slate-400">Downloads</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">{stats.creators.toLocaleString()}+</p>
+                <p className="text-sm text-slate-400">Creators</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">100%</p>
+                <p className="text-sm text-slate-400">Free & Open</p>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -225,6 +282,14 @@ function LandingPage() {
 function HomePage({ user }: { user: any }) {
   const [newestAgents, setNewestAgents] = useState<(Agent & { creator: Creator })[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchInput, setSearchInput] = useState('');
+  const router = useRouter();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = searchInput.trim();
+    router.push(q ? `/agents?q=${encodeURIComponent(q)}` : '/agents');
+  };
 
   useEffect(() => {
     const fetchNewestAgents = async () => {
@@ -262,16 +327,18 @@ function HomePage({ user }: { user: any }) {
         </div>
 
         {/* Search Bar */}
-        <div className="max-w-2xl mb-12">
+        <form onSubmit={handleSearch} className="max-w-2xl mb-12">
           <div className="relative">
             <Search className="absolute left-4 top-3 text-indigo-400 w-5 h-5" />
             <input
               type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               placeholder="Search agents..."
               className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition"
             />
           </div>
-        </div>
+        </form>
       </section>
 
       {/* Newest Agents Grid */}
