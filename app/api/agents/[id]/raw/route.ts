@@ -33,20 +33,19 @@ export async function GET(
       return new NextResponse('No claude.md available for this agent', { status: 404 });
     }
 
-    // Count the install (fire-and-forget; read-then-write is fine at this scale)
-    supabaseAdmin
+    // Count the install. Must be awaited — work left in flight after the
+    // response is killed when the serverless function freezes.
+    const { data: countRow } = await supabaseAdmin
       .from('agents')
       .select('downloads_count')
       .eq('id', id)
-      .single()
-      .then(({ data }) => {
-        if (!data) return;
-        supabaseAdmin
-          .from('agents')
-          .update({ downloads_count: (data.downloads_count || 0) + 1 })
-          .eq('id', id)
-          .then(() => {});
-      });
+      .single();
+    if (countRow) {
+      await supabaseAdmin
+        .from('agents')
+        .update({ downloads_count: (countRow.downloads_count || 0) + 1 })
+        .eq('id', id);
+    }
 
     return new NextResponse(file.file_content, {
       status: 200,
