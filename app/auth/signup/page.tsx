@@ -15,8 +15,15 @@ export default function SignUp() {
   const [notice, setNotice] = useState('');
   const router = useRouter();
 
+  const getRedirect = () => {
+    const r = new URLSearchParams(window.location.search).get('redirect');
+    // only allow internal paths so the param can't bounce users off-site
+    return r && r.startsWith('/') ? r : '/';
+  };
+
   const handleOAuth = async (provider: 'github' | 'google') => {
     setError('');
+    localStorage.setItem('post_auth_redirect', getRedirect());
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo: `${window.location.origin}/auth/callback` },
@@ -53,7 +60,7 @@ export default function SignUp() {
 
       if (authData.session) {
         // Email confirmation is off — user is signed in immediately.
-        router.push('/');
+        router.push(getRedirect());
       } else {
         // Email confirmation is on — tell them to check their inbox.
         setNotice(`Almost there! We sent a confirmation link to ${email}. Click it, then log in.`);

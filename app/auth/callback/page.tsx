@@ -47,7 +47,9 @@ export default function AuthCallback() {
         });
       }
 
-      router.replace('/');
+      const stored = localStorage.getItem('post_auth_redirect');
+      localStorage.removeItem('post_auth_redirect');
+      router.replace(stored && stored.startsWith('/') ? stored : '/');
     };
     run();
   }, [router]);

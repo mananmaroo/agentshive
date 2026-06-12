@@ -246,6 +246,10 @@ export default function AgentDetail() {
 
   const handleDownload = () => {
     if (!agent) return;
+    if (!user) {
+      window.location.href = `/auth/signup?redirect=${encodeURIComponent(`/agents/${agent.id}`)}`;
+      return;
+    }
     window.location.href = `/api/agents/${agent.id}/raw`;
   };
 
@@ -358,8 +362,17 @@ export default function AgentDetail() {
               onClick={handleDownload}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 transition h-fit whitespace-nowrap"
             >
-              <Download className="w-5 h-5" />
-              Download
+              {user ? (
+                <>
+                  <Download className="w-5 h-5" />
+                  Download
+                </>
+              ) : (
+                <>
+                  <Lock className="w-5 h-5" />
+                  Sign up to Download
+                </>
+              )}
             </button>
           </div>
 
@@ -423,18 +436,37 @@ export default function AgentDetail() {
               <p className="text-slate-400 text-sm mb-4">
                 Drop this file into your <code className="text-indigo-300">.claude/agents/</code> directory, or tell Claude Code: <em>&quot;fetch {installUrl} and save it as .claude/agents/{(agent.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-')}.md&quot;</em>
               </p>
-              <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
-                <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-all">{curlCommand}</pre>
-                <button
-                  onClick={copyInstall}
-                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
-                >
-                  {copied ? 'Copied' : 'Copy'}
-                </button>
-              </div>
-              <p className="text-xs text-slate-500 mt-3">
-                Raw file URL: <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline break-all">{installUrl}</a>
-              </p>
+              {user ? (
+                <>
+                  <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
+                    <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-all">{curlCommand}</pre>
+                    <button
+                      onClick={copyInstall}
+                      className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
+                    >
+                      {copied ? 'Copied' : 'Copy'}
+                    </button>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-3">
+                    Raw file URL: <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline break-all">{installUrl}</a>
+                  </p>
+                </>
+              ) : (
+                <div className="relative bg-slate-900 border border-slate-700 rounded-lg p-3 overflow-hidden">
+                  <pre className="text-xs text-slate-500 blur-sm select-none whitespace-pre-wrap break-all" aria-hidden="true">
+                    curl -fsSL https://agentshive.net/api/agents/••••••••/raw -o .claude/agents/agent.md
+                  </pre>
+                  <div className="absolute inset-0 flex items-center justify-center bg-slate-950/60">
+                    <Link
+                      href={`/auth/signup?redirect=${encodeURIComponent(`/agents/${agent.id}`)}`}
+                      className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+                    >
+                      <Lock className="w-4 h-4" />
+                      Sign up free to get the install command
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* How to install & run (beginner-friendly) */}

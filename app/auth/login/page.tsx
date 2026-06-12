@@ -22,8 +22,14 @@ function LoginContent() {
     }
   }, [searchParams]);
 
+  const getRedirect = () => {
+    const r = searchParams.get('redirect');
+    return r && r.startsWith('/') ? r : '/';
+  };
+
   const handleOAuth = async (provider: 'github' | 'google') => {
     setError('');
+    localStorage.setItem('post_auth_redirect', getRedirect());
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider,
       options: { redirectTo: `${window.location.origin}/auth/callback` },
@@ -44,7 +50,7 @@ function LoginContent() {
 
       if (signInError) throw signInError;
 
-      router.push('/');
+      router.push(getRedirect());
     } catch (err: any) {
       setError(err.message || 'Failed to log in');
     } finally {
