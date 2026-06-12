@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Search, Star, Download, TrendingUp, Clock, Eye, Filter, X, Code, Database, FileText, MessageSquare, Cog, GraduationCap, FlaskConical, Bot } from 'lucide-react';
 
@@ -89,7 +89,11 @@ export default function BrowseAgents() {
     fetchAgents();
   }, [selectedCategory, selectedSort, searchQuery]);
 
+  // Monotonic id so a slow earlier response can't overwrite a newer one
+  const fetchIdRef = useRef(0);
+
   const fetchAgents = async () => {
+    const fetchId = ++fetchIdRef.current;
     setLoading(true);
     try {
       let query = supabase.from('agents').select('*');
@@ -125,6 +129,7 @@ export default function BrowseAgents() {
       const { data, error } = await query;
 
       if (error) throw error;
+      if (fetchId !== fetchIdRef.current) return; // stale response — a newer fetch is in flight
 
       setAgents(data || []);
 
@@ -145,7 +150,7 @@ export default function BrowseAgents() {
     } catch (error) {
       console.error('Failed to fetch agents:', error);
     } finally {
-      setLoading(false);
+      if (fetchId === fetchIdRef.current) setLoading(false);
     }
   };
 
