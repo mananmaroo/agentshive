@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, Upload, TrendingUp, Users, BookOpen, Zap, LogOut, ArrowRight, Star, Download, Terminal } from 'lucide-react';
+import { Search, Upload, TrendingUp, Users, BookOpen, Zap, LogOut, ArrowRight, Star, Download, Terminal, Code, BarChart3, PenTool, FlaskConical, Headphones, GraduationCap, Briefcase } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
 import { createClient } from '@supabase/supabase-js';
 
@@ -36,14 +36,13 @@ interface Creator {
 function LandingPage() {
   const [demoAgents, setDemoAgents] = useState<(Agent & { creator: Creator })[]>([]);
   const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<{ agents: number; creators: number; downloads: number } | null>(null);
+  const [stats, setStats] = useState<{ agents: number; downloads: number } | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [agentsRes, creatorsRes, downloadsRes] = await Promise.all([
+        const [agentsRes, downloadsRes] = await Promise.all([
           supabaseAnon.from('agents').select('id', { count: 'exact', head: true }),
-          supabaseAnon.from('users').select('id', { count: 'exact', head: true }),
           supabaseAnon.from('agents').select('downloads_count'),
         ]);
         const totalDownloads = (downloadsRes.data || []).reduce(
@@ -52,7 +51,6 @@ function LandingPage() {
         );
         setStats({
           agents: agentsRes.count || 0,
-          creators: creatorsRes.count || 0,
           downloads: totalDownloads,
         });
       } catch {
@@ -139,8 +137,8 @@ function LandingPage() {
                 <p className="text-sm text-slate-400">Downloads</p>
               </div>
               <div>
-                <p className="text-3xl font-bold text-white">{stats.creators.toLocaleString()}+</p>
-                <p className="text-sm text-slate-400">Creators</p>
+                <p className="text-3xl font-bold text-white">7</p>
+                <p className="text-sm text-slate-400">Categories</p>
               </div>
               <div>
                 <p className="text-3xl font-bold text-white">100%</p>
@@ -220,6 +218,73 @@ function LandingPage() {
             <h3 className="text-white font-semibold mb-2">Learn & Improve</h3>
             <p className="text-slate-400 text-sm">Discover new techniques and best practices</p>
           </div>
+        </div>
+      </section>
+
+      {/* Browse by Role */}
+      <section className="max-w-7xl mx-auto px-4 py-20">
+        <h2 className="text-3xl font-bold text-white mb-3 text-center">What can agents do for you?</h2>
+        <p className="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+          Whatever your role, there&apos;s an agent that takes work off your plate. Pick yours.
+        </p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            {
+              icon: Code,
+              role: 'Developers',
+              desc: 'Review code, generate tests, write commit messages, optimize Dockerfiles.',
+              category: 'Code Generation',
+            },
+            {
+              icon: BarChart3,
+              role: 'Data Analysts',
+              desc: 'Profile CSVs, analyze A/B tests, build cleaning pipelines, design dashboards.',
+              category: 'Data Analysis',
+            },
+            {
+              icon: PenTool,
+              role: 'Marketers & Creators',
+              desc: 'SEO blog posts, LinkedIn ghostwriting, YouTube scripts, content calendars.',
+              category: 'Content Creation',
+            },
+            {
+              icon: FlaskConical,
+              role: 'Founders & Researchers',
+              desc: 'Market sizing, competitor teardowns, due diligence, trend scouting.',
+              category: 'Research',
+            },
+            {
+              icon: Headphones,
+              role: 'Support Teams',
+              desc: 'Triage tickets, generate FAQs, detect churn risk, handle refunds consistently.',
+              category: 'Customer Support',
+            },
+            {
+              icon: Briefcase,
+              role: 'Busy Professionals',
+              desc: 'Meeting notes, inbox zero, expense reports, daily standups — on autopilot.',
+              category: 'Automation',
+            },
+            {
+              icon: GraduationCap,
+              role: 'Students & Job Seekers',
+              desc: 'Interview prep, flashcards, resume reviews, step-by-step tutoring.',
+              category: 'Education',
+            },
+          ].map(({ icon: Icon, role, desc, category }) => (
+            <Link
+              key={role}
+              href={`/agents?category=${encodeURIComponent(category)}`}
+              className="bg-slate-900 border border-slate-700 rounded-lg p-6 hover:border-indigo-500 transition group"
+            >
+              <Icon className="w-8 h-8 text-indigo-400 mb-3" />
+              <h3 className="text-white font-semibold mb-2 group-hover:text-indigo-400 transition">{role}</h3>
+              <p className="text-slate-400 text-sm mb-4">{desc}</p>
+              <span className="text-indigo-400 text-sm font-semibold inline-flex items-center gap-1">
+                Browse agents <ArrowRight className="w-4 h-4" />
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
 

@@ -78,8 +78,11 @@ export default function BrowseAgents() {
   ];
 
   useEffect(() => {
-    const q = new URLSearchParams(window.location.search).get('q');
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q');
     if (q) setSearchQuery(q);
+    const cat = params.get('category');
+    if (cat && categories.includes(cat)) setSelectedCategory(cat);
   }, []);
 
   useEffect(() => {

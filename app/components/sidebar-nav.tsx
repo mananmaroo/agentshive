@@ -33,10 +33,10 @@ export function SidebarNav() {
     >
       {/* Logo */}
       <Link href="/" className="px-4 mb-8 block whitespace-nowrap">
-        <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">
+        <span className="text-xl font-bold bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">
           <span className="group-hover:hidden">A</span>
           <span className="hidden group-hover:inline">Agentshive</span>
-        </h1>
+        </span>
       </Link>
 
       {/* User Section */}
