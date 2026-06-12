@@ -254,9 +254,22 @@ export default function AgentDetail() {
   };
 
   const [copied, setCopied] = useState(false);
+  const [badgeCopied, setBadgeCopied] = useState(false);
   const installUrl = typeof window !== 'undefined' && agent
     ? `${window.location.origin}/api/agents/${agent.id}/raw`
     : '';
+  const badgeUrl = typeof window !== 'undefined' && agent
+    ? `${window.location.origin}/api/agents/${agent.id}/badge`
+    : '';
+  const badgeMarkdown = agent
+    ? `[![Agentshive installs](${badgeUrl})](${typeof window !== 'undefined' ? window.location.origin : ''}/agents/${agent.id})`
+    : '';
+
+  const copyBadge = async () => {
+    await navigator.clipboard.writeText(badgeMarkdown);
+    setBadgeCopied(true);
+    setTimeout(() => setBadgeCopied(false), 2000);
+  };
   const curlCommand = `curl -fsSL ${installUrl} -o .claude/agents/${(agent?.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-')}.md`;
 
   const copyInstall = async () => {
@@ -467,6 +480,34 @@ export default function AgentDetail() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* README badge embed */}
+            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-white mb-2">Add a badge to your README</h2>
+              <p className="text-slate-400 text-sm mb-4">
+                Show off this agent&apos;s live install count in your GitHub README or docs. The badge updates automatically.
+              </p>
+              {badgeUrl && (
+                <div className="flex items-center gap-3 mb-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={badgeUrl} alt="Agentshive installs badge" className="h-5" />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`${badgeUrl}?type=rating`} alt="Agentshive rating badge" className="h-5" />
+                </div>
+              )}
+              <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
+                <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-all">{badgeMarkdown}</pre>
+                <button
+                  onClick={copyBadge}
+                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
+                >
+                  {badgeCopied ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mt-3">
+                Append <code className="text-indigo-300">?type=rating</code> to the badge URL for the rating variant.
+              </p>
             </div>
 
             {/* How to install & run (beginner-friendly) */}

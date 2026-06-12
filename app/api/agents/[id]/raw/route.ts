@@ -1,4 +1,5 @@
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { supabaseAdmin } from '@/app/lib/supabase-admin';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/agents/[id]/raw — returns the agent's claude.md content as plain text.
@@ -32,11 +33,20 @@ export async function GET(
       return new NextResponse('No claude.md available for this agent', { status: 404 });
     }
 
-    supabase
+    // Count the install (fire-and-forget; read-then-write is fine at this scale)
+    supabaseAdmin
       .from('agents')
-      .update({ downloads_count: undefined })
+      .select('downloads_count')
       .eq('id', id)
-      .then(() => {});
+      .single()
+      .then(({ data }) => {
+        if (!data) return;
+        supabaseAdmin
+          .from('agents')
+          .update({ downloads_count: (data.downloads_count || 0) + 1 })
+          .eq('id', id)
+          .then(() => {});
+      });
 
     return new NextResponse(file.file_content, {
       status: 200,
