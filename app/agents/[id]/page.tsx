@@ -317,10 +317,10 @@ export default function AgentDetail() {
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex items-start justify-between gap-6 mb-6">
-            <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
-                <h1 className="text-4xl font-bold text-white">{agent.title}</h1>
+          <div className="flex flex-col sm:flex-row items-start justify-between gap-4 sm:gap-6 mb-6">
+            <div className="flex-1 min-w-0">
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <h1 className="text-2xl sm:text-4xl font-bold text-white break-words">{agent.title}</h1>
                 {agent.verified && (
                   <span className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full">
                     ✓ Verified
@@ -373,7 +373,7 @@ export default function AgentDetail() {
             {/* Download Button */}
             <button
               onClick={handleDownload}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center gap-2 transition h-fit whitespace-nowrap"
+              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition h-fit whitespace-nowrap"
             >
               {user ? (
                 <>

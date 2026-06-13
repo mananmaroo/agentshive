@@ -85,15 +85,15 @@ function LandingPage() {
     <div className="min-h-screen bg-slate-950">
       {/* Hero Section with Stars */}
       <section className="stars-bg min-h-screen flex flex-col items-center justify-center px-4 py-20 relative">
-        <div className="max-w-4xl mx-auto text-center z-10">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+        <div className="max-w-4xl mx-auto text-center z-10 w-full">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
             The Open Registry for <span className="bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">AI Agents</span>
           </h1>
-          <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto">
             Discover, download, and share ready-made AI agents. Save time, skip the setup, and build faster — together.
           </p>
 
-          <p className="text-lg text-indigo-300 mb-12 font-semibold">
+          <p className="text-base sm:text-lg text-indigo-300 mb-12 font-semibold">
             Works with Claude Code, Codex, n8n & LangChain • <span className="text-indigo-400">install an agent in seconds</span>
           </p>
 
@@ -120,7 +120,7 @@ function LandingPage() {
               <Terminal className="w-4 h-4 text-indigo-400" />
               <span className="text-xs text-slate-400 font-mono">install any agent in one command</span>
             </div>
-            <pre className="px-4 py-4 text-sm font-mono text-indigo-300 overflow-x-auto">
+            <pre className="px-4 py-4 text-xs sm:text-sm font-mono text-indigo-300 overflow-x-auto whitespace-pre">
               <span className="text-slate-500">$ </span>curl -o CLAUDE.md https://agentshive.net/api/agents/&lt;agent-id&gt;/raw
             </pre>
           </div>
