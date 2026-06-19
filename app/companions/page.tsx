@@ -278,27 +278,6 @@ export default function Companions() {
     return creators.get(creatorId)?.username || 'Unknown';
   };
 
-  // Filter: 'official' = first-party Agentshive templates (all curated ones qualify);
-  // 'Claude' / 'OpenAI' filter by the platforms a template is verified to run on.
-  const [filter, setFilter] = useState<'all' | 'official' | Platform>('all');
-  const filters: { key: 'all' | 'official' | Platform; label: string }[] = [
-    { key: 'all', label: 'All' },
-    { key: 'official', label: 'Official templates' },
-    { key: 'Claude', label: 'Claude' },
-    { key: 'OpenAI', label: 'OpenAI' },
-  ];
-  // Curated companions are all official first-party templates.
-  const showByPlatform = (platforms: Platform[]) => {
-    if (filter === 'all' || filter === 'official') return true;
-    return platforms.includes(filter);
-  };
-  const visibleMarquee = marquee.filter((c) => showByPlatform(c.platforms));
-  const visibleMore = moreCompanions.filter((c) =>
-    showByPlatform(c.platforms ?? ['Claude'])
-  );
-  // Community submissions are not official templates, so hide them under the curated filters.
-  const showCommunity = filter === 'all';
-
   const PlatformBadges = ({ platforms }: { platforms: Platform[] }) => (
     <div className="flex items-center gap-1.5">
       {platforms.map((p) => (
@@ -341,31 +320,9 @@ export default function Companions() {
           </div>
         </div>
 
-        {/* Filter bar */}
-        <div className="flex flex-wrap items-center gap-2 mb-8">
-          {filters.map((f) => (
-            <button
-              key={f.key}
-              onClick={() => setFilter(f.key)}
-              className={`text-sm font-medium px-4 py-2 rounded-full border transition ${
-                filter === f.key
-                  ? 'bg-indigo-600 border-indigo-600 text-white'
-                  : 'border-slate-700 text-slate-300 hover:border-slate-500'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-          {filter === 'official' && (
-            <span className="text-xs text-slate-500 ml-1">
-              First-party Agentshive templates — verified for Claude and OpenAI.
-            </span>
-          )}
-        </div>
-
         {/* Marquee flagship companions */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {visibleMarquee.map((c) => (
+          {marquee.map((c) => (
             <div
               key={c.file}
               className="border border-indigo-500/30 bg-indigo-500/5 rounded-lg p-6 flex flex-col"
@@ -426,14 +383,13 @@ export default function Companions() {
         </div>
 
         {/* More companions */}
-        {visibleMore.length > 0 && (
         <div className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-2">More companions</h2>
           <p className="text-slate-400 text-sm mb-6">
             Every companion is a Markdown definition you can download and run in Claude Code.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visibleMore.map((c) => (
+            {moreCompanions.map((c) => (
               <a
                 key={c.file}
                 href={`/companions/${c.file}`}
@@ -464,10 +420,8 @@ export default function Companions() {
             ))}
           </div>
         </div>
-        )}
 
         {/* Community-submitted companions */}
-        {showCommunity && (
         <div>
           <h2 className="text-2xl font-bold text-white mb-2">From the community</h2>
           <p className="text-slate-400 text-sm mb-6">
@@ -562,7 +516,6 @@ export default function Companions() {
             </div>
           )}
         </div>
-        )}
       </section>
     </div>
   );
