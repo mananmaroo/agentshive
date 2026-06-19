@@ -13,6 +13,7 @@ import {
   Bot,
 } from 'lucide-react';
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { useAuth } from '@/app/lib/auth-context';
 
 interface Agent {
   id: string;
@@ -228,6 +229,7 @@ const moreCompanions: GridCompanion[] = [
 ];
 
 export default function Companions() {
+  const { user } = useAuth();
   const [agents, setAgents] = useState<Agent[]>([]);
   const [creators, setCreators] = useState<Map<string, Creator>>(new Map());
   const [loading, setLoading] = useState(true);
@@ -278,6 +280,20 @@ export default function Companions() {
     return creators.get(creatorId)?.username || 'Unknown';
   };
 
+  // Downloads require a free account, mirroring the agent download gate.
+  const handleDownload = (file: string) => {
+    if (!user) {
+      window.location.href = `/auth/signup?redirect=${encodeURIComponent('/companions')}`;
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = `/companions/${file}`;
+    a.download = file;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
   const PlatformBadges = ({ platforms }: { platforms: Platform[] }) => (
     <div className="flex items-center gap-1.5">
       {platforms.map((p) => (
@@ -302,12 +318,13 @@ export default function Companions() {
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">Companions</h1>
           <p className="text-lg text-slate-400 max-w-3xl">
-            Companions are the hands-on{' '}
-            <span className="text-white font-semibold">Terminal Edition</span> agents — they
-            run right inside Claude Code (most via MCP) and actually do the work end-to-end,
-            instead of just advising. Drop a definition into your terminal, connect any tools it
-            needs, and let it go. A few are runtime-agnostic and run anywhere a system prompt
-            does.
+            Companions are hands-on agents that actually do the work end-to-end, instead of
+            just advising. Each is a portable definition that works with{' '}
+            <span className="text-white font-semibold">
+              Claude Code, Codex, Cursor, Perplexity, n8n, LangChain
+            </span>{' '}
+            — and any other LLM or agent runtime. Drop it into your tool of choice, connect any
+            tools it needs, and let it go.
           </p>
           <div className="mt-6">
             <Link
@@ -318,6 +335,24 @@ export default function Companions() {
               Add Companion
             </Link>
           </div>
+        </div>
+
+        {/* Intro / how-it-works card */}
+        <div className="border border-slate-700 bg-slate-800/40 rounded-lg p-6 mb-12">
+          <h2 className="text-lg font-semibold text-white mb-2">How companions work</h2>
+          <p className="text-slate-400 text-sm mb-3">
+            Every companion is a plain Markdown agent definition — not locked to any one
+            vendor. Use it in Claude Code, OpenAI Codex, Cursor, Perplexity, n8n, LangChain, or
+            any LLM that accepts a system prompt. Some are hands-on via MCP; all run anywhere a
+            prompt does.
+          </p>
+          <p className="text-slate-500 text-xs">
+            Downloads are free —{' '}
+            <Link href="/auth/signup" className="text-indigo-400 hover:text-indigo-300 font-semibold">
+              create an account
+            </Link>{' '}
+            to download any definition.
+          </p>
         </div>
 
         {/* Marquee flagship companions */}
@@ -363,19 +398,17 @@ export default function Companions() {
                 </p>
               </div>
 
-              <div className="mt-auto pt-4 border-t border-slate-700 flex items-center justify-between">
-                <a
-                  href={`/companions/${c.file}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+              <div className="mt-auto pt-4 border-t border-slate-700">
+                <button
+                  onClick={() => handleDownload(c.file)}
                   className="inline-flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 text-sm font-semibold"
                 >
                   <Download className="w-4 h-4" />
-                  View / Download definition
-                </a>
-                <span className="inline-flex items-center gap-1 text-xs text-slate-500">
+                  {user ? 'Download definition' : 'Sign up to download'}
+                </button>
+                <span className="mt-2 flex items-center gap-1 text-xs text-slate-500">
                   <Terminal className="w-3.5 h-3.5" />
-                  {c.runtime ?? 'Runs in Claude Code'}
+                  Claude Code · Codex · Perplexity · any LLM
                 </span>
               </div>
             </div>
@@ -386,16 +419,15 @@ export default function Companions() {
         <div className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-2">More companions</h2>
           <p className="text-slate-400 text-sm mb-6">
-            Every companion is a Markdown definition you can download and run in Claude Code.
+            Every companion is a Markdown definition you can download and run in Claude Code,
+            Codex, Perplexity, or any LLM.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {moreCompanions.map((c) => (
-              <a
+              <button
                 key={c.file}
-                href={`/companions/${c.file}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-slate-800 hover:border-slate-600 rounded-lg p-6 transition-colors duration-200 group flex flex-col"
+                onClick={() => handleDownload(c.file)}
+                className="border border-slate-800 hover:border-slate-600 rounded-lg p-6 transition-colors duration-200 group flex flex-col text-left w-full"
               >
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-slate-400 bg-slate-500/10">
@@ -414,9 +446,9 @@ export default function Companions() {
                 </div>
                 <div className="pt-3 border-t border-slate-700 flex items-center gap-1.5 text-indigo-400 group-hover:text-indigo-300 text-sm font-semibold">
                   <Download className="w-4 h-4" />
-                  View / Download definition
+                  {user ? 'Download definition' : 'Sign up to download'}
                 </div>
-              </a>
+              </button>
             ))}
           </div>
         </div>
