@@ -389,6 +389,11 @@ export default function AgentDetail() {
             </button>
           </div>
 
+          <p className="text-sm text-slate-500 mt-4">
+            Portable definition — works with Claude Code, Codex, Cursor, Perplexity, n8n,
+            LangChain &amp; any other LLM.
+          </p>
+
           {/* Category & License */}
           <div className="flex gap-4 text-sm text-slate-400 border-t border-slate-700 pt-6">
             {agent.category.length > 0 && (

@@ -193,6 +193,10 @@ export default function BrowseAgents() {
           <p className="text-lg text-slate-400">
             Discover {agents.length}+ AI agents created by the community
           </p>
+          <p className="text-sm text-slate-500 mt-2">
+            Every agent is a portable definition — works with Claude Code, Codex, Cursor,
+            Perplexity, n8n, LangChain &amp; any other LLM.
+          </p>
         </div>
 
         {/* Search & Filters */}
