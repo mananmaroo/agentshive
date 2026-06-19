@@ -35,6 +35,9 @@ interface Creator {
   avatar_url: string | null;
 }
 
+// Platforms an official template is verified to run on.
+type Platform = 'Claude' | 'OpenAI';
+
 // The flagship companions, rendered as richer marquee cards.
 type MarqueeCompanion = {
   file: string;
@@ -43,6 +46,7 @@ type MarqueeCompanion = {
   does: string[];
   needs: string;
   runtime?: string;
+  platforms: Platform[];
 };
 
 const marquee: MarqueeCompanion[] = [
@@ -58,6 +62,7 @@ const marquee: MarqueeCompanion[] = [
       'Creates calendar events on confirmation',
     ],
     needs: 'Gmail MCP, Google Calendar connector, built-in web fetch + filesystem',
+    platforms: ['Claude'],
   },
   {
     file: 'personal-assistant-notion-terminal.md',
@@ -70,6 +75,7 @@ const marquee: MarqueeCompanion[] = [
       'Turns notes into replies and calendar events',
     ],
     needs: 'Notion MCP, Gmail MCP, Google Calendar connector',
+    platforms: ['Claude'],
   },
   {
     file: 'document-visualizer-terminal.md',
@@ -82,6 +88,7 @@ const marquee: MarqueeCompanion[] = [
       'One clear message per slide, on a consistent master',
     ],
     needs: 'Local only (python-pptx, PyMuPDF) — no MCP',
+    platforms: ['Claude', 'OpenAI'],
   },
   {
     file: 'smart-coder.md',
@@ -96,12 +103,20 @@ const marquee: MarqueeCompanion[] = [
     ],
     needs: 'Nothing — runtime-agnostic, no MCP',
     runtime: 'Runs anywhere — Claude Code, Codex, Perplexity',
+    platforms: ['Claude', 'OpenAI'],
   },
 ];
 
 // The other 18 companions. Title is the file H1 (minus "# "); the description is the
-// first sentence of each file's "## Purpose" section.
-const moreCompanions = [
+// first sentence of each file's "## Purpose" section. These hands-on Terminal Edition
+// companions run in Claude Code via MCP, so they default to the Claude platform.
+type GridCompanion = {
+  file: string;
+  title: string;
+  description: string;
+  platforms?: Platform[];
+};
+const moreCompanions: GridCompanion[] = [
   {
     file: 'academic-paper-summarizer-terminal.md',
     title: 'Academic Paper Summarizer — Terminal Edition',
@@ -263,6 +278,40 @@ export default function Companions() {
     return creators.get(creatorId)?.username || 'Unknown';
   };
 
+  // Filter: 'official' = first-party Agentshive templates (all curated ones qualify);
+  // 'Claude' / 'OpenAI' filter by the platforms a template is verified to run on.
+  const [filter, setFilter] = useState<'all' | 'official' | Platform>('all');
+  const filters: { key: 'all' | 'official' | Platform; label: string }[] = [
+    { key: 'all', label: 'All' },
+    { key: 'official', label: 'Official templates' },
+    { key: 'Claude', label: 'Claude' },
+    { key: 'OpenAI', label: 'OpenAI' },
+  ];
+  // Curated companions are all official first-party templates.
+  const showByPlatform = (platforms: Platform[]) => {
+    if (filter === 'all' || filter === 'official') return true;
+    return platforms.includes(filter);
+  };
+  const visibleMarquee = marquee.filter((c) => showByPlatform(c.platforms));
+  const visibleMore = moreCompanions.filter((c) =>
+    showByPlatform(c.platforms ?? ['Claude'])
+  );
+  // Community submissions are not official templates, so hide them under the curated filters.
+  const showCommunity = filter === 'all';
+
+  const PlatformBadges = ({ platforms }: { platforms: Platform[] }) => (
+    <div className="flex items-center gap-1.5">
+      {platforms.map((p) => (
+        <span
+          key={p}
+          className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-slate-700/60 text-slate-300"
+        >
+          {p}
+        </span>
+      ))}
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <section className="max-w-7xl mx-auto px-4 py-12">
@@ -292,9 +341,31 @@ export default function Companions() {
           </div>
         </div>
 
+        {/* Filter bar */}
+        <div className="flex flex-wrap items-center gap-2 mb-8">
+          {filters.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => setFilter(f.key)}
+              className={`text-sm font-medium px-4 py-2 rounded-full border transition ${
+                filter === f.key
+                  ? 'bg-indigo-600 border-indigo-600 text-white'
+                  : 'border-slate-700 text-slate-300 hover:border-slate-500'
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+          {filter === 'official' && (
+            <span className="text-xs text-slate-500 ml-1">
+              First-party Agentshive templates — verified for Claude and OpenAI.
+            </span>
+          )}
+        </div>
+
         {/* Marquee flagship companions */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {marquee.map((c) => (
+          {visibleMarquee.map((c) => (
             <div
               key={c.file}
               className="border border-indigo-500/30 bg-indigo-500/5 rounded-lg p-6 flex flex-col"
@@ -304,6 +375,13 @@ export default function Companions() {
                   <Terminal className="w-5 h-5" />
                 </div>
                 <h3 className="text-lg font-semibold text-white">{c.title}</h3>
+              </div>
+
+              <div className="flex items-center gap-2 mb-3">
+                <span className="inline-flex items-center text-[10px] font-semibold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 uppercase tracking-wide">
+                  Official
+                </span>
+                <PlatformBadges platforms={c.platforms} />
               </div>
 
               <p className="text-slate-300 text-sm mb-4">{c.tagline}</p>
@@ -348,13 +426,14 @@ export default function Companions() {
         </div>
 
         {/* More companions */}
+        {visibleMore.length > 0 && (
         <div className="mb-16">
           <h2 className="text-2xl font-bold text-white mb-2">More companions</h2>
           <p className="text-slate-400 text-sm mb-6">
             Every companion is a Markdown definition you can download and run in Claude Code.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {moreCompanions.map((c) => (
+            {visibleMore.map((c) => (
               <a
                 key={c.file}
                 href={`/companions/${c.file}`}
@@ -371,6 +450,12 @@ export default function Companions() {
                   </h3>
                 </div>
                 <p className="text-slate-400 text-sm mb-4 flex-1">{c.description}</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="inline-flex items-center text-[10px] font-semibold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 uppercase tracking-wide">
+                    Official
+                  </span>
+                  <PlatformBadges platforms={c.platforms ?? ['Claude']} />
+                </div>
                 <div className="pt-3 border-t border-slate-700 flex items-center gap-1.5 text-indigo-400 group-hover:text-indigo-300 text-sm font-semibold">
                   <Download className="w-4 h-4" />
                   View / Download definition
@@ -379,8 +464,10 @@ export default function Companions() {
             ))}
           </div>
         </div>
+        )}
 
         {/* Community-submitted companions */}
+        {showCommunity && (
         <div>
           <h2 className="text-2xl font-bold text-white mb-2">From the community</h2>
           <p className="text-slate-400 text-sm mb-6">
@@ -475,6 +562,7 @@ export default function Companions() {
             </div>
           )}
         </div>
+        )}
       </section>
     </div>
   );
