@@ -63,7 +63,7 @@ export default function BrowseAgents() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSort, setSelectedSort] = useState<SortBy>('trending');
-  const [selectedTemplate, setSelectedTemplate] = useState<'all' | 'official' | 'Claude' | 'OpenAI'>('all');
+  const [selectedTemplate, setSelectedTemplate] = useState<'all' | 'claude-code' | 'codex' | 'agentshive_team'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
 
@@ -157,10 +157,10 @@ export default function BrowseAgents() {
 
   const matchesTemplate = (agent: Agent) => {
     if (selectedTemplate === 'all') return true;
-    if (selectedTemplate === 'official') return agent.verified;
-    // Platform match against tags/categories (case-insensitive).
-    const hay = [...agent.tags, ...agent.category].map((t) => t.toLowerCase());
-    return hay.includes(selectedTemplate.toLowerCase());
+    if (selectedTemplate === 'agentshive_team')
+      return creators.get(agent.creator_id)?.username === 'agentshive_team';
+    // 'claude-code' | 'codex' — matched by tag.
+    return agent.tags.map((t) => t.toLowerCase()).includes(selectedTemplate);
   };
 
   const filteredAgents = agents.filter((agent) => {
@@ -273,14 +273,14 @@ export default function BrowseAgents() {
                 <div className="flex flex-wrap gap-2">
                   {[
                     { value: 'all', label: 'All' },
-                    { value: 'official', label: 'Official templates' },
-                    { value: 'Claude', label: 'Claude' },
-                    { value: 'OpenAI', label: 'OpenAI' },
+                    { value: 'claude-code', label: 'Claude Code' },
+                    { value: 'codex', label: 'Codex' },
+                    { value: 'agentshive_team', label: 'Agentshive Team' },
                   ].map((option) => (
                     <button
                       key={option.value}
                       onClick={() => {
-                        setSelectedTemplate(option.value as 'all' | 'official' | 'Claude' | 'OpenAI');
+                        setSelectedTemplate(option.value as 'all' | 'claude-code' | 'codex' | 'agentshive_team');
                         setCurrentPage(1);
                       }}
                       className={`px-3 py-1 rounded-lg text-sm transition ${
