@@ -63,6 +63,7 @@ export default function BrowseAgents() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedSort, setSelectedSort] = useState<SortBy>('trending');
+  const [selectedTemplate, setSelectedTemplate] = useState<'all' | 'official' | 'Claude' | 'OpenAI'>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [showFilters, setShowFilters] = useState(false);
 
@@ -154,7 +155,16 @@ export default function BrowseAgents() {
     }
   };
 
+  const matchesTemplate = (agent: Agent) => {
+    if (selectedTemplate === 'all') return true;
+    if (selectedTemplate === 'official') return agent.verified;
+    // Platform match against tags/categories (case-insensitive).
+    const hay = [...agent.tags, ...agent.category].map((t) => t.toLowerCase());
+    return hay.includes(selectedTemplate.toLowerCase());
+  };
+
   const filteredAgents = agents.filter((agent) => {
+    if (!matchesTemplate(agent)) return false;
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
     return (
@@ -257,6 +267,34 @@ export default function BrowseAgents() {
                 </div>
               </div>
 
+              {/* Template Filter */}
+              <div>
+                <h3 className="text-sm font-semibold text-white mb-3">Template</h3>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { value: 'all', label: 'All' },
+                    { value: 'official', label: 'Official templates' },
+                    { value: 'Claude', label: 'Claude' },
+                    { value: 'OpenAI', label: 'OpenAI' },
+                  ].map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => {
+                        setSelectedTemplate(option.value as 'all' | 'official' | 'Claude' | 'OpenAI');
+                        setCurrentPage(1);
+                      }}
+                      className={`px-3 py-1 rounded-lg text-sm transition ${
+                        selectedTemplate === option.value
+                          ? 'bg-indigo-600 text-white'
+                          : 'bg-slate-800 text-slate-400 hover:bg-slate-700'
+                      }`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Sort Filter */}
               <div>
                 <h3 className="text-sm font-semibold text-white mb-3">Sort By</h3>
@@ -291,6 +329,7 @@ export default function BrowseAgents() {
                   onClick={() => {
                     setSelectedCategory('');
                     setSelectedSort('trending');
+                    setSelectedTemplate('all');
                     setCurrentPage(1);
                   }}
                   className="text-slate-400 hover:text-slate-300 text-sm flex items-center gap-1 font-semibold"
