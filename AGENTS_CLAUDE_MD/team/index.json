@@ -1,0 +1,1162 @@
+[
+  {
+    "id": "81962428-36c5-47f8-8ae4-065a83298949",
+    "slug": "customer-feedback-distributor",
+    "title": "Customer Feedback Distributor",
+    "description": "Intelligent customer service email agent that automatically categorizes incoming customer emails, distributes them to relevant teams via Slack, and manages the\r\n  response workflow. Uses Claude AI to understand context and route feedback to the right teams.",
+    "category": [
+      "Automation",
+      "Customer Support"
+    ],
+    "tags": [
+      "slack",
+      "mcp",
+      "customer-service",
+      "email",
+      "automation"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "customer-feedback-agent.md",
+    "has_content": true,
+    "content_len": 4728,
+    "file_url": "https://raw.githubusercontent.com/mananmaroo/agentshive/main/AGENTS_CLAUDE_MD/customer-feedback-agent.md"
+  },
+  {
+    "id": "eb8d76ee-1c6c-496c-9112-44a1d262df1b",
+    "slug": "ai-job-application-automation",
+    "title": "AI Job Application Automation",
+    "description": "Comprehensive job application automation agent for AI/ML and Data Science roles. Searches multiple job boards (LinkedIn, Indeed, Greenhouse, etc.), evaluates\r\n  positions against your criteria, tailors resumes and cover letters, and logs everything to a tracking spreadsheet. Perfect for batch job hunting.",
+    "category": [
+      "Data Analysis",
+      "Automation",
+      "Research"
+    ],
+    "tags": [
+      "job-search",
+      "automation",
+      "resume",
+      "cover-letter",
+      "ai-jobs",
+      "linkedin"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "job-application-agent.md",
+    "has_content": true,
+    "content_len": 8927,
+    "file_url": "https://raw.githubusercontent.com/mananmaroo/agentshive/main/AGENTS_CLAUDE_MD/job-application-agent.md"
+  },
+  {
+    "id": "45022f26-9e1a-420d-a518-553fc450ac7b",
+    "slug": "pdf-reader-summarizer",
+    "title": "PDF Reader & Summarizer",
+    "description": "Reads a PDF (reports, papers, contracts, manuals) and returns a clear structured summary — TL;DR, key points, and any action items or deadlines. Handles long, multi-page documents.",
+    "category": [
+      "Research",
+      "Documentation"
+    ],
+    "tags": [
+      "pdf",
+      "summarization",
+      "documents",
+      "research",
+      "reading"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1448,
+    "file_url": "agent-45022f26-9e1a-420d-a518-553fc450ac7b-claude.md"
+  },
+  {
+    "id": "0092e8b4-8fa5-4ac4-b309-5c599c7623e3",
+    "slug": "invoice-receipt-extractor",
+    "title": "Invoice & Receipt Extractor",
+    "description": "Reads invoices and receipts (PDF or image) and pulls the data into clean structured JSON or a CSV row — vendor, date, line items, tax, and total — ready for your bookkeeping.",
+    "category": [
+      "Data Analysis",
+      "Automation"
+    ],
+    "tags": [
+      "invoice",
+      "receipt",
+      "data-extraction",
+      "finance",
+      "bookkeeping"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1120,
+    "file_url": "agent-0092e8b4-8fa5-4ac4-b309-5c599c7623e3-claude.md"
+  },
+  {
+    "id": "f4823e38-311a-43eb-9646-b2d10115780d",
+    "slug": "code-review-companion",
+    "title": "Code Review Companion",
+    "description": "Reviews pull requests and diffs for bugs, security issues, and style problems. Produces a prioritized findings list with file/line references and suggested fixes.",
+    "category": [
+      "Code Generation"
+    ],
+    "tags": [
+      "code-review",
+      "quality",
+      "security",
+      "git"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1734,
+    "file_url": "agent-f4823e38-311a-43eb-9646-b2d10115780d-claude.md"
+  },
+  {
+    "id": "44bea717-a1de-4f19-8a88-e9c4e194f8a4",
+    "slug": "unit-test-generator",
+    "title": "Unit Test Generator",
+    "description": "Writes thorough unit tests for any function or module you paste in — happy path, edge cases, and failure modes — in your project's existing test framework and style.",
+    "category": [
+      "Code Generation"
+    ],
+    "tags": [
+      "testing",
+      "unit-tests",
+      "tdd",
+      "quality"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1506,
+    "file_url": "agent-44bea717-a1de-4f19-8a88-e9c4e194f8a4-claude.md"
+  },
+  {
+    "id": "9b5261d6-4d0a-4ec4-96cf-8df46033e09d",
+    "slug": "sql-query-builder",
+    "title": "SQL Query Builder",
+    "description": "Turns plain-English questions into correct, efficient SQL for your schema. Explains each query and warns about full-table scans before you run them.",
+    "category": [
+      "Code Generation",
+      "Data Analysis"
+    ],
+    "tags": [
+      "sql",
+      "database",
+      "postgres",
+      "analytics"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1432,
+    "file_url": "agent-9b5261d6-4d0a-4ec4-96cf-8df46033e09d-claude.md"
+  },
+  {
+    "id": "0597395e-f92d-4d89-ac21-0a0f12c65ef1",
+    "slug": "regex-builder-explainer",
+    "title": "Regex Builder & Explainer",
+    "description": "Builds regular expressions from plain-English descriptions and explains cryptic regexes token by token, with test cases for both.",
+    "category": [
+      "Code Generation"
+    ],
+    "tags": [
+      "regex",
+      "parsing",
+      "validation"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1386,
+    "file_url": "agent-0597395e-f92d-4d89-ac21-0a0f12c65ef1-claude.md"
+  },
+  {
+    "id": "3522f454-49c6-46cd-9816-2d3f1c14639b",
+    "slug": "legacy-code-refactorer",
+    "title": "Legacy Code Refactorer",
+    "description": "Modernizes legacy functions and modules step by step without changing behavior — small verified refactors, not risky rewrites.",
+    "category": [
+      "Code Generation"
+    ],
+    "tags": [
+      "refactoring",
+      "legacy",
+      "clean-code"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1431,
+    "file_url": "agent-3522f454-49c6-46cd-9816-2d3f1c14639b-claude.md"
+  },
+  {
+    "id": "73ae939c-588c-45ba-9faf-b91ca780827c",
+    "slug": "git-commit-message-writer",
+    "title": "Git Commit Message Writer",
+    "description": "Writes clear conventional-commit messages from your staged diff — type, scope, imperative subject, and a body that explains why, not what.",
+    "category": [
+      "Code Generation",
+      "Automation"
+    ],
+    "tags": [
+      "git",
+      "commits",
+      "conventional-commits",
+      "workflow"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1286,
+    "file_url": "agent-73ae939c-588c-45ba-9faf-b91ca780827c-claude.md"
+  },
+  {
+    "id": "bff59608-750d-405a-bc0e-b92f1148c239",
+    "slug": "dockerfile-optimizer",
+    "title": "Dockerfile Optimizer",
+    "description": "Audits and rewrites Dockerfiles for smaller images, faster builds, and better caching — multi-stage builds, layer ordering, and pinned bases.",
+    "category": [
+      "Code Generation",
+      "Automation"
+    ],
+    "tags": [
+      "docker",
+      "devops",
+      "containers",
+      "ci-cd"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1411,
+    "file_url": "agent-bff59608-750d-405a-bc0e-b92f1148c239-claude.md"
+  },
+  {
+    "id": "7cf704d6-d97b-4857-b57c-1bb46a91d2e1",
+    "slug": "api-client-generator",
+    "title": "API Client Generator",
+    "description": "Generates a typed API client (TypeScript, Python, or Go) from an OpenAPI spec or example requests, with error handling and retries built in.",
+    "category": [
+      "Code Generation"
+    ],
+    "tags": [
+      "api",
+      "openapi",
+      "typescript",
+      "sdk"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1362,
+    "file_url": "agent-7cf704d6-d97b-4857-b57c-1bb46a91d2e1-claude.md"
+  },
+  {
+    "id": "c88c53dc-f2a7-462a-821b-0b392a39bc6c",
+    "slug": "csv-data-profiler",
+    "title": "CSV Data Profiler",
+    "description": "Performs instant exploratory analysis on any CSV: column types, distributions, missing data, outliers, correlations, and a plain-English findings summary.",
+    "category": [
+      "Data Analysis"
+    ],
+    "tags": [
+      "eda",
+      "csv",
+      "statistics",
+      "data-quality"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1448,
+    "file_url": "agent-c88c53dc-f2a7-462a-821b-0b392a39bc6c-claude.md"
+  },
+  {
+    "id": "1f574124-8c52-4fea-a5fb-2f0fa4338788",
+    "slug": "a-b-test-analyzer",
+    "title": "A/B Test Analyzer",
+    "description": "Analyzes experiment results properly: significance, confidence intervals, power, and a clear ship/don't-ship recommendation — without p-hacking.",
+    "category": [
+      "Data Analysis"
+    ],
+    "tags": [
+      "ab-testing",
+      "statistics",
+      "experimentation",
+      "growth"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1470,
+    "file_url": "agent-1f574124-8c52-4fea-a5fb-2f0fa4338788-claude.md"
+  },
+  {
+    "id": "70a9da74-af1f-4073-8685-ca7d668a8c2c",
+    "slug": "kpi-dashboard-designer",
+    "title": "KPI Dashboard Designer",
+    "description": "Designs the right dashboard for your team: picks the metrics that matter, defines each one precisely, and lays out the dashboard with chart types and drill-downs.",
+    "category": [
+      "Data Analysis"
+    ],
+    "tags": [
+      "kpi",
+      "dashboards",
+      "metrics",
+      "bi"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1417,
+    "file_url": "agent-70a9da74-af1f-4073-8685-ca7d668a8c2c-claude.md"
+  },
+  {
+    "id": "0a1b0629-deee-48f7-8cdb-4e5f67249fb5",
+    "slug": "excel-formula-wizard",
+    "title": "Excel Formula Wizard",
+    "description": "Writes and debugs Excel/Google Sheets formulas from plain English — XLOOKUP, dynamic arrays, conditional aggregation — and explains exactly how each one works.",
+    "category": [
+      "Data Analysis"
+    ],
+    "tags": [
+      "excel",
+      "google-sheets",
+      "formulas",
+      "spreadsheets"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1397,
+    "file_url": "agent-0a1b0629-deee-48f7-8cdb-4e5f67249fb5-claude.md"
+  },
+  {
+    "id": "b4c2ca71-d263-4574-9d1f-7b654683871c",
+    "slug": "data-cleaning-pipeline-builder",
+    "title": "Data Cleaning Pipeline Builder",
+    "description": "Builds a reproducible pandas/Polars cleaning script for messy data: type fixes, deduplication, standardization, and validation — with every decision logged.",
+    "category": [
+      "Data Analysis",
+      "Code Generation"
+    ],
+    "tags": [
+      "pandas",
+      "data-cleaning",
+      "python",
+      "etl"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1393,
+    "file_url": "agent-b4c2ca71-d263-4574-9d1f-7b654683871c-claude.md"
+  },
+  {
+    "id": "50cbd652-f3a1-4e52-b49b-5544e86112ff",
+    "slug": "survey-response-analyzer",
+    "title": "Survey Response Analyzer",
+    "description": "Turns raw survey exports into insight: cross-tabs, theme extraction from open-ended answers, sentiment, and an executive summary with quotes.",
+    "category": [
+      "Data Analysis",
+      "Research"
+    ],
+    "tags": [
+      "surveys",
+      "nlp",
+      "sentiment",
+      "customer-insight"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1363,
+    "file_url": "agent-50cbd652-f3a1-4e52-b49b-5544e86112ff-claude.md"
+  },
+  {
+    "id": "41df2cd6-f024-457e-bc6c-a49a32d1dcd4",
+    "slug": "financial-statement-analyzer",
+    "title": "Financial Statement Analyzer",
+    "description": "Reads income statements, balance sheets, and cash flow statements; computes the ratios that matter and explains the company's health in plain language.",
+    "category": [
+      "Data Analysis",
+      "Research"
+    ],
+    "tags": [
+      "finance",
+      "ratios",
+      "valuation",
+      "accounting"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1485,
+    "file_url": "agent-41df2cd6-f024-457e-bc6c-a49a32d1dcd4-claude.md"
+  },
+  {
+    "id": "ca3a7066-c277-4c27-9603-2da118ef0aa6",
+    "slug": "seo-blog-post-writer",
+    "title": "SEO Blog Post Writer",
+    "description": "Writes long-form blog posts that rank: keyword-mapped outline, search-intent matching, scannable structure, and zero fluff paragraphs.",
+    "category": [
+      "Content Creation"
+    ],
+    "tags": [
+      "seo",
+      "blogging",
+      "content-marketing",
+      "copywriting"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1491,
+    "file_url": "agent-ca3a7066-c277-4c27-9603-2da118ef0aa6-claude.md"
+  },
+  {
+    "id": "adc85c4c-ca4c-4caf-aa5f-882d32483b24",
+    "slug": "linkedin-post-ghostwriter",
+    "title": "LinkedIn Post Ghostwriter",
+    "description": "Writes LinkedIn posts in your voice that earn engagement: a scroll-stopping first line, a story or insight in the middle, and a discussion-starting close.",
+    "category": [
+      "Content Creation"
+    ],
+    "tags": [
+      "linkedin",
+      "personal-brand",
+      "social-media",
+      "ghostwriting"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1413,
+    "file_url": "agent-adc85c4c-ca4c-4caf-aa5f-882d32483b24-claude.md"
+  },
+  {
+    "id": "7692e04b-c5a4-421f-8421-64ed3f8a8918",
+    "slug": "newsletter-curator",
+    "title": "Newsletter Curator",
+    "description": "Assembles a weekly newsletter from links and notes you collect: summarizes each item in two sharp sentences, groups by theme, and writes the intro.",
+    "category": [
+      "Content Creation"
+    ],
+    "tags": [
+      "newsletter",
+      "curation",
+      "email",
+      "writing"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1326,
+    "file_url": "agent-7692e04b-c5a4-421f-8421-64ed3f8a8918-claude.md"
+  },
+  {
+    "id": "0a87f33e-9b85-4d65-bada-b508e0b5178a",
+    "slug": "youtube-script-writer",
+    "title": "YouTube Script Writer",
+    "description": "Writes retention-optimized YouTube scripts: cold-open hook, open loops, pattern interrupts, and a natural CTA — formatted for reading on camera.",
+    "category": [
+      "Content Creation"
+    ],
+    "tags": [
+      "youtube",
+      "video",
+      "script",
+      "storytelling"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1438,
+    "file_url": "agent-0a87f33e-9b85-4d65-bada-b508e0b5178a-claude.md"
+  },
+  {
+    "id": "c93c3c9c-eb95-4652-af6e-9efb739199fc",
+    "slug": "product-description-writer",
+    "title": "Product Description Writer",
+    "description": "Writes e-commerce product descriptions that convert: benefit-led copy, scannable specs, objection handling, and SEO keywords woven in naturally.",
+    "category": [
+      "Content Creation"
+    ],
+    "tags": [
+      "ecommerce",
+      "copywriting",
+      "conversion",
+      "shopify"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1473,
+    "file_url": "agent-c93c3c9c-eb95-4652-af6e-9efb739199fc-claude.md"
+  },
+  {
+    "id": "a365cd05-545e-48fb-b514-23b4b8a103af",
+    "slug": "press-release-drafter",
+    "title": "Press Release Drafter",
+    "description": "Drafts AP-style press releases that journalists can use without rewriting: news-first headline, inverted pyramid, real quotes, and clean boilerplate.",
+    "category": [
+      "Content Creation"
+    ],
+    "tags": [
+      "pr",
+      "press-release",
+      "communications",
+      "media"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1415,
+    "file_url": "agent-a365cd05-545e-48fb-b514-23b4b8a103af-claude.md"
+  },
+  {
+    "id": "dbb6d166-c89c-4547-89c0-ac6927fbf203",
+    "slug": "social-media-calendar-planner",
+    "title": "Social Media Calendar Planner",
+    "description": "Plans a month of platform-native content from your goals: post themes, formats, hooks, and a posting schedule — balanced across promotion, value, and engagement.",
+    "category": [
+      "Content Creation",
+      "Automation"
+    ],
+    "tags": [
+      "social-media",
+      "content-calendar",
+      "instagram",
+      "marketing"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1488,
+    "file_url": "agent-dbb6d166-c89c-4547-89c0-ac6927fbf203-claude.md"
+  },
+  {
+    "id": "e4c0cde4-4a9f-4929-b7eb-1d35430e1a87",
+    "slug": "technical-documentation-writer",
+    "title": "Technical Documentation Writer",
+    "description": "Turns code, APIs, and tribal knowledge into documentation developers actually use: quickstarts, how-to guides, and reference pages with tested examples.",
+    "category": [
+      "Content Creation",
+      "Code Generation"
+    ],
+    "tags": [
+      "documentation",
+      "developer-experience",
+      "api-docs",
+      "technical-writing"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1502,
+    "file_url": "agent-e4c0cde4-4a9f-4929-b7eb-1d35430e1a87-claude.md"
+  },
+  {
+    "id": "0fd04a5c-7c06-4021-991a-e5388af8cf2f",
+    "slug": "market-research-analyst",
+    "title": "Market Research Analyst",
+    "description": "Researches any market: size, growth, segments, key players, pricing norms, and entry barriers — synthesized into a decision-ready brief with sources.",
+    "category": [
+      "Research"
+    ],
+    "tags": [
+      "market-research",
+      "tam",
+      "competitive-landscape",
+      "strategy"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1446,
+    "file_url": "agent-0fd04a5c-7c06-4021-991a-e5388af8cf2f-claude.md"
+  },
+  {
+    "id": "e6d09028-7843-42ae-867a-5a4e6ccdb1ca",
+    "slug": "competitor-analysis-agent",
+    "title": "Competitor Analysis Agent",
+    "description": "Builds a rigorous competitor teardown: features, pricing, positioning, reviews sentiment, and strategic gaps you can exploit.",
+    "category": [
+      "Research"
+    ],
+    "tags": [
+      "competitive-analysis",
+      "positioning",
+      "product-strategy",
+      "pricing"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1424,
+    "file_url": "agent-e6d09028-7843-42ae-867a-5a4e6ccdb1ca-claude.md"
+  },
+  {
+    "id": "47216db4-a18a-4760-b866-9d697a87c3a9",
+    "slug": "academic-paper-summarizer",
+    "title": "Academic Paper Summarizer",
+    "description": "Summarizes research papers at three depths — one paragraph, one page, and section-by-section — preserving the actual claims, methods, and limitations.",
+    "category": [
+      "Research",
+      "Education"
+    ],
+    "tags": [
+      "papers",
+      "arxiv",
+      "literature-review",
+      "science"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1444,
+    "file_url": "agent-47216db4-a18a-4760-b866-9d697a87c3a9-claude.md"
+  },
+  {
+    "id": "7b9671f2-2654-4fc0-a3c3-779a979be541",
+    "slug": "due-diligence-researcher",
+    "title": "Due Diligence Researcher",
+    "description": "Runs structured background research on a company before you invest, partner, or join: team, traction signals, financial health markers, legal flags, and reputation.",
+    "category": [
+      "Research"
+    ],
+    "tags": [
+      "due-diligence",
+      "startups",
+      "investing",
+      "background-check"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1489,
+    "file_url": "agent-7b9671f2-2654-4fc0-a3c3-779a979be541-claude.md"
+  },
+  {
+    "id": "ce0cc9c5-4734-4bc1-85c4-0434f29e5d75",
+    "slug": "trend-scout",
+    "title": "Trend Scout",
+    "description": "Spots and validates emerging trends in your industry: separates real signals (funding, hiring, search growth) from hype cycles, with a watchlist you can track.",
+    "category": [
+      "Research"
+    ],
+    "tags": [
+      "trends",
+      "foresight",
+      "innovation",
+      "signals"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1411,
+    "file_url": "agent-ce0cc9c5-4734-4bc1-85c4-0434f29e5d75-claude.md"
+  },
+  {
+    "id": "71067a43-e1cc-4241-a6b1-7104e0b69878",
+    "slug": "grant-finder",
+    "title": "Grant Finder",
+    "description": "Finds grants and funding programs that actually fit your project — eligibility-checked, deadline-sorted, with effort-vs-award guidance per application.",
+    "category": [
+      "Research"
+    ],
+    "tags": [
+      "grants",
+      "funding",
+      "nonprofits",
+      "startups"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1425,
+    "file_url": "agent-71067a43-e1cc-4241-a6b1-7104e0b69878-claude.md"
+  },
+  {
+    "id": "f029dcbe-75f6-4104-9333-576df6d5483b",
+    "slug": "patent-prior-art-searcher",
+    "title": "Patent Prior-Art Searcher",
+    "description": "Runs preliminary prior-art searches before you file or build: finds the closest patents and publications, maps claim overlap, and tells you what a lawyer should review.",
+    "category": [
+      "Research"
+    ],
+    "tags": [
+      "patents",
+      "prior-art",
+      "ip",
+      "innovation"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1435,
+    "file_url": "agent-f029dcbe-75f6-4104-9333-576df6d5483b-claude.md"
+  },
+  {
+    "id": "001eca90-ad09-4c77-8bfb-096ba3cfff61",
+    "slug": "support-ticket-triage-agent",
+    "title": "Support Ticket Triage Agent",
+    "description": "Classifies and prioritizes incoming support tickets: urgency, topic, sentiment, and routing — with a suggested first response for each.",
+    "category": [
+      "Customer Support",
+      "Automation"
+    ],
+    "tags": [
+      "support",
+      "triage",
+      "zendesk",
+      "helpdesk"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1419,
+    "file_url": "agent-001eca90-ad09-4c77-8bfb-096ba3cfff61-claude.md"
+  },
+  {
+    "id": "09d7bd84-498b-4f75-8b17-76ddb8f726f6",
+    "slug": "faq-generator-from-docs",
+    "title": "FAQ Generator from Docs",
+    "description": "Mines your documentation, tickets, and chat logs to generate the FAQ customers actually need — answers written once, deflecting tickets forever.",
+    "category": [
+      "Customer Support",
+      "Content Creation"
+    ],
+    "tags": [
+      "faq",
+      "knowledge-base",
+      "self-service",
+      "docs"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1395,
+    "file_url": "agent-09d7bd84-498b-4f75-8b17-76ddb8f726f6-claude.md"
+  },
+  {
+    "id": "7321e534-7d56-400c-abfa-e731c1421a1e",
+    "slug": "customer-churn-signal-detector",
+    "title": "Customer Churn Signal Detector",
+    "description": "Reviews account activity and support history to flag at-risk customers early, with the evidence and a save-play recommendation per account.",
+    "category": [
+      "Customer Support",
+      "Data Analysis"
+    ],
+    "tags": [
+      "churn",
+      "retention",
+      "customer-success",
+      "saas"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1494,
+    "file_url": "agent-7321e534-7d56-400c-abfa-e731c1421a1e-claude.md"
+  },
+  {
+    "id": "9d84fbab-6d5c-4dde-b321-6382aff6f646",
+    "slug": "refund-request-handler",
+    "title": "Refund Request Handler",
+    "description": "Evaluates refund requests against your policy consistently: decision, reasoning, and a response that keeps goodwill even when the answer is no.",
+    "category": [
+      "Customer Support"
+    ],
+    "tags": [
+      "refunds",
+      "policy",
+      "billing",
+      "customer-experience"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1424,
+    "file_url": "agent-9d84fbab-6d5c-4dde-b321-6382aff6f646-claude.md"
+  },
+  {
+    "id": "97032882-a3e0-494c-870d-dc222623930d",
+    "slug": "onboarding-email-sequence-writer",
+    "title": "Onboarding Email Sequence Writer",
+    "description": "Writes a behavior-triggered onboarding email sequence that gets users to their first success moment — one goal per email, measured by activation, not opens.",
+    "category": [
+      "Customer Support",
+      "Content Creation"
+    ],
+    "tags": [
+      "onboarding",
+      "email-sequence",
+      "activation",
+      "lifecycle"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1466,
+    "file_url": "agent-97032882-a3e0-494c-870d-dc222623930d-claude.md"
+  },
+  {
+    "id": "f1054a52-54b0-4cd8-97e5-5d4e7624ab9d",
+    "slug": "meeting-notes-action-items-agent",
+    "title": "Meeting Notes & Action Items Agent",
+    "description": "Turns raw meeting transcripts into crisp minutes: decisions made, action items with owners and dates, and open questions — in under a page.",
+    "category": [
+      "Automation"
+    ],
+    "tags": [
+      "meetings",
+      "transcripts",
+      "productivity",
+      "minutes"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1396,
+    "file_url": "agent-f1054a52-54b0-4cd8-97e5-5d4e7624ab9d-claude.md"
+  },
+  {
+    "id": "7548a3a1-0403-46e5-86d6-d07252ffe527",
+    "slug": "email-inbox-zero-assistant",
+    "title": "Email Inbox Zero Assistant",
+    "description": "Processes an email backlog in one pass: categorizes everything, drafts replies for the messages that need them, and produces an archive/delete list you approve in bulk.",
+    "category": [
+      "Automation"
+    ],
+    "tags": [
+      "email",
+      "inbox-zero",
+      "productivity",
+      "gtd"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1479,
+    "file_url": "agent-7548a3a1-0403-46e5-86d6-d07252ffe527-claude.md"
+  },
+  {
+    "id": "99fdfc3a-3869-4a93-a0b7-1a337c0b3327",
+    "slug": "invoice-data-extractor",
+    "title": "Invoice Data Extractor",
+    "description": "Extracts structured data from invoices and receipts in any layout: vendor, dates, line items, tax, totals — validated against arithmetic and output as clean JSON or CSV.",
+    "category": [
+      "Automation"
+    ],
+    "tags": [
+      "invoices",
+      "ocr",
+      "document-extraction",
+      "accounting"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1430,
+    "file_url": "agent-99fdfc3a-3869-4a93-a0b7-1a337c0b3327-claude.md"
+  },
+  {
+    "id": "c2ee313f-e256-47ef-b01b-930b640efc69",
+    "slug": "calendar-scheduling-assistant",
+    "title": "Calendar Scheduling Assistant",
+    "description": "Finds meeting times that respect everyone's constraints, time zones, and focus blocks — and drafts the scheduling email/invite text.",
+    "category": [
+      "Automation"
+    ],
+    "tags": [
+      "calendar",
+      "scheduling",
+      "timezones",
+      "meetings"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1395,
+    "file_url": "agent-c2ee313f-e256-47ef-b01b-930b640efc69-claude.md"
+  },
+  {
+    "id": "2622ed33-2627-4f8a-81d9-04de631ead15",
+    "slug": "web-scraping-recipe-builder",
+    "title": "Web Scraping Recipe Builder",
+    "description": "Builds polite, robust scraping scripts for public pages: selector strategy, pagination, rate limiting, and resilient parsing — with legality and robots.txt checks first.",
+    "category": [
+      "Automation",
+      "Code Generation"
+    ],
+    "tags": [
+      "scraping",
+      "python",
+      "data-collection",
+      "beautifulsoup"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1516,
+    "file_url": "agent-2622ed33-2627-4f8a-81d9-04de631ead15-claude.md"
+  },
+  {
+    "id": "51dd17fa-c884-43b4-bd64-855b834809d5",
+    "slug": "file-organizer-agent",
+    "title": "File Organizer Agent",
+    "description": "Designs and executes a cleanup of messy folders: dedupe, consistent naming, dated archive structure — with a dry-run preview before anything moves.",
+    "category": [
+      "Automation"
+    ],
+    "tags": [
+      "files",
+      "organization",
+      "cleanup",
+      "productivity"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1381,
+    "file_url": "agent-51dd17fa-c884-43b4-bd64-855b834809d5-claude.md"
+  },
+  {
+    "id": "a7ff311a-6bd6-475b-9c0d-517a0ee2c63d",
+    "slug": "expense-report-categorizer",
+    "title": "Expense Report Categorizer",
+    "description": "Categorizes transaction exports for accounting or taxes: merchant normalization, category rules, anomaly flags, and a clean summary by category and month.",
+    "category": [
+      "Automation",
+      "Data Analysis"
+    ],
+    "tags": [
+      "expenses",
+      "accounting",
+      "taxes",
+      "bookkeeping"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1403,
+    "file_url": "agent-a7ff311a-6bd6-475b-9c0d-517a0ee2c63d-claude.md"
+  },
+  {
+    "id": "b51734f9-5551-4178-b5e4-0249e3312e24",
+    "slug": "daily-standup-reporter",
+    "title": "Daily Standup Reporter",
+    "description": "Compiles your daily standup from commits, tickets, and calendar: yesterday's actual work, today's plan, and blockers — in your team's format, ready to post.",
+    "category": [
+      "Automation"
+    ],
+    "tags": [
+      "standup",
+      "agile",
+      "slack",
+      "reporting"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1394,
+    "file_url": "agent-b51734f9-5551-4178-b5e4-0249e3312e24-claude.md"
+  },
+  {
+    "id": "cf094808-33c0-4d25-a884-ce3f9d171ffe",
+    "slug": "tech-interview-prep-coach",
+    "title": "Tech Interview Prep Coach",
+    "description": "Runs realistic mock interviews for software/data roles: coding, system design, and behavioral rounds with calibrated feedback and a personalized study plan.",
+    "category": [
+      "Education"
+    ],
+    "tags": [
+      "interviews",
+      "coding-interview",
+      "system-design",
+      "career"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1494,
+    "file_url": "agent-cf094808-33c0-4d25-a884-ce3f9d171ffe-claude.md"
+  },
+  {
+    "id": "239447a4-1511-44a7-ab8c-f2b752635295",
+    "slug": "language-learning-tutor",
+    "title": "Language Learning Tutor",
+    "description": "Personal language tutor that adapts to your level: conversation practice, gentle corrections with explanations, vocabulary recycling, and spaced review.",
+    "category": [
+      "Education"
+    ],
+    "tags": [
+      "languages",
+      "tutoring",
+      "conversation",
+      "spaced-repetition"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1447,
+    "file_url": "agent-239447a4-1511-44a7-ab8c-f2b752635295-claude.md"
+  },
+  {
+    "id": "1d0e8785-f320-4641-90c8-577281732416",
+    "slug": "flashcard-generator",
+    "title": "Flashcard Generator",
+    "description": "Converts notes, textbooks, or articles into high-quality spaced-repetition flashcards: atomic facts, cloze deletions, and reversed cards — exportable to Anki.",
+    "category": [
+      "Education"
+    ],
+    "tags": [
+      "flashcards",
+      "anki",
+      "spaced-repetition",
+      "studying"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1379,
+    "file_url": "agent-1d0e8785-f320-4641-90c8-577281732416-claude.md"
+  },
+  {
+    "id": "a86902aa-f23c-4667-b351-c8249694f021",
+    "slug": "code-concept-explainer",
+    "title": "Code Concept Explainer",
+    "description": "Explains any programming concept at exactly your level — with a runnable example, a real-world analogy, and the misconception that usually trips people up.",
+    "category": [
+      "Education",
+      "Code Generation"
+    ],
+    "tags": [
+      "learning",
+      "programming",
+      "explanations",
+      "mentoring"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1436,
+    "file_url": "agent-a86902aa-f23c-4667-b351-c8249694f021-claude.md"
+  },
+  {
+    "id": "fa30481d-9920-4022-b3c1-e0782f44894e",
+    "slug": "course-outline-designer",
+    "title": "Course Outline Designer",
+    "description": "Designs complete course curricula from a topic and audience: learning objectives, module sequence, exercises, and assessments — backwards-designed from outcomes.",
+    "category": [
+      "Education",
+      "Content Creation"
+    ],
+    "tags": [
+      "curriculum",
+      "course-design",
+      "teaching",
+      "instructional-design"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1488,
+    "file_url": "agent-fa30481d-9920-4022-b3c1-e0782f44894e-claude.md"
+  },
+  {
+    "id": "3dd0da3e-5b53-4e9f-a29d-006e5effafd1",
+    "slug": "resume-reviewer-optimizer",
+    "title": "Resume Reviewer & Optimizer",
+    "description": "Reviews resumes against a target job description: impact-focused bullet rewrites, keyword alignment for ATS, and honest feedback on what to cut.",
+    "category": [
+      "Education",
+      "Content Creation"
+    ],
+    "tags": [
+      "resume",
+      "career",
+      "ats",
+      "job-search"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1457,
+    "file_url": "agent-3dd0da3e-5b53-4e9f-a29d-006e5effafd1-claude.md"
+  },
+  {
+    "id": "9ed9dc40-4e5a-4cfe-a109-e9606a7f1330",
+    "slug": "math-word-problem-solver",
+    "title": "Math Word Problem Solver",
+    "description": "Solves math problems step by step with the reasoning shown — and then teaches the pattern so you can solve the next one yourself. Tutoring mode, not answer vending.",
+    "category": [
+      "Education"
+    ],
+    "tags": [
+      "math",
+      "tutoring",
+      "problem-solving",
+      "homework"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "file_name": "claude.md",
+    "has_content": true,
+    "content_len": 1411,
+    "file_url": "agent-9ed9dc40-4e5a-4cfe-a109-e9606a7f1330-claude.md"
+  }
+]
