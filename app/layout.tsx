@@ -58,6 +58,8 @@ export const metadata: Metadata = {
   },
 };
 
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
@@ -83,12 +85,20 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <body className="bg-slate-950 text-slate-200">
-        <Script
-          defer
-          data-domain="agentshive.net"
-          src="https://plausible.io/js/script.js"
-          strategy="afterInteractive"
-        />
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4" strategy="afterInteractive">
+              {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`}
+            </Script>
+          </>
+        )}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
