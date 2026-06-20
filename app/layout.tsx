@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { AuthProvider } from "./lib/auth-context";
 import { LayoutWrapper } from "./components/layout-wrapper";
@@ -82,6 +83,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <body className="bg-slate-950 text-slate-200">
+        <Script
+          defer
+          data-domain="agentshive.net"
+          src="https://plausible.io/js/script.js"
+          strategy="afterInteractive"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
