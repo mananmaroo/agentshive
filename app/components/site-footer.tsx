@@ -129,6 +129,15 @@ export function SiteFooter() {
 
           {/* Bottom */}
           <div className="border-t border-slate-800 pt-8 text-center">
+            <div className="flex items-center justify-center gap-4 text-sm mb-3">
+              <Link href="/privacy" className="text-slate-400 hover:text-indigo-400 transition">
+                Privacy Policy
+              </Link>
+              <span className="text-slate-700">•</span>
+              <Link href="/terms" className="text-slate-400 hover:text-indigo-400 transition">
+                Terms of Service
+              </Link>
+            </div>
             <p className="text-sm text-slate-400 mb-2">
               Agentshive — Open Registry for AI Agents
             </p>
