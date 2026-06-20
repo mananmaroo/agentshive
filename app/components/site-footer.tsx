@@ -1,7 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { Code, Mail } from 'lucide-react';
+import { Code, Mail, Instagram } from 'lucide-react';
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
 
 function LinkedinIcon({ className }: { className?: string }) {
   return (
@@ -112,6 +120,28 @@ export function SiteFooter() {
                   >
                     <LinkedinIcon className="w-4 h-4" />
                     LinkedIn
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://instagram.com/getagentshive"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-slate-400 hover:text-indigo-400 transition flex items-center gap-1"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://x.com/getagentshive"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-slate-400 hover:text-indigo-400 transition flex items-center gap-1"
+                  >
+                    <XIcon className="w-4 h-4" />
+                    X (Twitter)
                   </a>
                 </li>
                 <li>
