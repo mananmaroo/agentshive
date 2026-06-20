@@ -1,6 +1,14 @@
 # Agentshive — Launch Posts (ready to paste)
 
-**Handle:** @getagentshive (Instagram, X, TikTok, YouTube) • **Site:** agentshive.net
+**Site:** agentshive.net • **Handle:** @getagentshive
+- Instagram: instagram.com/getagentshive
+- X: x.com/getagentshive
+- YouTube: youtube.com/@getAgentshive
+- TikTok: tiktok.com/@getagentshive
+- LinkedIn: linkedin.com/company/agentshive99
+- Reddit: reddit.com/user/infamouse_Stomach1067
+
+See `SOCIAL_BIOS.md` for profile bios and `CONTENT_CALENDAR.csv` for the 30-day schedule.
 
 ## Product Hunt
 

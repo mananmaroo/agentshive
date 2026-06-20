@@ -117,3 +117,37 @@
 - Post 1 reel/day for 10 days (keep a buffer). Lead with **#3 (Visualizer)**, then **#2 (PA)**, then **#5 (speed)** — strongest hooks first.
 - Reply to every comment in the first hour (drives reach).
 - After ~48h, boost only the 2–3 with best completion rate + saves (see LAUNCH_CHECKLIST.md for ad settings).
+
+---
+
+# Reels 11–20 (concepts — same format/rules as above)
+
+**11. "Agent of the day" (series, faceless, 12s):** Hook *"Free agent of the day."* Show one
+agent on `/agents`, 2 bullets of what it does, install line. Repeatable daily format.
+
+**12. Before/after (faceless, 15s):** Hook *"Manual vs agent."* Split screen: left does a task
+by hand (slow), right runs the agent (done). End: time saved.
+
+**13. "3 things your AI should do automatically" (faceless, 16s):** Quick list — triage email,
+summarize PDFs, write commit messages — each with a 2s clip of the agent doing it.
+
+**14. Build-in-public milestone (face optional, 12s):** Hook *"X downloads in Y days."* Show the
+stats counter on the homepage + a thank-you. Use real numbers once you have them.
+
+**15. "Submit your own agent" (creator angle, faceless, 15s):** Hook *"Built a good prompt? Publish
+it free."* Screen-record the `/companions/add` (or `/agents/upload`) flow end to end.
+
+**16. Messy notes → clean output (faceless, 14s):** Hook *"I gave AI my messy meeting notes…"*
+Paste chaotic notes → Meeting Notes agent outputs decisions + action items.
+
+**17. For students/researchers (faceless, 15s):** Hook *"Read papers 10x faster."* Academic Paper
+Summarizer opens a paper → 3-depth summary with citations.
+
+**18. For founders (faceless, 16s):** Hook *"Free market research in minutes."* Market Research /
+Competitor agent pulls sources → decision-ready brief.
+
+**19. "Stop copy-pasting prompts" (faceless, 12s):** Hook *"Your Notes app full of prompts? There's
+a better way."* Show installing an agent instead of pasting a prompt.
+
+**20. "What should I build next?" (face, 12s):** You ask the audience which agent to build; show 2–3
+recent ones. Pure engagement/comments driver. Pin the best comment, build it, post the result.
