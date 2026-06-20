@@ -1,12 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { Code, Mail, Instagram } from 'lucide-react';
+import { Code, Mail } from 'lucide-react';
 
 function XIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function YoutubeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6z" />
     </svg>
   );
 }
@@ -129,7 +147,7 @@ export function SiteFooter() {
                     rel="noopener noreferrer"
                     className="text-slate-400 hover:text-indigo-400 transition flex items-center gap-1"
                   >
-                    <Instagram className="w-4 h-4" />
+                    <InstagramIcon className="w-4 h-4" />
                     Instagram
                   </a>
                 </li>
@@ -142,6 +160,17 @@ export function SiteFooter() {
                   >
                     <XIcon className="w-4 h-4" />
                     X (Twitter)
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://youtube.com/@getagentshive"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-slate-400 hover:text-indigo-400 transition flex items-center gap-1"
+                  >
+                    <YoutubeIcon className="w-4 h-4" />
+                    YouTube
                   </a>
                 </li>
                 <li>
