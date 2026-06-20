@@ -4,7 +4,6 @@
 - Instagram: instagram.com/getagentshive
 - X: x.com/getagentshive
 - YouTube: youtube.com/@getAgentshive
-- TikTok: tiktok.com/@getagentshive
 - LinkedIn: linkedin.com/company/agentshive99
 - Reddit: reddit.com/user/infamouse_Stomach1067
 

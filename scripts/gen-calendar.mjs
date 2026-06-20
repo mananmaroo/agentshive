@@ -36,7 +36,7 @@ REELS.forEach((reel, i) => {
   const off = Math.round((i * 29) / (REELS.length - 1));
   const f = fmt(off);
   rows.push([f.date, f.wd, f.day, 'Reel', `R${reel.r} — ${reel.t}`,
-    'IG Reels + YouTube Shorts + TikTok; repurpose to X + LinkedIn',
+    'IG Reels + YouTube Shorts; repurpose to X + LinkedIn',
     `Script: MARKETING_REELS R${reel.r}. Post ~11am & 6pm; reply to comments in first hour.`, 'Planned']);
 });
 

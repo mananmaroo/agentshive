@@ -6,7 +6,9 @@
 - Captions burned in (most watch muted). Trending audio low under voiceover.
 - Record screens at agentshive.net: Home (hero), `/agents` (filters), `/companions`, an agent
   detail page (curl install), and a companion download.
-- Handle is **@getagentshive** on all platforms (IG, X, TikTok, YouTube); bio link → **agentshive.net**.
+- Handle is **@getagentshive** (IG, X, YouTube; LinkedIn = agentshive99); bio link → **agentshive.net**.
+- Each reel: post to **IG Reels + YouTube Shorts**, then repurpose to **X + LinkedIn** (no TikTok).
+- Hashtags: pull a fresh mix from `SOCIAL_BIOS.md` hashtag banks (10–15 on IG, 1–2 on X, 3–5 on LinkedIn).
 - Same end card every reel (last 2s): black screen, text **"agentshive.net • @getagentshive"**.
 - Export at 30fps minimum; keep cuts every 1.5–3s to hold attention.
 

@@ -1,95 +1,102 @@
-# Agentshive — Social Bios & Profile Setup
+# Agentshive — Social Bios, Hashtags & Optimization
 
 **Handles:** IG `@getagentshive` · X `@getagentshive` · YouTube `@getAgentshive` ·
-TikTok `@getagentshive` · LinkedIn `company/agentshive99` · Reddit `u/infamouse_Stomach1067`
+LinkedIn `company/agentshive99` · Reddit `u/infamouse_Stomach1067`
 **Link everywhere:** https://agentshive.net
+(No TikTok — skipping by choice.)
 
-**Set on every profile (do once, today):**
-- Profile photo: the Agentshive bee/logo (same image on all).
-- Banner (X, YouTube, LinkedIn): "The Open Registry for AI Agents — agentshive.net".
-- Link in bio: agentshive.net (use a Linktree only if you need multiple links).
-- Category/type: Software / Technology.
+**Set on every profile:** same bee/logo pic ✓, banner "The Open Registry for AI Agents —
+agentshive.net", link = agentshive.net, category = Software/Technology.
 
 ---
 
-## Instagram (bio ≤ 150 chars)
-**Name field:** Agentshive · AI Agents
-**Bio:**
+## Instagram
+**Name field (searchable — use keywords):** `Agentshive | Free AI Agents`
+**Bio (≤150 chars, catchy):**
 ```
-🐝 Free, ready-made AI agents you can actually use.
-Works with Claude Code, Codex, Perplexity & any LLM.
-New agents weekly 👇
+🐝 AI agents that do the work — not just chat
+Free for Claude Code, Codex, Perplexity & any LLM
+Grab one in 10 sec 👇
 ```
 **Link:** agentshive.net
+> Tip: the *Name* field is searchable on IG — keeping "AI Agents" in it helps discovery more than the bio text.
 
-## X / Twitter (bio ≤ 160 chars)
-**Name:** Agentshive
-**Bio:**
+## X / Twitter
+**Name:** `Agentshive`
+**Bio (≤160, catchy):**
 ```
-The open registry for AI agents. Download ready-made agents that run in Claude Code, Codex, Perplexity & any LLM. Free & open. 🐝
+AI agents that do the work, not just chat. A free, open registry you run in Claude Code, Codex, Perplexity & any LLM. New agents weekly 🐝
 ```
 **Link:** agentshive.net · **Location:** Worldwide
 
-## TikTok (bio ≤ 80 chars)
-```
-Free AI agents for any LLM 🐝
-agentshive.net
-```
-
-## YouTube (channel description)
-**Channel tagline:** Free AI agents for Claude Code, Codex & any LLM.
-**About / description:**
+## YouTube (@getAgentshive)
+**Tagline:** `Free AI agents for Claude Code, Codex & any LLM`
+**Description (keyword-rich for search):**
 ```
 Agentshive is the open registry for AI agents — a free library of ready-made agents you
 download and run in Claude Code, OpenAI Codex, Cursor, Perplexity, n8n, LangChain, or any LLM.
 
-On this channel: short demos of agents doing real work — a personal assistant that handles
-email, calendar and to-dos; a tool that turns documents into McKinsey-style decks; agents for
-coding, research, content, data and support; and quick how-tos on installing and building your
-own agents.
-
-New agents and demos every week. No lock-in, no paywall on the agents.
+Short demos of agents doing real work: a personal assistant for email, calendar and to-dos; a
+document-to-deck visualizer; agents for coding, research, content, data and support; plus
+how-tos on installing and building your own. New agents and demos every week. No lock-in.
 
 ▶ Browse & download free: https://agentshive.net
-📩 Contact: agentshive26@gmail.com
-```
-**Keywords/tags:** AI agents, Claude Code, Codex, Perplexity, LLM, AI automation, AI tools,
-prompt library, agent templates, productivity.
+📩 agentshive26@gmail.com
 
-## LinkedIn (Company Page)
-**Tagline (≤ 120 chars):**
+#AI #AIagents #ClaudeAI #Codex #Perplexity #AItools #automation #productivity
 ```
-The open registry for AI agents — download ready-made agents for Claude Code, Codex & any LLM. Free & open.
+> Put the keyword in the *title* of every Short, e.g. "Turn any doc into a deck with AI #Shorts".
+
+## LinkedIn (Company Page · agentshive99)
+**Tagline (≤120):**
+```
+The open registry for AI agents — ready-made agents for Claude Code, Codex & any LLM. Free & open. 🐝
 ```
 **About:**
 ```
 Agentshive is a free, open registry of AI agents. Instead of rebuilding the same prompts for
-every project, you download a ready-made agent and run it in Claude Code, OpenAI Codex, Cursor,
+every project, download a ready-made agent and run it in Claude Code, OpenAI Codex, Cursor,
 Perplexity, n8n, LangChain — or any LLM. No lock-in.
 
-The library includes agents for coding, research, content, data and support, plus hands-on
-"companions" that do the work end to end: a personal assistant (email, calendar, to-dos), a
-document-to-deck visualizer, and a smart-coder that hands off context between sessions.
+Agents for coding, research, content, data and support, plus hands-on "companions" that do the
+work end to end: a personal assistant (email, calendar, to-dos), a document-to-deck visualizer,
+and a smart-coder that hands off context between sessions. Free to use; creators can publish
+their own.
 
-Anyone can use the agents for free, and creators can publish their own.
-
-Browse and download: https://agentshive.net
+Browse & download: https://agentshive.net
 ```
-**Industry:** Software Development · **Company size:** 1–10 · **Website:** agentshive.net
 
 ## Reddit (u/infamouse_Stomach1067)
-> Reddit punishes overt self-promo. Keep the profile light and lead with value in posts.
-**Profile bio:**
+**Bio:**
 ```
-Building Agentshive — a free, open registry of AI agents (agentshive.net). Here to talk AI agents, share what I learn, and take requests.
+Building Agentshive — a free, open registry of AI agents (agentshive.net). Here to talk AI agents and take requests.
 ```
-**Recommended:** create a brand subreddit **r/agentshive** for updates, and post value-first in
-r/ClaudeAI, r/ChatGPT, r/SideProject, r/artificial (link only when allowed / in comments).
+> Reddit hates ads. Post value-first in r/ClaudeAI, r/ChatGPT, r/SideProject, r/artificial;
+> link only in comments / when rules allow. Consider creating r/agentshive for updates.
 
 ---
 
-## Reusable one-liners (for captions, comments, DMs)
-- "Free, ready-made AI agents that run in any LLM — agentshive.net."
-- "Stop re-writing prompts. Download the agent instead."
-- "Agents that *do* the work, not just talk about it."
-- "Works with Claude Code, Codex, Cursor, Perplexity & any LLM. No lock-in."
+## Hashtag banks (rotate — don't reuse the same block every time)
+
+**Instagram Reels (use 10–15; mix big + niche):**
+Core: `#ai #aitools #aiagents #artificialintelligence #claudeai #chatgpt`
+Reach: `#automation #productivity #saas #tech #futuretech #coding`
+Niche/intent: `#aiautomation #promptengineering #buildinpublic #developer #nocode #perplexity #codex #sideproject #startup`
+
+**YouTube Shorts:** `#Shorts #AI #AIagents #ClaudeAI #AItools` + keyword in title.
+
+**X / Twitter (1–2 only):** pick from `#AI` `#buildinpublic` `#AIagents`.
+
+**LinkedIn (3–5):** `#AI #DeveloperTools #Productivity #BuildInPublic #OpenSource`
+
+---
+
+## Traction checklist (per post)
+- **Hook in the first 1s** (text + a visible result). Biggest single lever on reach.
+- **Captions burned in**; most watch muted.
+- **Reply to every comment in the first hour** — early engagement drives the algorithm.
+- **Post when your audience is on:** ~11am and 6pm local; test and keep what works.
+- **One clear CTA:** "Free at agentshive.net — link in bio."
+- **Hook = a benefit or a number** ("McKinsey deck in 30s", "cancel 5 subscriptions"), never a logo intro.
+- **Cross-post** each reel to IG Reels + YouTube Shorts, then repurpose to X + LinkedIn.
+- **Save + share** matter more than likes — end with "save this" when it's a how-to.
