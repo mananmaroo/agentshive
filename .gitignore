@@ -44,3 +44,10 @@ next-env.d.ts
 
 # local QA walkthrough artifacts
 scripts/walkthrough/
+
+# QA / screenshot artifacts — kept out of the repo
+/audit-*.png
+/live-*.png
+/m-*.png
+/mz-*.png
+reel-shots/
