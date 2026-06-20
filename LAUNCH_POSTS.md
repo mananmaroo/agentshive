@@ -1,5 +1,7 @@
 # Agentshive — Launch Posts (ready to paste)
 
+**Handle:** @getagentshive (Instagram, X, TikTok, YouTube) • **Site:** agentshive.net
+
 ## Product Hunt
 
 **Name:** Agentshive
@@ -74,7 +76,7 @@ Browse → install → done.
 
 5/ No lock-in. No paywall on the agents. You can submit your own.
 It's live and free: agentshive.net
-Tell me which agent to build next 👇
+Follow @getagentshive and tell me which agent to build next 👇
 
 ---
 

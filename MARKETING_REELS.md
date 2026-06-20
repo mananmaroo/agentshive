@@ -6,7 +6,8 @@
 - Captions burned in (most watch muted). Trending audio low under voiceover.
 - Record screens at agentshive.net: Home (hero), `/agents` (filters), `/companions`, an agent
   detail page (curl install), and a companion download.
-- Same end card every reel (last 2s): black screen, text **"agentshive.net — free • link in bio"**.
+- Handle is **@getagentshive** on all platforms (IG, X, TikTok, YouTube); bio link → **agentshive.net**.
+- Same end card every reel (last 2s): black screen, text **"agentshive.net • @getagentshive"**.
 - Export at 30fps minimum; keep cuts every 1.5–3s to hold attention.
 
 ---
@@ -107,7 +108,7 @@
 - **0:09–0:13** Back to you: *"It's free and works in any AI tool. Tell me which agent to build next."*
 - **0:13–0:15** End card CTA.
 - **VO:** live to camera.
-- **Caption:** Built this for me, sharing it free. What should I build next? 🐝 agentshive.net
+- **Caption:** Built this for me, sharing it free. What should I build next? Follow @getagentshive 🐝 agentshive.net
 - **Hashtags:** #buildinpublic #indiehacker #ai #founder #startup
 
 ---
