@@ -270,23 +270,20 @@ export default function AgentDetail() {
   };
 
   const [copied, setCopied] = useState(false);
-  const [badgeCopied, setBadgeCopied] = useState(false);
+  const [pasteCopied, setPasteCopied] = useState(false);
   const installUrl = typeof window !== 'undefined' && agent
     ? `${window.location.origin}/api/agents/${agent.id}/raw`
     : '';
-  const badgeUrl = typeof window !== 'undefined' && agent
-    ? `${window.location.origin}/api/agents/${agent.id}/badge`
-    : '';
-  const badgeMarkdown = agent
-    ? `[![Agentshive installs](${badgeUrl})](${typeof window !== 'undefined' ? window.location.origin : ''}/agents/${agent.id})`
-    : '';
+  const fileSlug = (agent?.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-');
+  const curlCommand = `curl -fsSL ${installUrl} -o .claude/agents/${fileSlug}.md`;
+  // No-curl: a plain-English instruction users paste into their AI tool, which fetches + saves the agent.
+  const pasteCommand = `Set up this agent for me: download ${installUrl} and save it as ${fileSlug}.md (put it in .claude/agents/ if that folder exists), then load it and use it as an agent.`;
 
-  const copyBadge = async () => {
-    await navigator.clipboard.writeText(badgeMarkdown);
-    setBadgeCopied(true);
-    setTimeout(() => setBadgeCopied(false), 2000);
+  const copyPaste = async () => {
+    await navigator.clipboard.writeText(pasteCommand);
+    setPasteCopied(true);
+    setTimeout(() => setPasteCopied(false), 2000);
   };
-  const curlCommand = `curl -fsSL ${installUrl} -o .claude/agents/${(agent?.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-')}.md`;
 
   const copyInstall = async () => {
     await navigator.clipboard.writeText(curlCommand);
@@ -484,6 +481,22 @@ export default function AgentDetail() {
                   <p className="text-xs text-slate-500 mt-3">
                     Raw file URL: <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline break-all">{installUrl}</a>
                   </p>
+
+                  <div className="mt-5">
+                    <p className="text-sm font-semibold text-white mb-1">No terminal? Paste this into your AI tool</p>
+                    <p className="text-xs text-slate-500 mb-2">
+                      Works in Claude Code, Claude.ai / Cowork, Codex, ChatGPT or Perplexity — it fetches and saves the agent for you, no command line needed.
+                    </p>
+                    <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
+                      <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-words">{pasteCommand}</pre>
+                      <button
+                        onClick={copyPaste}
+                        className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
+                      >
+                        {pasteCopied ? 'Copied' : 'Copy'}
+                      </button>
+                    </div>
+                  </div>
                 </>
               ) : (
                 <div className="relative bg-slate-900 border border-slate-700 rounded-lg p-3 overflow-hidden">
@@ -532,34 +545,6 @@ export default function AgentDetail() {
                   <span className="font-semibold text-white">Then just ask</span> in plain English — the agent&apos;s behavior is now loaded.
                 </li>
               </ol>
-            </div>
-
-            {/* README badge embed */}
-            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-2">Add a badge to your README</h2>
-              <p className="text-slate-400 text-sm mb-4">
-                Show off this agent&apos;s live install count in your GitHub README or docs. The badge updates automatically.
-              </p>
-              {badgeUrl && (
-                <div className="flex items-center gap-3 mb-4">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={badgeUrl} alt="Agentshive installs badge" className="h-5" />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`${badgeUrl}?type=rating`} alt="Agentshive rating badge" className="h-5" />
-                </div>
-              )}
-              <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
-                <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-all">{badgeMarkdown}</pre>
-                <button
-                  onClick={copyBadge}
-                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
-                >
-                  {badgeCopied ? 'Copied' : 'Copy'}
-                </button>
-              </div>
-              <p className="text-xs text-slate-500 mt-3">
-                Append <code className="text-indigo-300">?type=rating</code> to the badge URL for the rating variant.
-              </p>
             </div>
 
             {/* How to install & run (beginner-friendly) */}
