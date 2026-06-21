@@ -65,6 +65,7 @@ export default function BrowseAgents() {
   const [selectedSort, setSelectedSort] = useState<SortBy>('trending');
   const [selectedTemplate, setSelectedTemplate] = useState<'all' | 'claude-code' | 'codex' | 'agentshive_team'>('all');
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
 
   const itemsPerPage = 12;
@@ -88,7 +89,7 @@ export default function BrowseAgents() {
 
   useEffect(() => {
     fetchAgents();
-  }, [selectedCategory, selectedSort, searchQuery]);
+  }, [selectedCategory, selectedSort, searchQuery, selectedTemplate, currentPage]);
 
   // Monotonic id so a slow earlier response can't overwrite a newer one
   const fetchIdRef = useRef(0);
@@ -97,13 +98,16 @@ export default function BrowseAgents() {
     const fetchId = ++fetchIdRef.current;
     setLoading(true);
     try {
-      let query = supabase.from('agents').select('*');
+      let query = supabase.from('agents').select('*', { count: 'exact' });
 
-      // Filter by search
+      // Filter by search (sanitized to avoid PostgREST filter injection)
       if (searchQuery) {
-        query = query.or(
-          `title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,tags.cs.{"${searchQuery}"}`
-        );
+        const term = searchQuery.replace(/[,()"{}*:\\]/g, ' ').trim();
+        if (term) {
+          query = query.or(
+            `title.ilike.%${term}%,description.ilike.%${term}%,tags.cs.{"${term}"}`
+          );
+        }
       }
 
       // Filter by category
@@ -111,28 +115,41 @@ export default function BrowseAgents() {
         query = query.contains('category', [selectedCategory]);
       }
 
+      // Filter by template
+      if (selectedTemplate === 'claude-code' || selectedTemplate === 'codex') {
+        query = query.contains('tags', [selectedTemplate]);
+      } else if (selectedTemplate === 'agentshive_team') {
+        const { data: team } = await supabase
+          .from('users').select('id').eq('username', 'agentshive_team').maybeSingle();
+        query = query.eq('creator_id', team?.id ?? '00000000-0000-0000-0000-000000000000');
+      }
+
       // Sort
       switch (selectedSort) {
-        case 'trending':
-          query = query.order('downloads_count', { ascending: false });
-          break;
         case 'newest':
           query = query.order('created_at', { ascending: false });
           break;
         case 'rating':
           query = query.order('average_rating', { ascending: false });
           break;
+        case 'trending':
         case 'downloads':
+        default:
           query = query.order('downloads_count', { ascending: false });
           break;
       }
 
-      const { data, error } = await query;
+      // Server-side pagination — fetch only the current page, not the whole table.
+      const from = (currentPage - 1) * itemsPerPage;
+      query = query.range(from, from + itemsPerPage - 1);
+
+      const { data, error, count } = await query;
 
       if (error) throw error;
       if (fetchId !== fetchIdRef.current) return; // stale response — a newer fetch is in flight
 
       setAgents(data || []);
+      setTotalCount(count || 0);
 
       // Fetch creator info for all agents
       const creatorIds = [...new Set((data || []).map((a) => a.creator_id))];
@@ -155,30 +172,10 @@ export default function BrowseAgents() {
     }
   };
 
-  const matchesTemplate = (agent: Agent) => {
-    if (selectedTemplate === 'all') return true;
-    if (selectedTemplate === 'agentshive_team')
-      return creators.get(agent.creator_id)?.username === 'agentshive_team';
-    // 'claude-code' | 'codex' — matched by tag.
-    return agent.tags.map((t) => t.toLowerCase()).includes(selectedTemplate);
-  };
-
-  const filteredAgents = agents.filter((agent) => {
-    if (!matchesTemplate(agent)) return false;
-    if (!searchQuery) return true;
-    const query = searchQuery.toLowerCase();
-    return (
-      agent.title.toLowerCase().includes(query) ||
-      agent.description.toLowerCase().includes(query) ||
-      agent.tags.some((tag) => tag.toLowerCase().includes(query))
-    );
-  });
-
-  const paginatedAgents = filteredAgents.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-  const totalPages = Math.ceil(filteredAgents.length / itemsPerPage);
+  // Filtering, sorting and pagination are all done server-side in fetchAgents,
+  // so `agents` already holds exactly the current page.
+  const paginatedAgents = agents;
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   const getCreatorName = (creatorId: string) => {
     return creators.get(creatorId)?.username || 'Unknown';
@@ -348,13 +345,13 @@ export default function BrowseAgents() {
 
         {/* Results Count */}
         <div className="text-slate-400 text-sm mb-6">
-          {filteredAgents.length === 0 ? (
+          {totalCount === 0 ? (
             'No agents found'
           ) : (
             <>
               Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-              {Math.min(currentPage * itemsPerPage, filteredAgents.length)} of{' '}
-              {filteredAgents.length} agents
+              {Math.min(currentPage * itemsPerPage, totalCount)} of{' '}
+              {totalCount} agents
             </>
           )}
         </div>
