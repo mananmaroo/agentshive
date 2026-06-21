@@ -244,13 +244,29 @@ export default function AgentDetail() {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!agent) return;
     if (!user) {
       window.location.href = `/auth/signup?redirect=${encodeURIComponent(`/agents/${agent.id}`)}`;
       return;
     }
-    window.location.href = `/api/agents/${agent.id}/raw`;
+    const slug = (agent.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-');
+    try {
+      const res = await fetch(`/api/agents/${agent.id}/raw`);
+      const text = await res.text();
+      const blob = new Blob([text], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${slug}.md`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      // Fallback: open the raw file if the blob download fails.
+      window.location.href = `/api/agents/${agent.id}/raw`;
+    }
   };
 
   const [copied, setCopied] = useState(false);
@@ -485,6 +501,37 @@ export default function AgentDetail() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Use it without a terminal */}
+            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-white mb-2">No terminal? Use it anywhere</h2>
+              <p className="text-slate-400 text-sm mb-4">
+                The <code className="text-indigo-300">curl</code> command above is for tools with a
+                shell (Claude Code, Codex, Cursor). In an app without a terminal — Claude.ai
+                (web, desktop, or Cowork), Perplexity, or ChatGPT — paste the agent definition
+                instead:
+              </p>
+              <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-300">
+                <li>
+                  <span className="font-semibold text-white">Get the definition:</span> click{' '}
+                  <span className="text-indigo-300">Download</span> at the top, or open the{' '}
+                  <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline">raw file</a>{' '}
+                  and copy all of it.
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Paste it as the instructions / system prompt</span> in your tool:
+                  <ul className="list-disc pl-5 mt-1 space-y-1 text-slate-400">
+                    <li><span className="text-slate-300">Claude.ai (incl. Cowork):</span> New Project → paste into &quot;Project instructions&quot; (or paste at the start of a chat).</li>
+                    <li><span className="text-slate-300">Perplexity:</span> create a Space → paste into &quot;AI instructions&quot;.</li>
+                    <li><span className="text-slate-300">ChatGPT:</span> create a custom GPT → paste into &quot;Instructions&quot; (or send it as your first message).</li>
+                    <li><span className="text-slate-300">n8n / LangChain:</span> use it as the system prompt of your AI node.</li>
+                  </ul>
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Then just ask</span> in plain English — the agent&apos;s behavior is now loaded.
+                </li>
+              </ol>
             </div>
 
             {/* README badge embed */}

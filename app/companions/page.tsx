@@ -281,17 +281,27 @@ export default function Companions() {
   };
 
   // Downloads require a free account, mirroring the agent download gate.
-  const handleDownload = (file: string) => {
+  // Fetch + blob so the .md saves to the user's Downloads folder (not opened in a tab).
+  const handleDownload = async (file: string) => {
     if (!user) {
       window.location.href = `/auth/signup?redirect=${encodeURIComponent('/companions')}`;
       return;
     }
-    const a = document.createElement('a');
-    a.href = `/companions/${file}`;
-    a.download = file;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
+    try {
+      const res = await fetch(`/companions/${file}`);
+      const text = await res.text();
+      const blob = new Blob([text], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = file;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      window.open(`/companions/${file}`, '_blank');
+    }
   };
 
   const PlatformBadges = ({ platforms }: { platforms: Platform[] }) => (
@@ -344,7 +354,8 @@ export default function Companions() {
             Every companion is a plain Markdown agent definition — not locked to any one
             vendor. Use it in Claude Code, OpenAI Codex, Cursor, Perplexity, n8n, LangChain, or
             any LLM that accepts a system prompt. Some are hands-on via MCP; all run anywhere a
-            prompt does.
+            prompt does. No terminal? Download it, then paste the text as your instructions /
+            system prompt — e.g. a Claude.ai Project (or Cowork), a Perplexity Space, or a custom GPT.
           </p>
           <p className="text-slate-500 text-xs">
             Downloads are free —{' '}
