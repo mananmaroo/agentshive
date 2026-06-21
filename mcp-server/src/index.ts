@@ -120,6 +120,21 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         required: ['id'],
       },
     },
+    {
+      name: 'get_agent_markdown',
+      description:
+        "Get an agent's full Markdown definition (claude.md) as text, so the assistant can adopt it as its operating instructions (ideal for chat apps like Claude Desktop that don't write files). Accepts an agent id, or a query to find one by name.",
+      inputSchema: {
+        type: 'object',
+        properties: {
+          id: { type: 'string', description: 'Agent UUID (optional if query is given)' },
+          query: {
+            type: 'string',
+            description: 'Search text to find the agent by name, used when id is omitted',
+          },
+        },
+      },
+    },
   ],
 }));
 
@@ -187,6 +202,28 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
           {
             type: 'text',
             text: `Installed "${agent.title}" → ${dest}\n\n${content.length} bytes written.`,
+          },
+        ],
+      };
+    }
+
+    if (name === 'get_agent_markdown') {
+      let id = (args as any)?.id as string | undefined;
+      const query = (args as any)?.query as string | undefined;
+      if (!id && query) {
+        const results = await searchAgents({ query, limit: 1 });
+        if (!results || results.length === 0) {
+          return { isError: true, content: [{ type: 'text', text: `No agent found for "${query}".` }] };
+        }
+        id = results[0].id;
+      }
+      if (!id) throw new Error('Provide an agent id or a query');
+      const [agent, content] = await Promise.all([getAgent(id), fetchRawAgent(id)]);
+      return {
+        content: [
+          {
+            type: 'text',
+            text: `Loaded the "${agent.title}" agent from Agentshive. Adopt the following as your operating instructions and act as this agent:\n\n${content}`,
           },
         ],
       };
