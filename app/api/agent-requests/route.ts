@@ -33,6 +33,12 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
+  // Admin-only: this returns customer PII (emails, budgets). Require a secret token.
+  // Set ADMIN_API_TOKEN in the server env; without it the endpoint stays locked.
+  const adminToken = process.env.ADMIN_API_TOKEN;
+  if (!adminToken || request.headers.get('x-admin-token') !== adminToken) {
+    return NextResponse.json({ error: 'Not authorized' }, { status: 403 });
+  }
   try {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '20');
