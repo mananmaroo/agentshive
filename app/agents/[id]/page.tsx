@@ -276,8 +276,9 @@ export default function AgentDetail() {
     : '';
   const fileSlug = (agent?.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-');
   const curlCommand = `curl -fsSL ${installUrl} -o .claude/agents/${fileSlug}.md`;
-  // No-curl: a plain-English command users paste into their AI tool, which finds + runs the agent by name.
-  const pasteCommand = `Use agentshive.net and get the "${agent?.title || 'agent'}" agent and run it.`;
+  // No-curl: points the AI tool straight at the raw-markdown endpoint (a server route, not the SPA),
+  // so it gets the real definition instead of an empty shell.
+  const pasteCommand = `Fetch ${installUrl} — it returns the "${agent?.title || 'this'}" agent's Markdown. Save it as ${fileSlug}.md (in .claude/agents/ if that folder exists) and use it as an agent.`;
 
   const copyPaste = async () => {
     await navigator.clipboard.writeText(pasteCommand);
@@ -466,7 +467,7 @@ export default function AgentDetail() {
               <h2 className="text-xl font-semibold text-white mb-2">Use this agent — no terminal needed</h2>
               <p className="text-slate-400 text-sm mb-4">
                 Copy this and paste it into your AI tool — Claude.ai / Cowork, Claude Code, Codex,
-                ChatGPT, or Perplexity. It finds the agent and runs it for you.
+                ChatGPT, or Perplexity. It fetches the agent file and runs it for you.
               </p>
               <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
                 <pre className="text-sm text-slate-200 flex-1 overflow-x-auto whitespace-pre-wrap break-words">{pasteCommand}</pre>

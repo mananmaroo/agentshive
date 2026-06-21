@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Code, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -101,6 +101,11 @@ export function SiteFooter() {
                     Request Agent
                   </Link>
                 </li>
+                <li>
+                  <Link href="/mcp" className="text-slate-400 hover:text-indigo-400 transition">
+                    Connect (MCP)
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -117,17 +122,6 @@ export function SiteFooter() {
                   <Link href="/support" className="text-slate-400 hover:text-indigo-400 transition">
                     Help Center
                   </Link>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/mananmaroo/agentshive"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-slate-400 hover:text-indigo-400 transition flex items-center gap-1"
-                  >
-                    <Code className="w-4 h-4" />
-                    GitHub
-                  </a>
                 </li>
                 <li>
                   <a

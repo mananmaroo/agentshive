@@ -1,7 +1,7 @@
 {
-  "name": "@agentshive/mcp",
+  "name": "agentshive-mcp",
   "version": "0.1.0",
-  "description": "MCP server for Agentshive — search and install AI agents directly from Claude Code or Codex",
+  "description": "MCP server for Agentshive — search and install AI agents directly from Claude Code, Codex, or Cursor",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -10,17 +10,24 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
   },
+  "homepage": "https://agentshive.net",
   "keywords": [
     "mcp",
     "model-context-protocol",
     "agentshive",
     "claude",
-    "agents"
+    "codex",
+    "agents",
+    "ai-agents"
   ],
   "author": "Agentshive",
   "license": "MIT",
