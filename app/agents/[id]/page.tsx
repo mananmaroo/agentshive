@@ -276,8 +276,8 @@ export default function AgentDetail() {
     : '';
   const fileSlug = (agent?.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-');
   const curlCommand = `curl -fsSL ${installUrl} -o .claude/agents/${fileSlug}.md`;
-  // No-curl: a plain-English instruction users paste into their AI tool, which fetches + saves the agent.
-  const pasteCommand = `Set up this agent for me: download ${installUrl} and save it as ${fileSlug}.md (put it in .claude/agents/ if that folder exists), then load it and use it as an agent.`;
+  // No-curl: a plain-English command users paste into their AI tool, which finds + runs the agent by name.
+  const pasteCommand = `Use agentshive.net and get the "${agent?.title || 'agent'}" agent and run it.`;
 
   const copyPaste = async () => {
     await navigator.clipboard.writeText(pasteCommand);
@@ -461,11 +461,53 @@ export default function AgentDetail() {
             </div>
             )}
 
-            {/* Install in Claude Code / Codex */}
+            {/* 1) Use it anywhere — no terminal needed */}
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-2">Use this agent</h2>
+              <h2 className="text-xl font-semibold text-white mb-2">Use this agent — no terminal needed</h2>
               <p className="text-slate-400 text-sm mb-4">
-                Drop this file into your <code className="text-indigo-300">.claude/agents/</code> directory, or tell Claude Code: <em>&quot;fetch {installUrl} and save it as .claude/agents/{(agent.title || 'agent').toLowerCase().replace(/[^a-z0-9-_]+/g, '-')}.md&quot;</em>
+                Copy this and paste it into your AI tool — Claude.ai / Cowork, Claude Code, Codex,
+                ChatGPT, or Perplexity. It finds the agent and runs it for you.
+              </p>
+              <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
+                <pre className="text-sm text-slate-200 flex-1 overflow-x-auto whitespace-pre-wrap break-words">{pasteCommand}</pre>
+                <button
+                  onClick={copyPaste}
+                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
+                >
+                  {pasteCopied ? 'Copied' : 'Copy'}
+                </button>
+              </div>
+              <details className="mt-4">
+                <summary className="text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer">
+                  Or paste the full definition manually
+                </summary>
+                <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-300 mt-3">
+                  <li>
+                    <span className="font-semibold text-white">Get the definition:</span> click{' '}
+                    <span className="text-indigo-300">Download</span> at the top, or open the{' '}
+                    <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline">raw file</a>{' '}
+                    and copy all of it.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-white">Paste it as the instructions / system prompt</span> in your tool:
+                    <ul className="list-disc pl-5 mt-1 space-y-1 text-slate-400">
+                      <li><span className="text-slate-300">Claude.ai (incl. Cowork):</span> New Project → &quot;Project instructions&quot;.</li>
+                      <li><span className="text-slate-300">Perplexity:</span> Space → &quot;AI instructions&quot;.</li>
+                      <li><span className="text-slate-300">ChatGPT:</span> custom GPT → &quot;Instructions&quot; (or first message).</li>
+                      <li><span className="text-slate-300">n8n / LangChain:</span> system prompt of your AI node.</li>
+                    </ul>
+                  </li>
+                  <li><span className="font-semibold text-white">Then just ask</span> in plain English.</li>
+                </ol>
+              </details>
+            </div>
+
+            {/* 2) In a terminal */}
+            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-white mb-2">In a terminal (Claude Code, Codex, Cursor)</h2>
+              <p className="text-slate-400 text-sm mb-4">
+                Prefer the command line? This saves the agent to{' '}
+                <code className="text-indigo-300">.claude/agents/</code> so your tool loads it every session.
               </p>
               {user ? (
                 <>
@@ -481,22 +523,6 @@ export default function AgentDetail() {
                   <p className="text-xs text-slate-500 mt-3">
                     Raw file URL: <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline break-all">{installUrl}</a>
                   </p>
-
-                  <div className="mt-5">
-                    <p className="text-sm font-semibold text-white mb-1">No terminal? Paste this into your AI tool</p>
-                    <p className="text-xs text-slate-500 mb-2">
-                      Works in Claude Code, Claude.ai / Cowork, Codex, ChatGPT or Perplexity — it fetches and saves the agent for you, no command line needed.
-                    </p>
-                    <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
-                      <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-words">{pasteCommand}</pre>
-                      <button
-                        onClick={copyPaste}
-                        className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
-                      >
-                        {pasteCopied ? 'Copied' : 'Copy'}
-                      </button>
-                    </div>
-                  </div>
                 </>
               ) : (
                 <div className="relative bg-slate-900 border border-slate-700 rounded-lg p-3 overflow-hidden">
@@ -514,37 +540,6 @@ export default function AgentDetail() {
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Use it without a terminal */}
-            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-2">No terminal? Use it anywhere</h2>
-              <p className="text-slate-400 text-sm mb-4">
-                The <code className="text-indigo-300">curl</code> command above is for tools with a
-                shell (Claude Code, Codex, Cursor). In an app without a terminal — Claude.ai
-                (web, desktop, or Cowork), Perplexity, or ChatGPT — paste the agent definition
-                instead:
-              </p>
-              <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-300">
-                <li>
-                  <span className="font-semibold text-white">Get the definition:</span> click{' '}
-                  <span className="text-indigo-300">Download</span> at the top, or open the{' '}
-                  <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline">raw file</a>{' '}
-                  and copy all of it.
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Paste it as the instructions / system prompt</span> in your tool:
-                  <ul className="list-disc pl-5 mt-1 space-y-1 text-slate-400">
-                    <li><span className="text-slate-300">Claude.ai (incl. Cowork):</span> New Project → paste into &quot;Project instructions&quot; (or paste at the start of a chat).</li>
-                    <li><span className="text-slate-300">Perplexity:</span> create a Space → paste into &quot;AI instructions&quot;.</li>
-                    <li><span className="text-slate-300">ChatGPT:</span> create a custom GPT → paste into &quot;Instructions&quot; (or send it as your first message).</li>
-                    <li><span className="text-slate-300">n8n / LangChain:</span> use it as the system prompt of your AI node.</li>
-                  </ul>
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Then just ask</span> in plain English — the agent&apos;s behavior is now loaded.
-                </li>
-              </ol>
             </div>
 
             {/* How to install & run (beginner-friendly) */}
