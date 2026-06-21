@@ -47,13 +47,14 @@ export async function GET(
         .eq('id', id);
     }
 
+    // text/plain (not text/markdown) and no Content-Disposition, so AI web-fetchers
+    // return the body as readable text instead of treating it as a file download.
     return new NextResponse(file.file_content, {
       status: 200,
       headers: {
-        'Content-Type': 'text/markdown; charset=utf-8',
+        'Content-Type': 'text/plain; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
         'Access-Control-Allow-Origin': '*',
-        'Content-Disposition': `inline; filename="${agent.title.replace(/[^a-z0-9-_]+/gi, '-').toLowerCase()}.md"`,
       },
     });
   } catch (error: any) {
