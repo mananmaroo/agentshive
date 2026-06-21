@@ -94,6 +94,13 @@ export default function AgentDetail() {
       if (agentError) throw agentError;
       setAgent(agentData);
 
+      // Load the agent's markdown so the copy command can embed it directly
+      // (no fetching needed by the user's AI tool — works even in Claude Desktop).
+      fetch(`/api/agents/${agentId}/raw`)
+        .then((r) => (r.ok ? r.text() : ''))
+        .then((t) => { if (t) setRawMd(t); })
+        .catch(() => {});
+
       // Fetch creator
       const { data: creatorData } = await supabase
         .from('users')
@@ -271,6 +278,7 @@ export default function AgentDetail() {
 
   const [copied, setCopied] = useState(false);
   const [pasteCopied, setPasteCopied] = useState(false);
+  const [rawMd, setRawMd] = useState('');
   const installUrl = typeof window !== 'undefined' && agent
     ? `${window.location.origin}/api/agents/${agent.id}/raw`
     : '';
@@ -278,7 +286,12 @@ export default function AgentDetail() {
   const curlCommand = `curl -fsSL ${installUrl} -o .claude/agents/${fileSlug}.md`;
   // No-curl: points the AI tool straight at the raw-markdown endpoint (a server route, not the SPA),
   // so it gets the real definition instead of an empty shell.
-  const pasteCommand = `Fetch ${installUrl} — it returns the "${agent?.title || 'this'}" agent's Markdown. Save it as ${fileSlug}.md (in .claude/agents/ if that folder exists) and use it as an agent.`;
+  // Embed the agent's full Markdown directly in the command so the AI tool just saves
+  // it to a file and runs it — no fetching (works in Claude Desktop). Falls back to a
+  // fetch instruction until the markdown finishes loading.
+  const pasteCommand = rawMd
+    ? `Create a file named ${fileSlug}.md (in .claude/agents/ if that folder exists) with exactly the content below, then act as this agent:\n\n${rawMd}`
+    : `Fetch ${installUrl} — it returns the "${agent?.title || 'this'}" agent's Markdown. Save it as ${fileSlug}.md (in .claude/agents/ if that folder exists) and use it as an agent.`;
 
   const copyPaste = async () => {
     await navigator.clipboard.writeText(pasteCommand);
@@ -467,10 +480,10 @@ export default function AgentDetail() {
               <h2 className="text-xl font-semibold text-white mb-2">Use this agent — no terminal needed</h2>
               <p className="text-slate-400 text-sm mb-4">
                 Copy this and paste it into your AI tool — Claude.ai / Cowork, Claude Code, Codex,
-                ChatGPT, or Perplexity. It fetches the agent file and runs it for you.
+                ChatGPT, or Perplexity. It includes the full agent — your tool just saves it to a file and runs it (no fetching, works even in Claude Desktop).
               </p>
               <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
-                <pre className="text-sm text-slate-200 flex-1 overflow-x-auto whitespace-pre-wrap break-words">{pasteCommand}</pre>
+                <pre className="text-xs text-slate-200 flex-1 overflow-auto max-h-60 whitespace-pre-wrap break-words">{pasteCommand}</pre>
                 <button
                   onClick={copyPaste}
                   className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
