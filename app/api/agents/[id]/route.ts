@@ -1,4 +1,5 @@
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { getAuthedUser } from '@/app/lib/auth-helpers';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/agents/[id] - Get single agent details
@@ -42,16 +43,17 @@ export async function PATCH(
 ) {
   try {
     const { id } = await context.params;
-    const body = await request.json();
 
-    // Get current user from auth header
-    const authHeader = request.headers.get('Authorization');
-    if (!authHeader) {
+    // Verify the caller's JWT
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
+
+    const body = await request.json();
 
     // Verify agent exists and user is creator
     const { data: agent, error: fetchError } = await supabase
@@ -64,6 +66,14 @@ export async function PATCH(
       return NextResponse.json(
         { error: 'Agent not found' },
         { status: 404 }
+      );
+    }
+
+    // Enforce ownership: only the creator may update
+    if (agent.creator_id !== authedUser.id) {
+      return NextResponse.json(
+        { error: 'Forbidden' },
+        { status: 403 }
       );
     }
 
@@ -107,11 +117,34 @@ export async function DELETE(
   try {
     const { id } = await context.params;
 
-    const authHeader = request.headers.get('Authorization');
-    if (!authHeader) {
+    // Verify the caller's JWT
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
+      );
+    }
+
+    // Verify agent exists and user is creator
+    const { data: agent, error: fetchError } = await supabase
+      .from('agents')
+      .select('creator_id')
+      .eq('id', id)
+      .single();
+
+    if (fetchError || !agent) {
+      return NextResponse.json(
+        { error: 'Agent not found' },
+        { status: 404 }
+      );
+    }
+
+    // Enforce ownership: only the creator may delete
+    if (agent.creator_id !== authedUser.id) {
+      return NextResponse.json(
+        { error: 'Forbidden' },
+        { status: 403 }
       );
     }
 

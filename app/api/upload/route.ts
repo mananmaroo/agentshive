@@ -1,30 +1,28 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin as supabase } from '@/app/lib/supabase-admin';
+import { getAuthedUser } from '@/app/lib/auth-helpers';
 import { NextRequest, NextResponse } from 'next/server';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
 
 // POST /api/upload - Upload agent file to Supabase Storage
 export async function POST(request: NextRequest) {
   try {
+    // Verify the caller's JWT; the storage path is derived from the authed
+    // user's id, never from form data.
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+    const user_id = authedUser.id;
+
     const formData = await request.formData();
     const file = formData.get('file') as File;
-    const user_id = formData.get('user_id') as string;
-    const agent_id = formData.get('agent_id') as string;
 
     // Validate inputs
     if (!file) {
       return NextResponse.json(
         { error: 'File is required' },
-        { status: 400 }
-      );
-    }
-
-    if (!user_id) {
-      return NextResponse.json(
-        { error: 'user_id is required' },
         { status: 400 }
       );
     }

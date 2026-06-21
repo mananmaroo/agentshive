@@ -1,4 +1,5 @@
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { getAuthedUser } from '@/app/lib/auth-helpers';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/agents - List all agents with filtering, sorting, pagination
@@ -81,13 +82,15 @@ export async function GET(request: NextRequest) {
 // POST /api/agents - Create new agent
 export async function POST(request: NextRequest) {
   try {
-    const authHeader = request.headers.get('Authorization');
-    if (!authHeader) {
+    // Verify the caller's JWT; the agent's creator is always the authed user.
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 401 }
       );
     }
+    const creator_id = authedUser.id;
 
     const body = await request.json();
     const {
@@ -100,13 +103,12 @@ export async function POST(request: NextRequest) {
       homepage_url,
       license,
       version,
-      creator_id,
     } = body;
 
     // Validate required fields
-    if (!title || !description || !creator_id) {
+    if (!title || !description) {
       return NextResponse.json(
-        { error: 'Missing required fields: title, description, creator_id' },
+        { error: 'Missing required fields: title, description' },
         { status: 400 }
       );
     }

@@ -1,10 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin as supabase } from '@/app/lib/supabase-admin';
+import { getAuthedUser } from '@/app/lib/auth-helpers';
 import { NextRequest, NextResponse } from 'next/server';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
 
 // GET /api/agents/[id]/ratings - Get all ratings for an agent
 export async function GET(
@@ -63,20 +59,24 @@ export async function POST(
 ) {
   try {
     const { id } = await context.params;
+
+    // Verify the caller's JWT; the rating always belongs to the authed user.
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+    const user_id = authedUser.id;
+
     const body = await request.json();
-    const { rating, user_id } = body;
+    const { rating } = body;
 
     // Validate rating
     if (!rating || rating < 1 || rating > 5) {
       return NextResponse.json(
         { error: 'Rating must be between 1 and 5' },
-        { status: 400 }
-      );
-    }
-
-    if (!user_id) {
-      return NextResponse.json(
-        { error: 'user_id is required' },
         { status: 400 }
       );
     }
@@ -157,15 +157,16 @@ export async function DELETE(
 ) {
   try {
     const { id } = await context.params;
-    const { searchParams } = new URL(request.url);
-    const user_id = searchParams.get('user_id');
 
-    if (!user_id) {
+    // Verify the caller's JWT; only the authed user's own rating can be deleted.
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
       return NextResponse.json(
-        { error: 'user_id is required' },
-        { status: 400 }
+        { error: 'Unauthorized' },
+        { status: 401 }
       );
     }
+    const user_id = authedUser.id;
 
     const { error } = await supabase
       .from('ratings')

@@ -1,23 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { getAuthedUser } from '@/app/lib/auth-helpers';
 
 export async function POST(request: NextRequest) {
   try {
+    // Verify the caller's JWT; the agent's creator is always the authed user.
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+    const creator_id = authedUser.id;
+
     const body = await request.json();
     const {
       title,
       description,
       category,
       tags,
-      creator_id,
       claude_md_content,
       video_url,
     } = body;
 
     // Validate required fields
-    if (!title || !description || !creator_id || !claude_md_content) {
+    if (!title || !description || !claude_md_content) {
       return NextResponse.json(
-        { error: 'Missing required fields: title, description, creator_id, claude_md_content' },
+        { error: 'Missing required fields: title, description, claude_md_content' },
         { status: 400 }
       );
     }

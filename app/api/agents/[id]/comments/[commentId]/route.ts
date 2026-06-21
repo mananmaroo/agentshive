@@ -1,10 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin as supabase } from '@/app/lib/supabase-admin';
+import { getAuthedUser } from '@/app/lib/auth-helpers';
 import { NextRequest, NextResponse } from 'next/server';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
 
 // DELETE /api/agents/[id]/comments/[commentId] - Delete a comment (comment creator only)
 export async function DELETE(
@@ -13,6 +9,15 @@ export async function DELETE(
 ) {
   try {
     const { commentId } = await context.params;
+
+    // Verify the caller's JWT
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
 
     // Get the comment to verify ownership
     const { data: comment, error: fetchError } = await supabase
@@ -25,6 +30,14 @@ export async function DELETE(
       return NextResponse.json(
         { error: 'Comment not found' },
         { status: 404 }
+      );
+    }
+
+    // Enforce ownership: only the comment's author may delete it
+    if (comment.user_id !== authedUser.id) {
+      return NextResponse.json(
+        { error: 'Forbidden' },
+        { status: 403 }
       );
     }
 
@@ -58,6 +71,16 @@ export async function PATCH(
 ) {
   try {
     const { commentId } = await context.params;
+
+    // Verify the caller's JWT
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const { content } = body;
 
@@ -72,6 +95,28 @@ export async function PATCH(
       return NextResponse.json(
         { error: 'Comment must be 5000 characters or less' },
         { status: 400 }
+      );
+    }
+
+    // Get the comment to verify ownership
+    const { data: comment, error: fetchError } = await supabase
+      .from('comments')
+      .select('user_id')
+      .eq('id', commentId)
+      .single();
+
+    if (fetchError || !comment) {
+      return NextResponse.json(
+        { error: 'Comment not found' },
+        { status: 404 }
+      );
+    }
+
+    // Enforce ownership: only the comment's author may update it
+    if (comment.user_id !== authedUser.id) {
+      return NextResponse.json(
+        { error: 'Forbidden' },
+        { status: 403 }
       );
     }
 

@@ -1,10 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin as supabase } from '@/app/lib/supabase-admin';
+import { getAuthedUser } from '@/app/lib/auth-helpers';
 import { NextRequest, NextResponse } from 'next/server';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-);
 
 // GET /api/users/[id] - Get user profile
 export async function GET(
@@ -72,8 +68,28 @@ export async function PATCH(
 ) {
   try {
     const { id } = await context.params;
+
+    // Verify the caller's JWT
+    const authedUser = await getAuthedUser(request);
+    if (!authedUser) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Enforce ownership: a user may only update their own profile
+    if (authedUser.id !== id) {
+      return NextResponse.json(
+        { error: 'Forbidden' },
+        { status: 403 }
+      );
+    }
+
     const body = await request.json();
-    const { username, bio, avatar_url, github_username } = body;
+    // Only these fields may be updated; identity/email/timestamps are never
+    // taken from the request body.
+    const { username, bio, avatar_url, github_username, website_url } = body;
 
     // Validate username if changed
     if (username) {
@@ -101,11 +117,14 @@ export async function PATCH(
     }
 
     // Update user
+    // Allowlist of updatable fields. Never allow id/email/timestamps to be
+    // overwritten from the request body.
     const updateData: any = {};
     if (username) updateData.username = username;
     if (bio !== undefined) updateData.bio = bio || null;
     if (avatar_url) updateData.avatar_url = avatar_url;
     if (github_username) updateData.github_username = github_username;
+    if (website_url !== undefined) updateData.website_url = website_url || null;
 
     const { data: updatedUser, error } = await supabase
       .from('users')
