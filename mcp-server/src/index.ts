@@ -9,7 +9,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 
 const API_BASE =
-  process.env.AGENTSHIVE_API ?? 'https://agentstack-nu.vercel.app';
+  process.env.AGENTSHIVE_API ?? 'https://agentshive.net';
 
 interface AgentSummary {
   id: string;
