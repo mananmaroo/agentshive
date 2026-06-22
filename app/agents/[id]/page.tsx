@@ -516,6 +516,41 @@ export default function AgentDetail() {
               </details>
             </div>
 
+            {/* Desktop apps: Claude, ChatGPT, Perplexity */}
+            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-white mb-2">Run it in a desktop app</h2>
+              <p className="text-slate-400 text-sm mb-4">
+                No terminal needed — this agent works in the Claude, ChatGPT, and Perplexity
+                desktop apps. Copy the agent text (the &quot;Copy&quot; button above), then:
+              </p>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {[
+                  {
+                    app: 'Claude (desktop)',
+                    steps: 'New Project → paste into “Project instructions”. For agents that use tools, add the matching connector under Settings → Connectors (MCP).',
+                  },
+                  {
+                    app: 'ChatGPT (desktop)',
+                    steps: 'Create a GPT (or open a new chat) → paste into “Instructions” or your first message. Connect any apps it needs under Settings → Connectors.',
+                  },
+                  {
+                    app: 'Perplexity (desktop)',
+                    steps: 'Open a Space → paste into “AI instructions”. Best for the research and reading agents; Perplexity has limited tool connectors.',
+                  },
+                ].map((d) => (
+                  <div key={d.app} className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                    <p className="text-white font-semibold text-sm mb-1">{d.app}</p>
+                    <p className="text-slate-400 text-xs leading-relaxed">{d.steps}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-slate-500 mt-4">
+                Tip: agents that reach the web, email, Slack, or your files need that tool
+                connected in the app first. Without a connector, the app will still follow the
+                agent&apos;s steps and tell you what it needs.
+              </p>
+            </div>
+
             {/* 2) In a terminal */}
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
               <h2 className="text-xl font-semibold text-white mb-2">In a terminal (Claude Code, Codex, Cursor)</h2>

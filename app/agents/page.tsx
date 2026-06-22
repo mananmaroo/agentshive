@@ -441,6 +441,9 @@ export default function BrowseAgents() {
                   <p className="text-xs text-slate-400">
                     By <span className="text-white font-semibold">{getCreatorName(agent.creator_id)}</span>
                   </p>
+                  <p className="text-[11px] text-slate-500 mt-1">
+                    Works in: Claude · ChatGPT · Perplexity desktop apps
+                  </p>
                 </div>
 
                 {/* Stats */}
