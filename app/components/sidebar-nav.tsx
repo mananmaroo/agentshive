@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Zap, BookOpen, Folder, HelpCircle, Coffee, FileText, Users, LogOut, Terminal } from 'lucide-react';
+import { Home, Zap, BookOpen, Folder, HelpCircle, Coffee, FileText, Users, LogOut, Terminal, Sparkles } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
 
 export function SidebarNav() {
@@ -19,6 +19,7 @@ export function SidebarNav() {
   const navItems = [
     { icon: Home, label: 'Home', href: '/' },
     { icon: Zap, label: 'Browse Agents', href: '/agents' },
+    { icon: Sparkles, label: 'Perfect Prompts', href: '/perfect-prompts' },
     { icon: Terminal, label: 'Companions', href: '/companions' },
     { icon: BookOpen, label: 'Learn', href: '/learn-videos' },
     { icon: FileText, label: 'Blog', href: '/blog' },
