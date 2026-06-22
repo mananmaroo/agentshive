@@ -195,8 +195,8 @@ export default function BrowseAgents() {
             Discover {agents.length}+ AI agents created by the community
           </p>
           <p className="text-sm text-slate-500 mt-2">
-            Every agent is a portable definition — works with Claude Code, Codex, Cursor,
-            Perplexity, n8n, LangChain &amp; any other LLM.
+            Every agent is a simple text file that works in Claude Code, Codex, Cursor,
+            Perplexity, n8n, LangChain, and any other AI chat.
           </p>
         </div>
 

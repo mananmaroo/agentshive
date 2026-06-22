@@ -113,9 +113,9 @@ export default function PerfectPrompts() {
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">Perfect Prompts</h1>
           <p className="text-lg text-slate-400 max-w-3xl">
-            Ready-to-use prompts and expert personas you paste straight into any LLM —
-            no tools, MCP or setup. They tutor, advise, or transform text. For prompts
-            that actually take actions on your behalf, see{' '}
+            Ready-to-use prompts and expert helpers you can paste into any AI chat —
+            no tools or setup needed. They teach, give advice, or rewrite text for you.
+            For helpers that take actions for you, see{' '}
             <Link href="/agents" className="text-indigo-400 hover:text-indigo-300 font-semibold">
               Browse Agents
             </Link>{' '}

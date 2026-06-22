@@ -87,7 +87,7 @@ function LandingPage() {
       <section className="stars-bg min-h-screen flex flex-col items-center justify-center px-4 py-20 relative">
         <div className="max-w-4xl mx-auto text-center z-10 w-full">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-            The Open Registry for <span className="bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">AI Agents</span>
+            The Free Library of <span className="bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">AI Agents</span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto">
             Discover, download, and share ready-made AI agents. Save time, skip the setup, and build faster — together.
@@ -206,7 +206,7 @@ function LandingPage() {
           <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 text-center">
             <Upload className="w-10 h-10 text-indigo-400 mx-auto mb-3" />
             <h3 className="text-white font-semibold mb-2">Upload Any Format</h3>
-            <p className="text-slate-400 text-sm">Markdown, n8n, code, videos — any agent runtime</p>
+            <p className="text-slate-400 text-sm">Markdown, n8n, code, or videos — works with any AI tool</p>
           </div>
           <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 text-center">
             <Star className="w-10 h-10 text-indigo-400 mx-auto mb-3" />
@@ -301,7 +301,7 @@ function LandingPage() {
                 Getting Started with AI Agents
               </h3>
               <p className="text-slate-400 mb-6">
-                Learn the fundamentals of building powerful AI agents, from setup to deployment. Discover best practices and common patterns.
+                Learn how to build your own AI agents, step by step — from first setup to going live. Pick up handy tips along the way.
               </p>
               <Link
                 href="/learn-videos"

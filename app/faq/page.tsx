@@ -7,7 +7,7 @@ const faqs = [
   {
     question: 'What is Agentshive?',
     answer:
-      'Agentshive is an open registry for AI agents. It allows developers to discover, share, and download agents built for Claude Code, Codex, OpenAI, n8n, LangChain, custom code, and any other runtime.',
+      'Agentshive is a free library of AI agents. Anyone can find, share, and download agents that work with Claude Code, Codex, OpenAI, n8n, LangChain, your own code, and other AI tools.',
   },
   {
     question: 'Do I need a paid account to run an agent?',

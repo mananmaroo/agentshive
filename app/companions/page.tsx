@@ -7,7 +7,6 @@ import {
   Download,
   Eye,
   Terminal,
-  FileText,
   Plus,
   ArrowRight,
   Bot,
@@ -36,195 +35,307 @@ interface Creator {
   avatar_url: string | null;
 }
 
-// Platforms an official template is verified to run on.
+// Platforms an official companion is verified to run on.
 type Platform = 'Claude' | 'OpenAI';
 
-// The flagship companions, rendered as richer marquee cards.
-type MarqueeCompanion = {
+// Every official companion uses the same rich card shape, so they all look
+// identical: a one-line plain tagline, four "what it does" bullets, and what
+// it needs to run. All are made by the Agentshive team.
+type Companion = {
   file: string;
   title: string;
   tagline: string;
   does: string[];
   needs: string;
-  runtime?: string;
   platforms: Platform[];
 };
 
-const marquee: MarqueeCompanion[] = [
+const companions: Companion[] = [
   {
     file: 'personal-assistant-local-terminal.md',
     title: 'Personal Assistant — Local Notes',
-    tagline:
-      'Email, calendar, news, to-dos and appointments — notes kept in local Markdown you own.',
+    tagline: 'It handles your email, calendar, and to-dos, with notes kept on your own computer.',
     does: [
-      'Summarizes new email into a local to-do list',
-      'Daily briefing of calendar + tasks + news',
-      'Draft-first replies you confirm, then optional auto-send',
-      'Creates calendar events on confirmation',
+      'Turns new email into a to-do list',
+      'Gives a daily plan of tasks and news',
+      'Writes replies you approve before sending',
+      'Adds calendar events when you confirm',
     ],
-    needs: 'Gmail MCP, Google Calendar connector, built-in web fetch + filesystem',
+    needs: 'Gmail + Google Calendar + local files',
     platforms: ['Claude'],
   },
   {
     file: 'personal-assistant-notion-terminal.md',
     title: 'Personal Assistant — Notion',
-    tagline: 'Same assistant, with your to-do list and notes in Notion.',
+    tagline: 'The same assistant, but it keeps your to-dos and notes in Notion.',
     does: [
-      'Summarizes new email into a Notion database',
-      'Inbox and tasks live in Notion instead of local files',
-      'Draft-first replies with opt-in automation',
-      'Turns notes into replies and calendar events',
+      'Saves new email into a Notion list',
+      'Keeps your inbox and tasks in Notion',
+      'Writes replies you approve first',
+      'Turns notes into replies and events',
     ],
-    needs: 'Notion MCP, Gmail MCP, Google Calendar connector',
+    needs: 'Notion + Gmail + Google Calendar',
     platforms: ['Claude'],
   },
   {
     file: 'document-visualizer-terminal.md',
     title: 'Document Visualizer',
-    tagline:
-      'Turn a document into slides — a deck of just your highlights, plus a full McKinsey-style deck.',
+    tagline: 'It turns a document into slides — your highlights plus a full, polished deck.',
     does: [
-      'Detects highlighted passages and builds a focused highlights deck',
-      'Always builds a full consulting-grade deck with action titles',
-      'One clear message per slide, on a consistent master',
+      'Finds the parts you highlighted',
+      'Builds a short highlights slide deck',
+      'Also builds a full, professional deck',
+      'Keeps one clear idea per slide',
     ],
-    needs: 'Local only (python-pptx, PyMuPDF) — no MCP',
+    needs: 'Local files only — no extra tools',
     platforms: ['Claude', 'OpenAI'],
   },
   {
     file: 'smart-coder.md',
     title: 'Smart Coder',
-    tagline:
-      'Survives memory loss: reads a handoff doc to resume instantly, writes one at end of day, and keeps every reply terse to save tokens.',
+    tagline: 'A coding helper that remembers where it left off and picks up right away.',
     does: [
-      'Reads HANDOFF.md + its own instructions before any work',
-      'Reconstructs project state and resumes the next step cold',
-      'Writes a complete end-of-day handoff to import next session',
-      'Strips filler so responses use fewer tokens',
+      'Reads a handoff note before starting',
+      'Figures out the project and next step',
+      'Writes an end-of-day handoff note',
+      'Keeps replies short to save tokens',
     ],
-    needs: 'Nothing — runtime-agnostic, no MCP',
-    runtime: 'Runs anywhere — Claude Code, Codex, Perplexity',
+    needs: 'Nothing extra — runs anywhere',
     platforms: ['Claude', 'OpenAI'],
   },
-];
-
-// The other 18 companions. Title is the file H1 (minus "# "); the description is the
-// first sentence of each file's "## Purpose" section. These hands-on Terminal Edition
-// companions run in Claude Code via MCP, so they default to the Claude platform.
-type GridCompanion = {
-  file: string;
-  title: string;
-  description: string;
-  platforms?: Platform[];
-};
-const moreCompanions: GridCompanion[] = [
   {
     file: 'academic-paper-summarizer-terminal.md',
     title: 'Academic Paper Summarizer — Terminal Edition',
-    description:
-      'The hands-on version of the Academic Paper Summarizer agent — it locates the paper, reads the full text, and writes a three-depth summary to a file.',
+    tagline: 'It finds a research paper and writes you an easy summary of what it found.',
+    does: [
+      'Finds and opens the paper to read',
+      'Reads the full text, not just abstract',
+      'Writes summaries at three depths',
+      'Checks the key citations are real',
+    ],
+    needs: 'Playwright (browser) to fetch papers',
+    platforms: ['Claude'],
   },
   {
     file: 'ai-job-application-automation-terminal.md',
-    title: 'AI Job Application Automation Agent — Terminal Edition',
-    description:
-      'The hands-on version of the AI Job Application Automation Agent — it searches job boards, tailors resume and cover-letter files, logs to a tracking CSV, and (only with confirmation) submits applications.',
+    title: 'AI Job Application Automation — Terminal Edition',
+    tagline: 'It searches job boards, tailors your resume, and helps you apply.',
+    does: [
+      'Searches job boards for matches',
+      'Reads and filters job descriptions',
+      'Tailors resume and cover-letter files',
+      'Logs to a sheet, applies with approval',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'calendar-scheduling-assistant-terminal.md',
     title: 'Calendar Scheduling Assistant — Terminal Edition',
-    description:
-      'The hands-on version of the Calendar Scheduling Assistant — it reads free/busy across participants, computes the best slots across time zones, and creates the invite.',
+    tagline: 'It finds a meeting time that works for everyone and sends the invite.',
+    does: [
+      'Collects people, time zones, limits',
+      "Reads everyone's free and busy times",
+      'Ranks the best meeting slots',
+      'Creates the invite after you confirm',
+    ],
+    needs: 'Google Calendar or Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'competitor-analysis-agent-terminal.md',
     title: 'Competitor Analysis Agent — Terminal Edition',
-    description:
-      'The hands-on version of the Competitor Analysis Agent — it browses competitor sites and reviews, extracts pricing and positioning, and writes a comparison matrix and gaps analysis.',
+    tagline: "It studies your rivals' products and finds gaps you can win.",
+    does: [
+      'Confirms which rivals to study',
+      'Reads their prices and features',
+      'Mines reviews for praise and gripes',
+      'Writes a comparison and gaps report',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'customer-feedback-distributor-terminal.md',
-    title: 'Customer Feedback Distributor Agent — Terminal Edition',
-    description:
-      'The hands-on version of the Customer Feedback Distributor Agent — it categorizes and prioritizes feedback, logs it to a CSV, and posts routed messages to the right Slack channels.',
+    title: 'Customer Feedback Distributor — Terminal Edition',
+    tagline: 'It sorts customer feedback and sends each note to the right team.',
+    does: [
+      'Reads incoming feedback',
+      'Sorts by type, urgency, and mood',
+      'Drafts a Slack message per item',
+      'Posts to the right channel on approval',
+    ],
+    needs: 'Slack (Playwright optional)',
+    platforms: ['Claude'],
   },
   {
     file: 'daily-standup-reporter-terminal.md',
     title: 'Daily Standup Reporter — Terminal Edition',
-    description:
-      'The hands-on version of the Daily Standup Reporter — it reads real git history and PR/ticket state, drafts the standup in the team format, and posts it to Slack on confirmation.',
+    tagline: 'It reads your code activity and writes your daily standup update.',
+    does: [
+      'Reads git commits and changes',
+      'Pulls your pull requests and tickets',
+      'Drafts yesterday, today, and blockers',
+      'Posts to Slack after you confirm',
+    ],
+    needs: 'GitHub + Slack + local git',
+    platforms: ['Claude'],
   },
   {
     file: 'due-diligence-researcher-terminal.md',
     title: 'Due Diligence Researcher — Terminal Edition',
-    description:
-      'The hands-on version of the Due Diligence Researcher — it searches registries, filings, news, and reputation sources, dates each finding, and writes a sourced diligence memo.',
+    tagline: 'It investigates a company and writes a sourced report before you decide.',
+    does: [
+      "Confirms the company's real identity",
+      'Researches team, traction, red flags',
+      'Reads the financials carefully',
+      'Writes a sourced memo with confidence',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'expense-report-categorizer-terminal.md',
     title: 'Expense Report Categorizer — Terminal Edition',
-    description:
-      'The hands-on version of the Expense Report Categorizer — it reads a transaction export, normalizes merchants, applies category rules, flags anomalies, and writes the categorized ledger.',
+    tagline: 'It sorts your transactions into categories and spots odd charges.',
+    does: [
+      'Reads your transaction export',
+      'Cleans up messy merchant names',
+      'Applies categories and flags oddities',
+      'Writes a tidy ledger and summary',
+    ],
+    needs: 'Local files only — no extra tools',
+    platforms: ['Claude', 'OpenAI'],
   },
   {
     file: 'file-organizer-agent-terminal.md',
     title: 'File Organizer Agent — Terminal Edition',
-    description:
-      'The hands-on version of the File Organizer Agent — it scans the target folder, produces a dry-run plan, and after approval executes the moves and renames with a reversible log.',
+    tagline: 'It tidies a messy folder and renames files in a neat, sortable way.',
+    does: [
+      'Scans the folder and finds duplicates',
+      'Suggests folders and naming',
+      'Shows a plan for you to approve',
+      'Moves and renames, with an undo log',
+    ],
+    needs: 'Local files only — no extra tools',
+    platforms: ['Claude', 'OpenAI'],
   },
   {
     file: 'grant-finder-terminal.md',
     title: 'Grant Finder — Terminal Edition',
-    description:
-      'The hands-on version of the Grant Finder — it searches grant portals and funder sites, hard-checks eligibility on each official page, and writes a ranked, deadline-sorted shortlist.',
+    tagline: 'It hunts for grants you qualify for and ranks them by deadline.',
+    does: [
+      'Collects your eligibility facts',
+      'Searches grant and funder sites',
+      'Checks the rules on each official page',
+      'Writes a ranked, deadline-sorted list',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'invoice-data-extractor-terminal.md',
     title: 'Invoice Data Extractor — Terminal Edition',
-    description:
-      'The hands-on version of the Invoice Data Extractor — it opens a folder of invoices and receipts, extracts and validates the fields, and writes clean JSON/CSV.',
+    tagline: 'It reads a pile of invoices and pulls the details into a clean file.',
+    does: [
+      'Reads each invoice (OCR if scanned)',
+      'Pulls vendor, dates, totals, items',
+      'Checks the math adds up',
+      'Writes clean JSON or CSV',
+    ],
+    needs: 'Local files (Playwright optional)',
+    platforms: ['Claude'],
   },
   {
     file: 'market-research-analyst-terminal.md',
     title: 'Market Research Analyst — Terminal Edition',
-    description:
-      'The hands-on version of the Market Research Analyst — it gathers and triangulates market data from authoritative sources, then writes a sourced, decision-ready brief.',
+    tagline: 'It gathers market data and writes a clear brief to guide your decision.',
+    does: [
+      'Confirms your question and scope',
+      'Gathers data from trusted sources',
+      'Sizes the market two ways and checks',
+      'Writes a clear, sourced brief',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'newsletter-curator-terminal.md',
     title: 'Newsletter Curator — Terminal Edition',
-    description:
-      'The hands-on version of the Newsletter Curator — it opens every link you collected, reads each source, and assembles the complete issue in Markdown ready to paste into your sending tool.',
+    tagline: 'It reads your collected links and builds a ready-to-send newsletter.',
+    does: [
+      'Opens and reads each link',
+      'Writes a short summary per item',
+      'Cuts weak items, groups the rest',
+      'Assembles the full issue in Markdown',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'patent-prior-art-searcher-terminal.md',
     title: 'Patent Prior-Art Searcher — Terminal Edition',
-    description:
-      'The hands-on version of the Patent Prior-Art Searcher — it queries the patent offices, opens each close hit, extracts the claim language, and builds the overlap table.',
+    tagline: 'It searches patents for inventions like yours and flags the overlaps.',
+    does: [
+      'Breaks your invention into key parts',
+      'Searches several patent offices',
+      'Quotes overlapping patent wording',
+      'Builds an overlap table and risk read',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'pdf-reader-summarizer-terminal.md',
     title: 'PDF Reader & Summarizer — Terminal Edition',
-    description:
-      'The hands-on version of the PDF Reader & Summarizer — it opens the PDF, extracts its text (OCR if scanned), and writes a clear, page-cited structured summary.',
+    tagline: 'It reads a PDF and writes a clear summary with page references.',
+    does: [
+      'Opens the PDF and pulls the text',
+      'Detects the kind of document',
+      'Builds a page-cited summary',
+      'Writes the summary to a file',
+    ],
+    needs: 'Local files (Playwright optional)',
+    platforms: ['Claude'],
   },
   {
     file: 'support-ticket-triage-agent-terminal.md',
     title: 'Support Ticket Triage Agent — Terminal Edition',
-    description:
-      'The hands-on version of the Support Ticket Triage Agent — it reads tickets from the help-desk UI, classifies and prioritizes them, drafts the first reply, and posts the routing summary.',
+    tagline: 'It sorts support tickets, ranks urgency, and drafts the first reply.',
+    does: [
+      'Reads tickets from the help desk',
+      'Scores urgency and spots unhappy users',
+      'Picks the queue and help docs',
+      'Drafts a reply, posts after approval',
+    ],
+    needs: 'Playwright + Slack (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'trend-scout-terminal.md',
     title: 'Trend Scout — Terminal Edition',
-    description:
-      'The hands-on version of the Trend Scout — it gathers signals across funding, hiring, search interest, regulatory moves, and conference agendas, then writes a ranked watchlist with evidence.',
+    tagline: 'It spots new trends in your field and ranks which ones are real.',
+    does: [
+      'Confirms your field and time frame',
+      'Collects signals from many sources',
+      'Scores trends backed by real signals',
+      'Writes a ranked watchlist with proof',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
   {
     file: 'web-scraping-recipe-builder-terminal.md',
     title: 'Web Scraping Recipe Builder — Terminal Edition',
-    description:
-      'The hands-on version of the Web Scraping Recipe Builder — it inspects the live target page, writes a polite and resilient scraping script, runs its test mode, and saves the script and first rows.',
+    tagline: 'It builds a polite script that pulls the data you want from a website.',
+    does: [
+      'Checks the site rules first',
+      'Looks at the page and picks the data',
+      'Writes a gentle, slow scraping script',
+      'Runs a test and saves sample rows',
+    ],
+    needs: 'Playwright (browser)',
+    platforms: ['Claude'],
   },
 ];
 
@@ -304,19 +415,6 @@ export default function Companions() {
     }
   };
 
-  const PlatformBadges = ({ platforms }: { platforms: Platform[] }) => (
-    <div className="flex items-center gap-1.5">
-      {platforms.map((p) => (
-        <span
-          key={p}
-          className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-slate-700/60 text-slate-300"
-        >
-          {p}
-        </span>
-      ))}
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <section className="max-w-7xl mx-auto px-4 py-12">
@@ -328,13 +426,12 @@ export default function Companions() {
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">Companions</h1>
           <p className="text-lg text-slate-400 max-w-3xl">
-            Companions are hands-on agents that actually do the work end-to-end, instead of
-            just advising. Each is a portable definition that works with{' '}
+            A companion is a helper that does the whole job for you — not just give
+            advice. Each one is a simple text file you can drop into{' '}
             <span className="text-white font-semibold">
-              Claude Code, Codex, Cursor, Perplexity, n8n, LangChain
+              Claude Code, Codex, Cursor, Perplexity, n8n, or LangChain
             </span>{' '}
-            — and any other LLM or agent runtime. Drop it into your tool of choice, connect any
-            tools it needs, and let it go.
+            — or any other AI chat. Add the tools it needs, and let it run.
           </p>
           <div className="mt-6">
             <Link
@@ -347,28 +444,29 @@ export default function Companions() {
           </div>
         </div>
 
-        {/* Intro / how-it-works card */}
+        {/* How it works */}
         <div className="border border-slate-700 bg-slate-800/40 rounded-lg p-6 mb-12">
           <h2 className="text-lg font-semibold text-white mb-2">How companions work</h2>
           <p className="text-slate-400 text-sm mb-3">
-            Every companion is a plain Markdown agent definition — not locked to any one
-            vendor. Use it in Claude Code, OpenAI Codex, Cursor, Perplexity, n8n, LangChain, or
-            any LLM that accepts a system prompt. Some are hands-on via MCP; all run anywhere a
-            prompt does. No terminal? Download it, then paste the text as your instructions /
-            system prompt — e.g. a Claude.ai Project (or Cowork), a Perplexity Space, or a custom GPT.
+            Every companion is just a plain text file — it is not tied to one company.
+            Use it in Claude Code, OpenAI Codex, Cursor, Perplexity, n8n, LangChain, or
+            any AI that takes instructions. Some can use tools to act for you; all of
+            them run anywhere a prompt runs. No terminal? Download the file and paste the
+            text in as your instructions — for example a Claude.ai Project, a Perplexity
+            Space, or a custom GPT.
           </p>
           <p className="text-slate-500 text-xs">
             Downloads are free —{' '}
             <Link href="/auth/signup" className="text-indigo-400 hover:text-indigo-300 font-semibold">
-              create an account
+              make an account
             </Link>{' '}
-            to download any definition.
+            to download any file.
           </p>
         </div>
 
-        {/* Marquee flagship companions */}
+        {/* All official companions — one consistent set */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {marquee.map((c) => (
+          {companions.map((c) => (
             <div
               key={c.file}
               className="border border-indigo-500/30 bg-indigo-500/5 rounded-lg p-6 flex flex-col"
@@ -380,14 +478,16 @@ export default function Companions() {
                 <h3 className="text-lg font-semibold text-white">{c.title}</h3>
               </div>
 
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex flex-wrap items-center gap-2 mb-1">
                 <span className="inline-flex items-center text-[10px] font-semibold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 uppercase tracking-wide">
                   Official
                 </span>
-                <PlatformBadges platforms={c.platforms} />
+                <span className="text-xs text-slate-400">
+                  By <span className="text-white font-semibold">Agentshive Team</span>
+                </span>
               </div>
 
-              <p className="text-slate-300 text-sm mb-4">{c.tagline}</p>
+              <p className="text-slate-300 text-sm mb-4 mt-3">{c.tagline}</p>
 
               <div className="mb-4">
                 <p className="text-xs font-semibold text-indigo-300 uppercase tracking-wide mb-2">
@@ -415,60 +515,22 @@ export default function Companions() {
                   className="inline-flex items-center gap-1.5 text-indigo-400 hover:text-indigo-300 text-sm font-semibold"
                 >
                   <Download className="w-4 h-4" />
-                  {user ? 'Download definition' : 'Sign up to download'}
+                  {user ? 'Download file' : 'Sign up to download'}
                 </button>
-                <span className="mt-2 flex items-center gap-1 text-xs text-slate-500">
+                <span className="mt-2 flex items-center gap-1.5 text-xs text-slate-500">
                   <Terminal className="w-3.5 h-3.5" />
-                  Claude Code · Codex · Perplexity · any LLM
+                  Works in: {c.platforms.join(', ')} · and any other AI chat
                 </span>
               </div>
             </div>
           ))}
         </div>
 
-        {/* More companions */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-white mb-2">More companions</h2>
-          <p className="text-slate-400 text-sm mb-6">
-            Every companion is a Markdown definition you can download and run in Claude Code,
-            Codex, Perplexity, or any LLM.
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {moreCompanions.map((c) => (
-              <button
-                key={c.file}
-                onClick={() => handleDownload(c.file)}
-                className="border border-slate-800 hover:border-slate-600 rounded-lg p-6 transition-colors duration-200 group flex flex-col text-left w-full"
-              >
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 text-slate-400 bg-slate-500/10">
-                    <FileText className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-base font-semibold text-white group-hover:text-indigo-400 transition">
-                    {c.title}
-                  </h3>
-                </div>
-                <p className="text-slate-400 text-sm mb-4 flex-1">{c.description}</p>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="inline-flex items-center text-[10px] font-semibold px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 uppercase tracking-wide">
-                    Official
-                  </span>
-                  <PlatformBadges platforms={c.platforms ?? ['Claude']} />
-                </div>
-                <div className="pt-3 border-t border-slate-700 flex items-center gap-1.5 text-indigo-400 group-hover:text-indigo-300 text-sm font-semibold">
-                  <Download className="w-4 h-4" />
-                  {user ? 'Download definition' : 'Sign up to download'}
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Community-submitted companions */}
         <div>
           <h2 className="text-2xl font-bold text-white mb-2">From the community</h2>
           <p className="text-slate-400 text-sm mb-6">
-            Companions submitted by the Agentshive community.
+            Companions shared by other people who use Agentshive.
           </p>
 
           {loading ? (
