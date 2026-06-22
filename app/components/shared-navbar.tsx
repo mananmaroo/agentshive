@@ -29,6 +29,9 @@ export function SharedNavbar() {
           <Link href="/agents" className="text-amber-900 hover:text-amber-700 transition text-sm">
             Browse
           </Link>
+          <Link href="/perfect-prompts" className="text-amber-900 hover:text-amber-700 transition text-sm">
+            Perfect Prompts
+          </Link>
           <Link href="/companions" className="text-amber-900 hover:text-amber-700 transition text-sm">
             Companions
           </Link>

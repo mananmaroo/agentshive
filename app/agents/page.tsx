@@ -100,6 +100,10 @@ export default function BrowseAgents() {
     try {
       let query = supabase.from('agents').select('*', { count: 'exact' });
 
+      // Keep the Agent pool clean: Perfect Prompts and Companions live in their
+      // own tabs, so exclude those categories from the default Browse listing.
+      query = query.not('category', 'cs', '{"Perfect Prompt"}').not('category', 'cs', '{"Companion"}');
+
       // Filter by search (sanitized to avoid PostgREST filter injection)
       if (searchQuery) {
         const term = searchQuery.replace(/[,()"{}*:\\]/g, ' ').trim();

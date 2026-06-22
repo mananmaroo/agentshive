@@ -9,9 +9,14 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error;
 
+    // These have their own dedicated tabs (/perfect-prompts, /companions) and are
+    // excluded from Browse, so don't surface them as category cards that link to
+    // an empty Browse filter.
+    const ownTab = new Set(['Perfect Prompt', 'Companion']);
     const categoryMap = new Map<string, number>();
     agents?.forEach((agent) => {
       agent.category?.forEach((cat: string) => {
+        if (ownTab.has(cat)) return;
         categoryMap.set(cat, (categoryMap.get(cat) || 0) + 1);
       });
     });
