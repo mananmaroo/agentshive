@@ -89,12 +89,13 @@ function LandingPage() {
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
             The Free Library of <span className="bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">AI Agents</span>
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-8 max-w-3xl mx-auto">
-            Discover, download, and share ready-made AI agents. Save time, skip the setup, and build faster — together.
+          <p className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-6 max-w-3xl mx-auto">
+            Think of agents like apps for your AI. Each one gives ChatGPT or Claude a specific job —
+            writing emails, doing research, organising files — and it just does it.
           </p>
 
-          <p className="text-base sm:text-lg text-indigo-300 mb-12 font-semibold">
-            Works with Claude Code, Codex, n8n & LangChain • <span className="text-indigo-400">install an agent in seconds</span>
+          <p className="text-base text-slate-400 mb-10 max-w-2xl mx-auto">
+            Browse free, ready-made agents. Copy one. Paste it into your AI. Done.
           </p>
 
           {/* CTA Buttons */}
@@ -112,17 +113,6 @@ function LandingPage() {
             >
               Sign Up Free
             </Link>
-          </div>
-
-          {/* One-command install snippet */}
-          <div className="max-w-2xl mx-auto text-left bg-slate-900/80 border border-slate-700 rounded-lg overflow-hidden mb-12">
-            <div className="flex items-center gap-2 px-4 py-2 border-b border-slate-800 bg-slate-900">
-              <Terminal className="w-4 h-4 text-indigo-400" />
-              <span className="text-xs text-slate-400 font-mono">install any agent in one command</span>
-            </div>
-            <pre className="px-4 py-4 text-xs sm:text-sm font-mono text-indigo-300 overflow-x-auto whitespace-pre">
-              <span className="text-slate-500">$ </span>curl -o CLAUDE.md https://agentshive.net/api/agents/&lt;agent-id&gt;/raw
-            </pre>
           </div>
 
           {/* Live stats */}

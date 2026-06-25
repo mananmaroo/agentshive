@@ -192,11 +192,10 @@ export default function BrowseAgents() {
         <div className="mb-10">
           <h1 className="text-4xl font-bold text-white mb-4">Browse Agents</h1>
           <p className="text-lg text-slate-400">
-            Discover {agents.length}+ AI agents created by the community
+            {totalCount > 0 ? `${totalCount}+ agents` : 'Community-built agents'} — copy one and paste it into ChatGPT, Claude, or Perplexity
           </p>
           <p className="text-sm text-slate-500 mt-2">
-            Every agent is a simple text file that works in Claude Code, Codex, Cursor,
-            Perplexity, n8n, LangChain, and any other AI chat.
+            Each agent gives your AI a specific job. No coding needed — just copy, paste, and go.
           </p>
         </div>
 

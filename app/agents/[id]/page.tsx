@@ -237,9 +237,11 @@ export default function AgentDetail() {
   const fileSlug = agent.title.toLowerCase().replace(/[^a-z0-9-_]+/g, '-');
   const installUrl = `${window.location.origin}/api/agents/${agent.id}/raw`;
   const curlCommand = `curl -fsSL ${installUrl} -o .claude/agents/${fileSlug}.md`;
+  // Show the full-markdown command once loaded; fall back to the fetch-URL
+  // command immediately (robots.txt now allows /api/agents/ so AI tools can fetch it).
   const pasteCommand = rawMd
     ? `Create a file named ${fileSlug}.md (in .claude/agents/ if that folder exists) with exactly the content below, then act as this agent:\n\n${rawMd}`
-    : `Fetch ${installUrl} — it returns the "${agent.title}" agent's Markdown. Save it as ${fileSlug}.md (in .claude/agents/ if that folder exists) and use it as an agent.`;
+    : `Fetch ${installUrl} — it returns the "${agent.title}" agent's full instructions. Save it as ${fileSlug}.md (in .claude/agents/ if that folder exists) and act as that agent.`;
 
   const tags = agent.tags ?? [];
   const categories = agent.category ?? [];
@@ -318,8 +320,7 @@ export default function AgentDetail() {
           </div>
 
           <p className="text-sm text-slate-500 mt-4">
-            Portable definition — works with Claude Code, Codex, Cursor, Perplexity, n8n,
-            LangChain &amp; any other LLM.
+            Works with ChatGPT, Claude, Perplexity, and any other AI tool — no coding required.
           </p>
 
           <div className="flex gap-4 text-sm text-slate-400 border-t border-slate-700 pt-6">
@@ -342,6 +343,66 @@ export default function AgentDetail() {
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
+
+            {/* ── STEP 1: Paste into ChatGPT / Claude (easiest, shown first) ── */}
+            <div className="bg-indigo-950/40 border border-indigo-700/50 rounded-lg p-6">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="bg-indigo-600 text-white text-xs font-bold px-2 py-0.5 rounded">Easiest way</span>
+              </div>
+              <h2 className="text-xl font-semibold text-white mt-2 mb-1">Copy and paste into any AI chat</h2>
+              <p className="text-slate-400 text-sm mb-4">
+                Works with <strong className="text-white">ChatGPT, Claude.ai, Perplexity</strong> — no downloads, no setup.
+                Just copy this, open your AI chat, and paste it in as your first message.
+              </p>
+              <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
+                <pre className="text-xs text-slate-200 flex-1 overflow-auto max-h-60 whitespace-pre-wrap break-words">
+                  {pasteCommand}
+                </pre>
+                <button
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(pasteCommand);
+                    setPasteCopied(true);
+                    setTimeout(() => setPasteCopied(false), 2000);
+                  }}
+                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded text-sm font-bold transition"
+                >
+                  {pasteCopied ? '✓ Copied!' : 'Copy'}
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mt-3">
+                After pasting, just talk to the AI normally — it will follow this agent&apos;s instructions.
+              </p>
+            </div>
+
+            {/* ── Where to paste it ── */}
+            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
+              <h2 className="text-xl font-semibold text-white mb-1">Where to paste it</h2>
+              <p className="text-slate-400 text-sm mb-4">
+                Paste the copied text into one of these AI tools and it becomes your personal assistant for this task.
+              </p>
+              <div className="grid sm:grid-cols-3 gap-4">
+                {[
+                  {
+                    app: '💬 ChatGPT',
+                    steps: 'Open ChatGPT → start a new chat → paste as your first message. Or go to "Explore GPTs" → "Create" → paste into Instructions.',
+                  },
+                  {
+                    app: '🤖 Claude.ai',
+                    steps: 'Open Claude → click "New Project" → find "Project instructions" → paste it there. Then chat normally in that project.',
+                  },
+                  {
+                    app: '🔍 Perplexity',
+                    steps: 'Open Perplexity → click "Spaces" → create a Space → paste into "AI instructions". Works great for research agents.',
+                  },
+                ].map((d) => (
+                  <div key={d.app} className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
+                    <p className="text-white font-semibold text-sm mb-2">{d.app}</p>
+                    <p className="text-slate-400 text-xs leading-relaxed">{d.steps}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Links */}
             {(agent.repository_url || agent.homepage_url) && (
               <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
@@ -365,171 +426,53 @@ export default function AgentDetail() {
               </div>
             )}
 
-            {/* Paste into AI tool */}
-            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-2">Use this agent — no terminal needed</h2>
-              <p className="text-slate-400 text-sm mb-4">
-                Copy this and paste it into Claude.ai, Claude Code, Codex, ChatGPT, or Perplexity.
-                It includes the full agent definition — no fetching required.
-              </p>
-              <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
-                <pre className="text-xs text-slate-200 flex-1 overflow-auto max-h-60 whitespace-pre-wrap break-words">
-                  {rawMd ? pasteCommand : 'Loading agent definition…'}
-                </pre>
-                <button
-                  onClick={async () => {
-                    await navigator.clipboard.writeText(pasteCommand);
-                    setPasteCopied(true);
-                    setTimeout(() => setPasteCopied(false), 2000);
-                  }}
-                  disabled={!rawMd}
-                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition disabled:opacity-40 disabled:cursor-wait"
-                >
-                  {!rawMd ? 'Loading…' : pasteCopied ? 'Copied ✓' : 'Copy'}
-                </button>
-              </div>
-              <details className="mt-4">
-                <summary className="text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer">
-                  Or paste the full definition manually
-                </summary>
-                <ol className="list-decimal pl-5 space-y-2 text-sm text-slate-300 mt-3">
-                  <li>
-                    <span className="font-semibold text-white">Get the definition:</span> click{' '}
-                    <span className="text-indigo-300">Download</span> at the top, or open the{' '}
-                    <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline">raw file</a>{' '}
-                    and copy all of it.
-                  </li>
-                  <li>
-                    <span className="font-semibold text-white">Paste it as the system prompt</span> in your tool:
-                    <ul className="list-disc pl-5 mt-1 space-y-1 text-slate-400">
-                      <li><span className="text-slate-300">Claude.ai:</span> New Project → &quot;Project instructions&quot;.</li>
-                      <li><span className="text-slate-300">Perplexity:</span> Space → &quot;AI instructions&quot;.</li>
-                      <li><span className="text-slate-300">ChatGPT:</span> Custom GPT → &quot;Instructions&quot;.</li>
-                      <li><span className="text-slate-300">n8n / LangChain:</span> system prompt of your AI node.</li>
-                    </ul>
-                  </li>
-                  <li><span className="font-semibold text-white">Then just ask</span> in plain English.</li>
-                </ol>
-              </details>
-            </div>
-
-            {/* Desktop apps */}
-            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-2">Run it in a desktop app</h2>
-              <p className="text-slate-400 text-sm mb-4">
-                Copy the agent text above, then paste it into your desktop app:
-              </p>
-              <div className="grid sm:grid-cols-3 gap-4">
-                {[
-                  {
-                    app: 'Claude (desktop)',
-                    steps: 'New Project → paste into "Project instructions". For tool-using agents, add the matching connector under Settings → Connectors (MCP).',
-                  },
-                  {
-                    app: 'ChatGPT (desktop)',
-                    steps: 'Create a GPT → paste into "Instructions". Connect any apps it needs under Settings → Connectors.',
-                  },
-                  {
-                    app: 'Perplexity (desktop)',
-                    steps: 'Open a Space → paste into "AI instructions". Best for research and reading agents.',
-                  },
-                ].map((d) => (
-                  <div key={d.app} className="bg-slate-900/50 border border-slate-700 rounded-lg p-4">
-                    <p className="text-white font-semibold text-sm mb-1">{d.app}</p>
-                    <p className="text-slate-400 text-xs leading-relaxed">{d.steps}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Terminal install */}
-            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-              <h2 className="text-xl font-semibold text-white mb-2">In a terminal (Claude Code, Codex, Cursor)</h2>
-              <p className="text-slate-400 text-sm mb-4">
-                Saves the agent to <code className="text-indigo-300">.claude/agents/</code> so your tool loads it every session.
-              </p>
-              {user ? (
-                <>
-                  <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
-                    <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-all">{curlCommand}</pre>
-                    <button
-                      onClick={async () => {
-                        await navigator.clipboard.writeText(curlCommand);
-                        setCopied(true);
-                        setTimeout(() => setCopied(false), 2000);
-                      }}
-                      className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
-                    >
-                      {copied ? 'Copied' : 'Copy'}
-                    </button>
-                  </div>
-                  <p className="text-xs text-slate-500 mt-3">
-                    Raw file: <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline break-all">{installUrl}</a>
-                  </p>
-                </>
-              ) : (
-                <div className="relative bg-slate-900 border border-slate-700 rounded-lg p-3 overflow-hidden">
-                  <pre className="text-xs text-slate-500 blur-sm select-none whitespace-pre-wrap break-all" aria-hidden="true">
-                    curl -fsSL https://agentshive.net/api/agents/••••••••/raw -o .claude/agents/agent.md
-                  </pre>
-                  <div className="absolute inset-0 flex items-center justify-center bg-slate-950/60">
-                    <Link
-                      href={`/auth/signup?redirect=${encodeURIComponent(`/agents/${agent.id}`)}`}
-                      className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
-                    >
-                      <Lock className="w-4 h-4" />
-                      Sign up free to get the install command
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* How to install */}
-            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
-              <div className="flex items-center gap-2 mb-1">
-                <Terminal className="w-5 h-5 text-indigo-400" />
-                <h2 className="text-xl font-semibold text-white">How to install &amp; run this agent</h2>
-              </div>
-              <p className="text-slate-400 text-sm mb-4">New to this? Three steps — no experience needed.</p>
-
-              <div className="flex items-start gap-3 bg-amber-500/10 border border-amber-500/30 rounded-lg p-4 mb-6">
-                <Lock className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-amber-200/90">
-                  <span className="font-semibold text-amber-300">A Pro account is required to run agents.</span>{' '}
-                  Downloading is free, but running it needs a paid plan —{' '}
-                  <span className="font-medium">Claude Pro or Max</span> for Claude Code, or{' '}
-                  <span className="font-medium">ChatGPT Plus</span> for Codex.
+            {/* ── For power users: terminal install ── */}
+            <details className="bg-slate-800/30 border border-slate-700 rounded-lg">
+              <summary className="p-6 cursor-pointer text-slate-400 hover:text-white text-sm font-semibold select-none">
+                <Terminal className="w-4 h-4 inline mr-2 text-indigo-400" />
+                For developers — install via terminal (Claude Code, Cursor, Codex)
+              </summary>
+              <div className="px-6 pb-6">
+                <p className="text-slate-400 text-sm mb-4">
+                  This saves the agent permanently into your AI coding tool so it&apos;s always available.
                 </p>
-              </div>
-
-              <div className="space-y-6">
-                {[
-                  { n: 1, title: 'Install Claude Code (or Codex) and sign in', desc: 'Install the tool once, then sign in with your Pro/Max account.', img: '/install/step1.png', alt: 'Terminal installing Claude Code' },
-                  { n: 2, title: 'Add this agent', desc: 'Copy the install command above and paste it into your terminal. It saves the agent into your .claude/agents/ folder.', img: '/install/step2.png', alt: 'Terminal downloading the agent file' },
-                  { n: 3, title: 'Run it', desc: "Start your tool and ask it to use the agent in plain English. That's it.", img: '/install/step3.png', alt: 'Terminal running the agent' },
-                ].map((step) => (
-                  <div key={step.n} className="flex flex-col sm:flex-row gap-4">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center">
-                      {step.n}
+                {user ? (
+                  <>
+                    <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
+                      <pre className="text-xs text-slate-300 flex-1 overflow-x-auto whitespace-pre-wrap break-all">{curlCommand}</pre>
+                      <button
+                        onClick={async () => {
+                          await navigator.clipboard.writeText(curlCommand);
+                          setCopied(true);
+                          setTimeout(() => setCopied(false), 2000);
+                        }}
+                        className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
+                      >
+                        {copied ? 'Copied' : 'Copy'}
+                      </button>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-white font-semibold mb-1">{step.title}</h3>
-                      <p className="text-slate-400 text-sm mb-3">{step.desc}</p>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={step.img} alt={step.alt} loading="lazy" className="w-full rounded-lg border border-slate-700" />
+                    <p className="text-xs text-slate-500 mt-3">
+                      Raw file: <a href={installUrl} className="text-indigo-400 hover:text-indigo-300 underline break-all">{installUrl}</a>
+                    </p>
+                  </>
+                ) : (
+                  <div className="relative bg-slate-900 border border-slate-700 rounded-lg p-3 overflow-hidden">
+                    <pre className="text-xs text-slate-500 blur-sm select-none whitespace-pre-wrap break-all" aria-hidden="true">
+                      curl -fsSL https://agentshive.net/api/agents/••••••••/raw -o .claude/agents/agent.md
+                    </pre>
+                    <div className="absolute inset-0 flex items-center justify-center bg-slate-950/60">
+                      <Link
+                        href={`/auth/signup?redirect=${encodeURIComponent(`/agents/${agent.id}`)}`}
+                        className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
+                      >
+                        <Lock className="w-4 h-4" />
+                        Sign up free to get the install command
+                      </Link>
                     </div>
                   </div>
-                ))}
+                )}
               </div>
-
-              <p className="text-xs text-slate-500 mt-5">
-                Don&apos;t have a tool yet? Get{' '}
-                <a href="https://claude.com/claude-code" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 underline">Claude Code</a>{' '}
-                or{' '}
-                <a href="https://openai.com/codex" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 underline">Codex</a>.
-              </p>
-            </div>
+            </details>
 
             {/* Rating */}
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
