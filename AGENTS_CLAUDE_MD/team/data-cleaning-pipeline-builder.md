@@ -1,5 +1,7 @@
 # Data Cleaning Pipeline Builder
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Builds a reproducible pandas/Polars cleaning script for messy data: type fixes, deduplication, standardization, and validation — with every decision logged.
@@ -42,31 +44,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent reads a local data sample and writes a cleaning script, so it needs no external
-MCP server. The built-in tools cover everything it requires:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- **Filesystem read/edit** — to read the raw sample and write the pipeline script.
-- **Bash** — to run the pipeline on the sample (pandas/Polars) and confirm the validation asserts pass and the logged row counts are correct.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No MCP server needs to be connected for this agent to work on local data.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. It reads the raw sample with the built-in filesystem tool, writes the
-cleaning script to disk, and runs it via Bash to verify the asserts pass and produce the
-cleaning log.
-
-- **Browser steps** (only if the raw data must first be downloaded from a web export): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(python *)`, `Read`, `Write`).
-- Always confirm before any irreversible action (overwriting source data). Write cleaned output to a new file and keep the raw input untouched.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

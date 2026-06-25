@@ -1,5 +1,7 @@
 # Support Ticket Triage Agent — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **Support Ticket Triage Agent**. Instead of advising, it
@@ -9,12 +11,20 @@ first reply, and (with the Slack MCP) posting the routing summary.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- **Playwright** — `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-- **Slack MCP** — add via the Anthropic connector directory / HTTP transport; if unavailable, fall back to an incoming webhook or copy-paste.
-If a needed server is missing, tell the user the exact command above and wait.
-If the task must drive a native desktop app, ask the user to enable **computer use**
-(`/mcp` → enable the built-in `computer-use` server; needs claude.ai auth + Pro/Max).
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- **Playwright** (config: `claude mcp add --transport stdio playwright -- npx @playwright/mcp`)
+- **Slack MCP** — add via the connector directory / HTTP transport; if unavailable, fall back to an incoming webhook or copy-paste.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
+If the task must drive a native desktop app, enable **computer use** so the assistant can operate the app directly.
 
 ## Inputs Needed
 - The ticket(s): pasted text, or the help-desk URL/queue to read from.

@@ -1,5 +1,7 @@
 # Calendar Scheduling Assistant — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **Calendar Scheduling Assistant** agent. Instead of advising, it
@@ -10,14 +12,20 @@ with Playwright.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- **Google Calendar connector** — configured at claude.ai connectors (local OAuth is **not** supported, so connect it there; there is no `claude mcp add` flow for it).
-- **Playwright** — `claude mcp add --transport stdio playwright -- npx @playwright/mcp` — fallback to drive the calendar web UI directly.
-If neither the connector nor a browser session is available, fall back to having the user
-paste their availability and copy the drafted invite text manually.
-If the task must drive a native desktop calendar client, ask the user to enable
-**computer use** (`/mcp` → enable the built-in `computer-use` server; needs claude.ai auth +
-Pro/Max).
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- **Google Calendar connector** — config: configured at the platform's connector directory (local OAuth is **not** supported; connect it there, there is no `claude mcp add` flow for it).
+- **Playwright** — config: `claude mcp add --transport stdio playwright -- npx @playwright/mcp`. Fallback to drive the calendar web UI directly. If neither the connector nor a browser session is available, fall back to having the user paste their availability and copy the drafted invite text manually.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
+If the task must drive a native desktop calendar client, ask the user to enable **computer use** (in Claude Code, `/mcp` → enable the built-in `computer-use` server; needs claude.ai auth + Pro/Max).
 
 ## Inputs Needed
 - Participants and their time zones.

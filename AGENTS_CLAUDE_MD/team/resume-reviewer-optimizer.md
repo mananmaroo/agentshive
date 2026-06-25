@@ -1,5 +1,7 @@
 # Resume Reviewer & Optimizer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Reviews resumes against a target job description: impact-focused bullet rewrites, keyword alignment for ATS, and honest feedback on what to cut.
@@ -43,17 +45,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact. Never invent metrics — ask the user for real numbers.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is reasoning over documents you provide (the resume and the target job description), so it needs no external MCP integration to do its core job. Claude Code's built-in tools are sufficient: the filesystem read/edit tools to open your resume file (`.md`, `.txt`, `.docx` exported to text) and the JD, and Bash for any local file handling.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-The one optional integration is browsing the live job posting so you do not have to paste the JD:
-- Playwright (browser) — open the job-posting URL, read the full description, and pull the exact required keywords. Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Run `/mcp` in your session (or `claude mcp list` in the terminal) to confirm it is connected. If a server you need is **not** connected, stop and give the user the exact command, then wait for them to enable it — never silently skip an integration.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control to review and rewrite a resume. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your local files (your resume and a saved copy of the job description), Claude Code's built-in file tools are enough — no extra MCP or computer-use permission required. (Add the Playwright MCP above only if you also want it to fetch the live posting for you.)
+> Part of the agent library at [agentshive.net](https://agentshive.net).

@@ -1,5 +1,7 @@
 # CSV Data Profiler
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Performs instant exploratory analysis on any CSV: column types, distributions, missing data, outliers, correlations, and a plain-English findings summary.
@@ -42,31 +44,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent reads local files and computes on them, so it needs no external MCP server.
-The built-in tools cover everything it requires:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- **Filesystem read** — to open the CSV you point it at.
-- **Bash** — to run pandas/Polars (or DuckDB) for the actual profiling so the stats are computed, not estimated.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No MCP server needs to be connected for this agent to work on local data.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. Pointed at a CSV on disk it reads the file with the built-in filesystem
-tool, runs the profiling computation via Bash (pandas/Polars/DuckDB), and writes the
-Markdown findings report back to a file.
-
-- **Browser steps** (only if the CSV must first be downloaded from a web tool or export page): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(python *)`, `Read`).
-- Always confirm before any irreversible action (overwriting an existing report file). Treat the input data as read-only.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

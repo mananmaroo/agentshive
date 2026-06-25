@@ -1,5 +1,7 @@
 # PDF Reader & Summarizer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Read a PDF document and produce a clear, structured summary so the user understands it in under a minute — even if the original is dozens of pages.
@@ -44,34 +46,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-This agent is mostly local-file work, so it needs **no MCP server** in the common case:
-- **Filesystem read/edit** (built in) — open the PDF and write the summary out.
-- **Bash** (built in) — run text/OCR extraction helpers (e.g. `pdftotext`, `tesseract`) for scanned or image-only PDFs.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-- Playwright (browser): `claude mcp add --transport stdio playwright -- npx @playwright/mcp` — only needed if the PDF must first be downloaded from a site behind navigation/login.
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. Pointed at a PDF path or URL it can extract the text (OCR if scanned),
-summarize it, and write the structured summary to a file via the built-in filesystem and
-Bash tools.
-
-- **Browser steps** (only if the PDF lives behind navigation or a login): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — e.g. a desktop PDF viewer or scanner): this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via `/permissions` (e.g. `Bash(pdftotext *)`, `Bash(tesseract *)`).
-- Always confirm before any irreversible action (overwriting an existing summary file, moving the source document). Respect site terms of service, robots.txt, and rate limits.
-
-> For a fully hands-on version of this agent, install **PDF Reader & Summarizer — Terminal Edition** from agentshive.net.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

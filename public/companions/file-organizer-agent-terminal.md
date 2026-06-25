@@ -1,15 +1,25 @@
 # File Organizer Agent — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **File Organizer Agent**. Instead of advising, it actually does the task end-to-end inside Claude Code / the Claude terminal — scanning the target folder with the built-in file and Bash tools, producing a dry-run plan, and (after approval) executing the moves and renames with a reversible log.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- This agent is local-file first and needs **no MCP server** — it uses the built-in **filesystem** and **Bash** tools to scan, plan, and execute.
-If a server you expected to use is missing, tell the user and wait.
-This task does not require a native desktop app, so computer use is not needed.
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- This companion is local-file first and needs **no MCP server** — it uses the built-in **filesystem** and **Bash** tools to scan, plan, and execute.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
 
 ## Inputs Needed
 - The target folder path

@@ -1,5 +1,7 @@
 # Unit Test Generator
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Writes thorough unit tests for any function or module you paste in — happy path, edge cases, and failure modes — in your project's existing test framework and style.
@@ -42,31 +44,16 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-This agent needs no external MCP server. It relies only on Claude Code's built-in tools:
-- **Filesystem** — read the code under test and existing test files, write the new test file.
-- **Bash** — run the test suite (e.g. `pytest`, `npm test`, `go test`) and iterate until green.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read
+and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted
+or attached content.
 
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. It reads the target code, writes the test file to disk, and runs the suite
-via the built-in Bash tool, fixing failures before presenting.
-
-- **Browser steps** (rarely needed — e.g. pulling test-framework docs): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(pytest *)`, `Bash(npm test *)`).
-- Always confirm before any irreversible action (overwriting an existing test file).
-  Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

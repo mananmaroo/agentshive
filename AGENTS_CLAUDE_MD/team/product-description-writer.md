@@ -1,5 +1,7 @@
 # Product Description Writer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Writes e-commerce product descriptions that convert: benefit-led copy, scannable specs, objection handling, and SEO keywords woven in naturally.
@@ -43,15 +45,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by the product data or a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is pure reasoning and needs no external integration to write the description. It runs on Claude Code's built-in tools:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- Built-in filesystem read/edit — to read a spec sheet or product CSV and write the finished copy back to disk.
-- Built-in web fetch — to check a competitor listing for keyword intent or to confirm a stated certification or material claim.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No MCP server is required to produce the copy. Loading it into the store (Shopify, Amazon, etc.) is done in that platform's own UI; run `/mcp` to confirm nothing else is expected.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your local files (e.g. a spec sheet or product CSV), Claude Code's built-in file tools are enough — no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

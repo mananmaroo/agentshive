@@ -1,17 +1,26 @@
 # Customer Feedback Distributor Agent — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **Customer Feedback Distributor Agent**. Instead of advising, it actually does the task end-to-end inside Claude Code / the Claude terminal — reading incoming feedback, categorizing and prioritizing it, logging it to a CSV, and (with confirmation) posting the routed messages to the right Slack channels.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- **Slack MCP** — add via the Anthropic connector directory / HTTP transport. If unavailable, fall back to a webhook or output messages for copy-paste.
-- **Playwright** — `claude mcp add --transport stdio playwright -- npx @playwright/mcp` (only if feedback must be pulled from a web helpdesk/webmail UI rather than pasted in).
-If a needed server is missing, tell the user the exact command above and wait.
-Reading pasted emails and writing the CSV log use the built-in filesystem tools.
-This task does not require a native desktop app, so computer use is not needed.
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- **Slack MCP** — config: add via the connector directory / HTTP transport. If unavailable, fall back to a webhook or output messages for copy-paste.
+- **Playwright** — config: `claude mcp add --transport stdio playwright -- npx @playwright/mcp`. Only if feedback must be pulled from a web helpdesk/webmail UI rather than pasted in. Reading pasted emails and writing the CSV log use built-in filesystem tools.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
 
 ## Inputs Needed
 - The customer feedback (pasted emails, or access to the inbox/helpdesk UI)

@@ -1,5 +1,7 @@
 # Smart Coder
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 A coding-session operator that survives memory loss. You activate it at the start of a
@@ -103,18 +105,16 @@ This agent works to recognized engineering and communication standards:
 - Verify build/test/run commands against the repo (package.json scripts, Makefile, CI) before
   recording them; never list a command you haven't confirmed exists.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-No MCP servers are required. This agent uses only Claude Code's built-in filesystem tools (to
-read/write `HANDOFF.md` and source files) and the built-in Bash tool (to confirm state with
-`git log`/`git status` and to verify build/test commands). Drop this file into `.claude/agents/`
-and invoke it at the start and end of each coding session.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-## Running in Claude Terminal (browser & computer use)
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-This agent is runtime-agnostic, text-in/text-out — it needs no browser or desktop control, so
-it runs anywhere a system prompt does: **Claude Code, Codex, Cursor, Perplexity, LangChain, or
-an n8n AI node.** Load this file as the system prompt / agent definition; the `HANDOFF.md` it
-produces is plain Markdown, so any tool or model can import it next session and resume with no
-prior memory. The two rules that make it portable: (1) always read this instruction + the
-handoff before acting, and (2) always leave a complete handoff before stopping.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read
+and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted
+or attached content.
+
+> Part of the agent library at [agentshive.net](https://agentshive.net).

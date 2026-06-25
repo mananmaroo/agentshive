@@ -1,5 +1,7 @@
 # FAQ Generator from Docs
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Mines your documentation, tickets, and chat logs to generate the FAQ customers actually need — answers written once, deflecting tickets forever.
@@ -42,36 +44,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- Playwright — read docs pages, a hosted help center, or community threads that are not supplied as files, and publish into a web-based help-center editor.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-For local docs and exported ticket files, Claude Code's built-in file tools and web fetch are enough — no MCP needed.
+To read docs pages, a hosted help center, or community threads not supplied as files — and to publish into a web-based help-center editor — it needs the **Playwright** MCP server — add it via Connectors in a desktop/web app, or `claude mcp add ...` in Claude Code / Codex. For local docs and exported ticket files, the built-in file tools and web fetch are enough. Filesystem and web fetch are otherwise built in.
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
-
-- Playwright (browser): `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise.
-
-- **Browser steps** (open the live docs, read a hosted help center, draft entries into a web CMS): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(npx playwright *)`, `mcp__playwright__*`).
-- Always confirm before any irreversible action (publishing entries to a live help center).
-  Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

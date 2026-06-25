@@ -1,5 +1,7 @@
 # Email Inbox Zero Assistant
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Processes an email backlog in one pass: categorizes everything, drafts replies for the messages that need them, and produces an archive/delete list you approve in bulk.
@@ -41,36 +43,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- Playwright — open and operate a webmail UI (Gmail, Outlook web) when the inbox is not exported, to read, label, and archive messages.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-If your mail lives behind a provider connector (e.g. a Gmail connector configured at claude.ai), use that instead; if no integration is available, fall back to a forwarded/exported batch the agent processes as text.
+To open and operate a webmail UI (Gmail, Outlook web) — reading, labeling, and archiving messages — it needs the **Playwright** MCP server — add it via Connectors in a desktop/web app, or `claude mcp add ...` in Claude Code / Codex. If your mail sits behind a provider connector, use that instead; with no integration, fall back to a forwarded/exported batch processed as text. Filesystem and web fetch are otherwise built in.
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
-
-- Playwright (browser): `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise.
-
-- **Browser steps** (open webmail, search, label, archive, draft replies): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(npx playwright *)`, `mcp__playwright__*`).
-- Always confirm before any irreversible action (sending a reply, archiving or deleting
-  in bulk). Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

@@ -1,5 +1,7 @@
 # Code Concept Explainer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Explains any programming concept at exactly your level — with a runnable example, a real-world analogy, and the misconception that usually trips people up.
@@ -42,21 +44,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is pure reasoning — it explains concepts and writes small examples, so it needs
-no external MCP server. The built-in tools cover everything it requires:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- **Filesystem read** — to open a code file the learner wants explained.
-- **Bash** — optional, to actually run the minimal example and confirm it behaves as described.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No MCP server needs to be connected for this agent to work.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control. It runs
-anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your
-local files (e.g. a code file or notes), Claude Code's built-in file tools are enough —
-no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

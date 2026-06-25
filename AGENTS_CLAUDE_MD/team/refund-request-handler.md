@@ -1,5 +1,7 @@
 # Refund Request Handler
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Evaluates refund requests against your policy consistently: decision, reasoning, and a response that keeps goodwill even when the answer is no.
@@ -43,18 +45,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is primarily reasoning over text you provide (the request, the policy, customer history), so it needs no external MCP integration to do its core job. Claude Code's built-in tools cover everything: the filesystem read/edit tools to load a policy document or customer-history file, and Bash for any local lookup.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-If your refund decisions and replies need to land in a helpdesk (Zendesk, Intercom) or be posted to a team channel, that is an outbound integration:
-- Slack — to post a decision or escalation summary to a team channel. Add it via the Anthropic connector directory (HTTP transport). If unavailable, fall back to a webhook or copy-paste.
-- Playwright (browser) — to read or update a ticket in a web helpdesk UI that has no MCP. Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Run `/mcp` in your session (or `claude mcp list` in the terminal) to confirm any of the above are connected. If a server you need is **not** connected, stop and give the user the exact command, then wait for them to enable it — never silently skip an integration.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your local files (e.g. the policy document or a customer-history export), Claude Code's built-in file tools are enough — no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

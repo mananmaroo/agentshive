@@ -1,5 +1,7 @@
 # API Client Generator
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Generates a typed API client (TypeScript, Python, or Go) from an OpenAPI spec or example requests, with error handling and retries built in.
@@ -43,37 +45,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- Playwright — only if the OpenAPI spec or API docs live behind a page that a simple fetch can't reach (auth wall, JS-rendered docs portal).
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-For most jobs no MCP is needed: reading a local spec file, writing the client source, and fetching a public spec URL are all covered by Claude Code's built-in filesystem and web-fetch tools.
+Only if the OpenAPI spec or API docs live behind a page a simple fetch can't reach (auth wall, JS-rendered docs portal) does it need the **Playwright** browser MCP server — add it via Connectors in a desktop/web app, or `claude mcp add --transport stdio playwright -- npx @playwright/mcp` in Claude Code / Codex. For most jobs no MCP is needed: reading a local spec file, writing the client source, and fetching a public spec URL are otherwise covered by built-in filesystem and web fetch.
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
-
-- Playwright (browser): `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. It can read a local OpenAPI file, fetch a public spec URL, write the
-generated client source to disk, and run the usage example to confirm it compiles.
-
-- **Browser steps** (open a docs portal or fetch a spec behind a login/JS wall): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(npm *)`, `Bash(python *)`, `mcp__playwright__*`).
-- Always confirm before any irreversible action (overwriting existing client files, installing dependencies).
-  Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

@@ -1,18 +1,27 @@
 # Daily Standup Reporter — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **Daily Standup Reporter** agent. Instead of advising, it actually does the task end-to-end inside Claude Code / the Claude terminal — reading real git history and PR/ticket state, drafting the standup in the team's format, and (with confirmation) posting it to Slack.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- **GitHub** — `claude mcp add --transport http github https://api.githubcopilot.com/mcp/`
-- **Slack MCP** — add via the Anthropic connector directory / HTTP transport. If unavailable, fall back to a webhook or output the update for copy-paste.
-- **Playwright** (optional) — `claude mcp add --transport stdio playwright -- npx @playwright/mcp` (only if posting into a web standup tool's UI).
-Local `git` runs through the built-in Bash tool — no MCP needed for a checked-out repo.
-If a needed server is missing, tell the user the exact command above and wait.
-This task does not require a native desktop app, so computer use is not needed.
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- **GitHub** — config: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/`.
+- **Slack MCP** — config: add via the connector directory / HTTP transport. If unavailable, fall back to a webhook or output the update for copy-paste.
+- **Playwright** (optional) — config: `claude mcp add --transport stdio playwright -- npx @playwright/mcp`. Only if posting into a web standup tool's UI. Local `git` runs through the built-in Bash tool — no MCP needed for a checked-out repo.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
 
 ## Inputs Needed
 - The repo path (checked out locally) and/or the GitHub repo for hosted history

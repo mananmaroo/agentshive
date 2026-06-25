@@ -1,5 +1,7 @@
 # SQL Query Builder
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Turns plain-English questions into correct, efficient SQL for your schema. Explains each query and warns about full-table scans before you run them.
@@ -42,21 +44,16 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-This agent is pure reasoning and needs **no MCP server**. It writes and explains SQL from the
-schema you provide. If you want it to read a schema file or save the query, Claude Code's
-built-in **Filesystem** tools are enough; it does not execute queries against your database.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read
+and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted
+or attached content.
 
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control. It runs
-anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your
-local files (e.g. a schema dump or notes), Claude Code's built-in file tools are enough —
-no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

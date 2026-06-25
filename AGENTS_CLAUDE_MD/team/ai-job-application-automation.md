@@ -1,5 +1,7 @@
 # AI Job Application Automation Agent
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Overview
 This Claude agent automates the entire job application pipeline for AI/ML and Data Science roles. It searches multiple job boards, evaluates positions against your criteria, tailors resumes and cover letters, and logs everything to a tracking spreadsheet.
 
@@ -353,38 +355,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- Playwright (browser) — search LinkedIn/Indeed/Greenhouse/Lever and company career pages, open each posting to read the full JD, and (with confirmation) fill and submit application forms.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Reading/writing the resume, cover letter, and `applications.csv` uses Claude Code's built-in filesystem tools; PDF/DOCX generation runs through the built-in Bash tool with the user's local scripts. Built-in web fetch handles a simple static posting.
+To search LinkedIn/Indeed/Greenhouse/Lever and company career pages, open each posting to read the full JD, and (with confirmation) fill and submit application forms, it needs the **Playwright** browser MCP server — add it via Connectors in a desktop/web app, or `claude mcp add --transport stdio playwright -- npx @playwright/mcp` in Claude Code / Codex. Reading/writing the resume, cover letter, and `applications.csv`, running the local PDF/DOCX scripts, and fetching a simple static posting are otherwise covered by built-in filesystem and web fetch.
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
-
-- Playwright (browser): `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise.
-
-- **Browser steps** (navigate, search, fill forms, download): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(npx playwright *)`, `mcp__playwright__*`).
-- Always confirm before any irreversible action (submitting an application, sending a
-  recruiter message). Respect site terms of service, robots.txt, and rate limits.
-
-> For a fully hands-on version of this agent, install **AI Job Application Automation Agent — Terminal Edition** from agentshive.net.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

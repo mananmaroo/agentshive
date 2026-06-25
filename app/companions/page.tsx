@@ -36,7 +36,7 @@ interface Creator {
 }
 
 // Platforms an official companion is verified to run on.
-type Platform = 'Claude' | 'OpenAI';
+type Platform = 'Claude' | 'OpenAI' | 'Perplexity';
 
 // Every official companion uses the same rich card shape, so they all look
 // identical: a one-line plain tagline, four "what it does" bullets, and what
@@ -62,7 +62,7 @@ const companions: Companion[] = [
       'Adds calendar events when you confirm',
     ],
     needs: 'Gmail + Google Calendar + local files',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'personal-assistant-notion-terminal.md',
@@ -75,7 +75,7 @@ const companions: Companion[] = [
       'Turns notes into replies and events',
     ],
     needs: 'Notion + Gmail + Google Calendar',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'document-visualizer-terminal.md',
@@ -88,7 +88,7 @@ const companions: Companion[] = [
       'Keeps one clear idea per slide',
     ],
     needs: 'Local files only — no extra tools',
-    platforms: ['Claude', 'OpenAI'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'smart-coder.md',
@@ -101,11 +101,11 @@ const companions: Companion[] = [
       'Keeps replies short to save tokens',
     ],
     needs: 'Nothing extra — runs anywhere',
-    platforms: ['Claude', 'OpenAI'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'academic-paper-summarizer-terminal.md',
-    title: 'Academic Paper Summarizer — Terminal Edition',
+    title: 'Academic Paper Summarizer',
     tagline: 'It finds a research paper and writes you an easy summary of what it found.',
     does: [
       'Finds and opens the paper to read',
@@ -114,11 +114,11 @@ const companions: Companion[] = [
       'Checks the key citations are real',
     ],
     needs: 'Playwright (browser) to fetch papers',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'ai-job-application-automation-terminal.md',
-    title: 'AI Job Application Automation — Terminal Edition',
+    title: 'AI Job Application Automation',
     tagline: 'It searches job boards, tailors your resume, and helps you apply.',
     does: [
       'Searches job boards for matches',
@@ -127,11 +127,11 @@ const companions: Companion[] = [
       'Logs to a sheet, applies with approval',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'calendar-scheduling-assistant-terminal.md',
-    title: 'Calendar Scheduling Assistant — Terminal Edition',
+    title: 'Calendar Scheduling Assistant',
     tagline: 'It finds a meeting time that works for everyone and sends the invite.',
     does: [
       'Collects people, time zones, limits',
@@ -140,11 +140,11 @@ const companions: Companion[] = [
       'Creates the invite after you confirm',
     ],
     needs: 'Google Calendar or Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'competitor-analysis-agent-terminal.md',
-    title: 'Competitor Analysis Agent — Terminal Edition',
+    title: 'Competitor Analysis Agent',
     tagline: "It studies your rivals' products and finds gaps you can win.",
     does: [
       'Confirms which rivals to study',
@@ -153,11 +153,11 @@ const companions: Companion[] = [
       'Writes a comparison and gaps report',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'customer-feedback-distributor-terminal.md',
-    title: 'Customer Feedback Distributor — Terminal Edition',
+    title: 'Customer Feedback Distributor',
     tagline: 'It sorts customer feedback and sends each note to the right team.',
     does: [
       'Reads incoming feedback',
@@ -166,11 +166,11 @@ const companions: Companion[] = [
       'Posts to the right channel on approval',
     ],
     needs: 'Slack (Playwright optional)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'daily-standup-reporter-terminal.md',
-    title: 'Daily Standup Reporter — Terminal Edition',
+    title: 'Daily Standup Reporter',
     tagline: 'It reads your code activity and writes your daily standup update.',
     does: [
       'Reads git commits and changes',
@@ -179,11 +179,11 @@ const companions: Companion[] = [
       'Posts to Slack after you confirm',
     ],
     needs: 'GitHub + Slack + local git',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'due-diligence-researcher-terminal.md',
-    title: 'Due Diligence Researcher — Terminal Edition',
+    title: 'Due Diligence Researcher',
     tagline: 'It investigates a company and writes a sourced report before you decide.',
     does: [
       "Confirms the company's real identity",
@@ -192,11 +192,11 @@ const companions: Companion[] = [
       'Writes a sourced memo with confidence',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'expense-report-categorizer-terminal.md',
-    title: 'Expense Report Categorizer — Terminal Edition',
+    title: 'Expense Report Categorizer',
     tagline: 'It sorts your transactions into categories and spots odd charges.',
     does: [
       'Reads your transaction export',
@@ -205,11 +205,11 @@ const companions: Companion[] = [
       'Writes a tidy ledger and summary',
     ],
     needs: 'Local files only — no extra tools',
-    platforms: ['Claude', 'OpenAI'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'file-organizer-agent-terminal.md',
-    title: 'File Organizer Agent — Terminal Edition',
+    title: 'File Organizer Agent',
     tagline: 'It tidies a messy folder and renames files in a neat, sortable way.',
     does: [
       'Scans the folder and finds duplicates',
@@ -218,11 +218,11 @@ const companions: Companion[] = [
       'Moves and renames, with an undo log',
     ],
     needs: 'Local files only — no extra tools',
-    platforms: ['Claude', 'OpenAI'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'grant-finder-terminal.md',
-    title: 'Grant Finder — Terminal Edition',
+    title: 'Grant Finder',
     tagline: 'It hunts for grants you qualify for and ranks them by deadline.',
     does: [
       'Collects your eligibility facts',
@@ -231,11 +231,11 @@ const companions: Companion[] = [
       'Writes a ranked, deadline-sorted list',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'invoice-data-extractor-terminal.md',
-    title: 'Invoice Data Extractor — Terminal Edition',
+    title: 'Invoice Data Extractor',
     tagline: 'It reads a pile of invoices and pulls the details into a clean file.',
     does: [
       'Reads each invoice (OCR if scanned)',
@@ -244,11 +244,11 @@ const companions: Companion[] = [
       'Writes clean JSON or CSV',
     ],
     needs: 'Local files (Playwright optional)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'market-research-analyst-terminal.md',
-    title: 'Market Research Analyst — Terminal Edition',
+    title: 'Market Research Analyst',
     tagline: 'It gathers market data and writes a clear brief to guide your decision.',
     does: [
       'Confirms your question and scope',
@@ -257,11 +257,11 @@ const companions: Companion[] = [
       'Writes a clear, sourced brief',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'newsletter-curator-terminal.md',
-    title: 'Newsletter Curator — Terminal Edition',
+    title: 'Newsletter Curator',
     tagline: 'It reads your collected links and builds a ready-to-send newsletter.',
     does: [
       'Opens and reads each link',
@@ -270,11 +270,11 @@ const companions: Companion[] = [
       'Assembles the full issue in Markdown',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'patent-prior-art-searcher-terminal.md',
-    title: 'Patent Prior-Art Searcher — Terminal Edition',
+    title: 'Patent Prior-Art Searcher',
     tagline: 'It searches patents for inventions like yours and flags the overlaps.',
     does: [
       'Breaks your invention into key parts',
@@ -283,11 +283,11 @@ const companions: Companion[] = [
       'Builds an overlap table and risk read',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'pdf-reader-summarizer-terminal.md',
-    title: 'PDF Reader & Summarizer — Terminal Edition',
+    title: 'PDF Reader & Summarizer',
     tagline: 'It reads a PDF and writes a clear summary with page references.',
     does: [
       'Opens the PDF and pulls the text',
@@ -296,11 +296,11 @@ const companions: Companion[] = [
       'Writes the summary to a file',
     ],
     needs: 'Local files (Playwright optional)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'support-ticket-triage-agent-terminal.md',
-    title: 'Support Ticket Triage Agent — Terminal Edition',
+    title: 'Support Ticket Triage Agent',
     tagline: 'It sorts support tickets, ranks urgency, and drafts the first reply.',
     does: [
       'Reads tickets from the help desk',
@@ -309,11 +309,11 @@ const companions: Companion[] = [
       'Drafts a reply, posts after approval',
     ],
     needs: 'Playwright + Slack (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'trend-scout-terminal.md',
-    title: 'Trend Scout — Terminal Edition',
+    title: 'Trend Scout',
     tagline: 'It spots new trends in your field and ranks which ones are real.',
     does: [
       'Confirms your field and time frame',
@@ -322,11 +322,11 @@ const companions: Companion[] = [
       'Writes a ranked watchlist with proof',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
   {
     file: 'web-scraping-recipe-builder-terminal.md',
-    title: 'Web Scraping Recipe Builder — Terminal Edition',
+    title: 'Web Scraping Recipe Builder',
     tagline: 'It builds a polite script that pulls the data you want from a website.',
     does: [
       'Checks the site rules first',
@@ -335,7 +335,7 @@ const companions: Companion[] = [
       'Runs a test and saves sample rows',
     ],
     needs: 'Playwright (browser)',
-    platforms: ['Claude'],
+    platforms: ['Claude', 'OpenAI', 'Perplexity'],
   },
 ];
 
@@ -422,7 +422,7 @@ export default function Companions() {
         <div className="mb-12">
           <div className="inline-flex items-center gap-2 bg-indigo-500/10 text-indigo-300 text-xs font-medium px-3 py-1 rounded-full mb-4">
             <Terminal className="w-3.5 h-3.5" />
-            Terminal Edition
+            MCP · Works in Claude, OpenAI &amp; Perplexity
           </div>
           <h1 className="text-4xl font-bold text-white mb-4">Companions</h1>
           <p className="text-lg text-slate-400 max-w-3xl">
@@ -451,9 +451,9 @@ export default function Companions() {
             Every companion is just a plain text file — it is not tied to one company.
             Use it in Claude Code, OpenAI Codex, Cursor, Perplexity, n8n, LangChain, or
             any AI that takes instructions. Some can use tools to act for you; all of
-            them run anywhere a prompt runs. No terminal? Download the file and paste the
-            text in as your instructions — for example a Claude.ai Project, a Perplexity
-            Space, or a custom GPT.
+            them run anywhere a prompt runs. Need MCP? Open it in <strong className="text-slate-300">Claude Desktop, ChatGPT Desktop, or Perplexity</strong> and
+            connect the servers listed in the file. No MCP needed? Paste the text into a
+            Claude.ai Project, a Perplexity Space, or a custom GPT.
           </p>
           <p className="text-slate-500 text-xs">
             Downloads are free —{' '}

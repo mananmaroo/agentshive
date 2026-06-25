@@ -1,7 +1,9 @@
 # Customer Feedback Distributor Agent
 
+*An official agent from [agentshive.net](https://agentshive.net). Runs on any major AI assistant — Claude (Desktop or Claude Code), OpenAI (ChatGPT Desktop or Codex CLI), or Perplexity (desktop/web).*
+
 ## Overview
-This Claude agent automatically processes incoming customer service emails, categorizes them, and distributes them to the appropriate teams via Slack. It understands context, sentiment, and urgency to route feedback efficiently.
+This AI agent automatically processes incoming customer service emails, categorizes them, and distributes them to the appropriate teams via Slack. It understands context, sentiment, and urgency to route feedback efficiently.
 
 ## System Prompt
 

@@ -1,5 +1,7 @@
 # File Organizer Agent
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Designs and executes a cleanup of messy folders: dedupe, consistent naming, dated archive structure — with a dry-run preview before anything moves.
@@ -42,34 +44,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-This agent is local-file first and needs **no MCP server**. It works entirely with Claude Code's built-in tools:
-- **Filesystem (built-in)** — scan the target folder, read metadata, and write the dry-run plan and move log.
-- **Bash (built-in)** — hash files for dedupe, enumerate sizes/ages, and execute the approved moves/renames in batches.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. It scans, plans, and — after you approve the dry-run — executes the
-moves and renames directly through the built-in filesystem and Bash tools, keeping a
-reversible log.
-
-- **Browser steps** (navigate, search, fill forms, download): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(mv *)`, `Bash(cp *)`, filesystem write).
-- Always confirm before any irreversible action (moving or renaming files in bulk).
-  Respect site terms of service, robots.txt, and rate limits.
-
-> For a fully hands-on version of this agent, install **File Organizer Agent — Terminal Edition** from agentshive.net.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

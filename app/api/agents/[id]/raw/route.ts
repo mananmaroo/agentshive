@@ -55,6 +55,8 @@ export async function GET(
         'Content-Type': 'text/plain; charset=utf-8',
         'Cache-Control': 'public, max-age=300, s-maxage=300',
         'Access-Control-Allow-Origin': '*',
+        'X-Robots-Tag': 'noindex',
+        'X-Content-Type-Options': 'nosniff',
       },
     });
   } catch (error: any) {

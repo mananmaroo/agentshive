@@ -486,9 +486,10 @@ export default function AgentDetail() {
                 <pre className="text-xs text-slate-200 flex-1 overflow-auto max-h-60 whitespace-pre-wrap break-words">{pasteCommand}</pre>
                 <button
                   onClick={copyPaste}
-                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition"
+                  disabled={!rawMd}
+                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded text-xs font-semibold transition disabled:opacity-40 disabled:cursor-wait"
                 >
-                  {pasteCopied ? 'Copied' : 'Copy'}
+                  {!rawMd ? 'Loading…' : pasteCopied ? 'Copied ✓' : 'Copy'}
                 </button>
               </div>
               <details className="mt-4">

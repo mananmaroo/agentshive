@@ -1,5 +1,7 @@
 # Customer Feedback Distributor Agent
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Overview
 This Claude agent automatically processes incoming customer service emails, categorizes them, and distributes them to the appropriate teams via Slack. It understands context, sentiment, and urgency to route feedback efficiently.
 
@@ -192,39 +194,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- Slack MCP — post each categorized item to the correct team channel. Add via the Anthropic connector directory / HTTP transport; if it is unavailable, fall back to a webhook or output the message for copy-paste.
-- Playwright (browser) — only if feedback must be pulled from a web admin UI (e.g. a helpdesk or webmail) rather than pasted in.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Reading pasted emails and writing the `feedback_log.csv` use Claude Code's built-in filesystem tools.
+To post each categorized item to the right team channel it needs the **Slack** MCP server — add it via Connectors in a desktop/web app, or `claude mcp add ...` in Claude Code / Codex. (Add **Playwright** the same way only if feedback must be pulled from a web admin UI rather than pasted in.) Filesystem and web fetch are otherwise built in.
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
-
-- Playwright (browser): `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise.
-
-- **Browser steps** (navigate, search, fill forms, download): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(npx playwright *)`, `mcp__playwright__*`, `mcp__slack__*`).
-- Always confirm before any irreversible action (posting a message to a Slack channel,
-  creating a ticket). Respect site terms of service, robots.txt, and rate limits.
-
-> For a fully hands-on version of this agent, install **Customer Feedback Distributor Agent — Terminal Edition** from agentshive.net.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

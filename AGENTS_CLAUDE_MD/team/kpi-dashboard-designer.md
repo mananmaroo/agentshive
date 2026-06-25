@@ -1,5 +1,7 @@
 # KPI Dashboard Designer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Designs the right dashboard for your team: picks the metrics that matter, defines each one precisely, and lays out the dashboard with chart types and drill-downs.
@@ -43,19 +45,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is a design/reasoning agent — it produces a dashboard specification and needs no external integration or MCP server to do that. Claude Code's built-in tools cover everything it needs:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- the built-in file tools to read a schema, data dictionary, or sample CSV the user supplies, so metric definitions point at real tables/fields;
-- plain text in/out for the metric-definition table, layout sketch, and chart rationale.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No `/mcp` setup is required. (If you later want the spec built out in a specific BI tool, that is a separate implementation step — confirm the tool first.)
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it designs the dashboard, it does not need a browser or
-desktop control to do so. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI
-node. If you want it to read your local schema or a sample data export to ground the
-metric definitions, Claude Code's built-in file tools are enough — no extra MCP or
-computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

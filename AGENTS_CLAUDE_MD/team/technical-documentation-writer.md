@@ -1,5 +1,7 @@
 # Technical Documentation Writer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Turns code, APIs, and tribal knowledge into documentation developers actually use: quickstarts, how-to guides, and reference pages with tested examples.
@@ -43,26 +45,17 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected. Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- GitHub — read the repository, source files, READMEs, and existing docs for the code being documented; reference issues/PRs for context on recent changes.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Local `git` (clone, `git diff`, `git log`) and running code samples to verify they work both go through Claude Code's built-in Bash tool — no MCP needed for a checked-out repo.
+To read a repository's source, READMEs, existing docs, and issues/PRs it needs the **GitHub** MCP
+server — add it via Connectors in a desktop/web app, or
+`claude mcp add --transport http github https://api.githubcopilot.com/mcp/` in Claude Code / Codex.
+Filesystem and web fetch are otherwise built in.
 
-If a server you need is **not** connected, stop and give the user the exact command, then wait for them to enable it — never silently skip an integration:
-
-- GitHub: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you, not just advise. Pointed at a checked-out repo it can read the source via the built-in file tools, run every code sample through Bash to confirm it works, and write the doc pages directly.
-
-- **Browser steps** (read a hosted README, an API page, or upstream docs a tool cannot reach locally): use the Playwright MCP. Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type): this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via `/permissions` (e.g. `Bash(git *)`, `mcp__github__*`).
-- Always confirm before any irreversible action (committing docs, pushing a branch, opening a PR). Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

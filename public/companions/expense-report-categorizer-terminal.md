@@ -1,16 +1,26 @@
 # Expense Report Categorizer — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **Expense Report Categorizer** agent. Instead of advising, it actually does the task end-to-end inside Claude Code / the Claude terminal — reading the transaction export with the built-in file tools, normalizing merchants, applying category rules, flagging anomalies, and writing the categorized ledger and summary back to disk.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- This agent is local-data first and needs **no MCP server** — it uses the built-in **filesystem** and **Bash** tools to read the export and write the outputs.
-- **Playwright** (optional) — `claude mcp add --transport stdio playwright -- npx @playwright/mcp` (only if you want the agent to download statements from a bank's web portal first).
-If you add Playwright and it is missing, tell the user the exact command above and wait.
-This task does not require a native desktop app, so computer use is not needed.
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- This companion is local-data first and needs **no MCP server** — it uses the built-in **filesystem** and **Bash** tools to read the export and write the outputs.
+- **Playwright** (optional) — config: `claude mcp add --transport stdio playwright -- npx @playwright/mcp`. Only if you want the agent to download statements from a bank's web portal first.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
 
 ## Inputs Needed
 - The transaction export (CSV from bank/card) and its file path

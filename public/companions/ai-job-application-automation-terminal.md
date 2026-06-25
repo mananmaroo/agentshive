@@ -1,16 +1,26 @@
 # AI Job Application Automation Agent — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **AI Job Application Automation Agent**. Instead of advising, it actually does the task end-to-end inside Claude Code / the Claude terminal — searching job boards in a real browser with Playwright, reading full job descriptions, tailoring resume and cover letter files, logging to the tracking CSV, and (only with explicit confirmation) filling and submitting application forms.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- **Playwright** — `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-If a needed server is missing, tell the user the exact command above and wait.
-Resume/cover-letter files and `applications.csv` are read/written with the built-in filesystem tools; PDF/DOCX generation runs via the built-in Bash tool with the user's local scripts.
-If a board requires driving a native desktop app, ask the user to enable **computer use** (`/mcp` → enable the built-in `computer-use` server; needs claude.ai auth + Pro/Max).
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- **Playwright** — config: `claude mcp add --transport stdio playwright -- npx @playwright/mcp`. Used to search job boards, read JDs, and fill/submit forms. Resume/cover-letter files and `applications.csv` are read/written with built-in filesystem tools; PDF/DOCX generation runs via the built-in Bash tool with the user's local scripts.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
+If a board requires driving a native desktop app, ask the user to enable **computer use** (in Claude Code, `/mcp` → enable the built-in `computer-use` server; needs claude.ai auth + Pro/Max).
 
 ## Inputs Needed
 - Master resume(s) and the candidate's profile/criteria (roles, locations, salary floors, experience band)

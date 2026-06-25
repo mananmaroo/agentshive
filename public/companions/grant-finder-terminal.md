@@ -1,16 +1,25 @@
 # Grant Finder — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **Grant Finder** agent. Instead of advising, it actually does the task end-to-end inside Claude Code / the Claude terminal — searching grant portals and funder sites in a real browser with Playwright, hard-checking eligibility on each official page, and writing a ranked, deadline-sorted shortlist to a file.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- **Playwright** — `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-If a needed server is missing, tell the user the exact command above and wait.
-The built-in web fetch handles a simple static program page; Playwright is needed for portal search forms and paginated/JS-heavy listings.
-This task does not require a native desktop app, so computer use is not needed.
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- **Playwright** — config: `claude mcp add --transport stdio playwright -- npx @playwright/mcp`. Needed for portal search forms and paginated/JS-heavy listings; built-in web fetch handles a simple static program page.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
 
 ## Inputs Needed
 - Project description

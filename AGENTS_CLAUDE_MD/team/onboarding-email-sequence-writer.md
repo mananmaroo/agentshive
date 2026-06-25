@@ -1,5 +1,7 @@
 # Onboarding Email Sequence Writer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Writes a behavior-triggered onboarding email sequence that gets users to their first success moment — one goal per email, measured by activation, not opens.
@@ -43,15 +45,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is pure reasoning and needs no external integration to draft the sequence. It runs on Claude Code's built-in tools:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- Built-in filesystem read/edit — to read product notes or an existing sequence and write the drafts back to disk.
-- Built-in web fetch — only to verify a referenced benchmark or to read the email tool's own docs for trigger/field names.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No MCP server is required to write the sequence. Loading the emails into the user's ESP (Customer.io, HubSpot, Loops, etc.) is done in that tool's own UI; run `/mcp` to confirm nothing else is expected.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your local files (e.g. product notes or an existing sequence), Claude Code's built-in file tools are enough — no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

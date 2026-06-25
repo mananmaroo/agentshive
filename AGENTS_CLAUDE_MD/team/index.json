@@ -3,7 +3,7 @@
     "id": "81962428-36c5-47f8-8ae4-065a83298949",
     "slug": "customer-feedback-distributor",
     "title": "Customer Feedback Distributor",
-    "description": "Intelligent customer service email agent that automatically categorizes incoming customer emails, distributes them to relevant teams via Slack, and manages the\r\n  response workflow. Uses Claude AI to understand context and route feedback to the right teams.",
+    "description": "Intelligent customer service email agent that automatically categorizes incoming customer emails, distributes them to relevant teams via Slack, and manages the\r\n  response workflow. Uses an AI model to understand context and route feedback to the right teams.",
     "category": [
       "Automation",
       "Customer Support"

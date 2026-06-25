@@ -1,5 +1,7 @@
 # SEO Blog Post Writer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Writes long-form blog posts that rank: keyword-mapped outline, search-intent matching, scannable structure, and zero fluff paragraphs.
@@ -43,24 +45,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected. Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- Playwright (browser) — research the target keyword on live search results, read competing pages to find the questions to answer, and verify any statistic or claim before it goes in the draft. Built-in WebFetch handles simple single-page reads.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-If a server you need is **not** connected, stop and give the user the exact command, then wait for them to enable it — never silently skip an integration:
+To research the target keyword on live search results, read competing pages for the questions to answer, and verify any statistic before it goes in the draft, it needs the **Playwright (browser)** MCP server — add it via Connectors in a desktop/web app, or `claude mcp add --transport stdio playwright -- npx @playwright/mcp` in Claude Code / Codex. Filesystem and web fetch are otherwise built in (web fetch handles simple single-page reads).
 
-- Playwright (browser): `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those. A CMS publish step, e.g. WordPress, has no first-party MCP here — drive its web admin with Playwright or hand off the Markdown for manual paste.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you, not just advise. It can research the SERP, read competitor posts, verify facts, and draft the full piece end-to-end.
-
-- **Browser steps** (search the keyword, open competing posts, confirm a stat, check character limits live): use the Playwright MCP. Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type): this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via `/permissions` (e.g. `Bash(npx playwright *)`, `mcp__playwright__*`).
-- Always confirm before any irreversible action (publishing a post, submitting a CMS form). Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

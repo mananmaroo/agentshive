@@ -1,5 +1,7 @@
 # Meeting Notes & Action Items Agent
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Turns raw meeting transcripts into crisp minutes: decisions made, action items with owners and dates, and open questions — in under a page.
@@ -42,14 +44,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by the transcript, label it clearly as an assumption or open question — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is pure reasoning over a transcript and needs no external integration to do its core work. It runs on Claude Code's built-in tools:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- Built-in filesystem read/edit — to open the transcript file and write the minutes back to disk.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No MCP server is required to produce the minutes. If you later want the agent to post the output, a Slack MCP can be added (via the Anthropic connector directory / HTTP transport); when it is unavailable, fall back to copy-paste or a webhook. Run `/mcp` to confirm what is connected.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your local files (e.g. a transcript or notes), Claude Code's built-in file tools are enough — no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

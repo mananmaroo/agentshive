@@ -1,5 +1,7 @@
 # Git Commit Message Writer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Writes clear conventional-commit messages from your staged diff — type, scope, imperative subject, and a body that explains why, not what.
@@ -41,37 +43,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- GitHub — read issue/PR context and the branch's hosted history when the message should reference issues or match a PR; optional for a purely local commit.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Local `git` (`git diff --cached`, `git log`, `git status`, the actual commit) runs through Claude Code's built-in Bash tool — no MCP needed for a checked-out repo.
+To read issue/PR context or match a hosted branch history it needs the **GitHub** MCP server — add it via Connectors in a desktop/web app, or `claude mcp add --transport http github https://api.githubcopilot.com/mcp/` in Claude Code / Codex. It is optional for a purely local commit, where `git diff --cached` runs through the built-in terminal. Filesystem and web fetch are otherwise built in.
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
-
-- GitHub: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. Pointed at a real checked-out repo it can run `git diff --cached`/`git log`
-via the built-in Bash tool, draft the message, and (on your go-ahead) run the commit.
-
-- **Browser steps** (open an issue or PR page to confirm a reference number a tool can't reach): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(git *)`, `mcp__github__*`).
-- Always confirm before any irreversible action (running the commit, amending history,
-  pushing). Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

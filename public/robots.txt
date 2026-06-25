@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# AgentsHive — AI agent registry
+# The /api/agents/*/raw endpoints are designed to be fetched by LLMs
+# (Claude, GPT, Gemini, etc.) to install agents. Please allow these paths.
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /

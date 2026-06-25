@@ -1,5 +1,7 @@
 # Personal Assistant — Terminal Edition (Local Notes)
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 A hands-on personal assistant that runs end-to-end inside Claude Code / the Claude
@@ -11,21 +13,27 @@ account — so your data stays on your machine.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm the integrations below:
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
 
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
 - **Gmail / email** — the Gmail MCP (read, label, draft, send). If you don't use Gmail,
   the assistant can fall back to generic IMAP/SMTP; tell it your provider and it will ask
   for the connection details (use an app password or OAuth token, never a raw password).
-- **Google Calendar** — connected via the claude.ai Calendar connector (local OAuth is not
-  supported for Calendar); used to read appointments and create events. If unavailable, the
-  assistant works from an `.ics` export or a calendar Markdown file you keep.
+- **Google Calendar** — connected via the calendar connector; used to read appointments and
+  create events. If unavailable, the assistant works from an `.ics` export or a calendar
+  Markdown file you keep.
 - **News** — no MCP needed: the built-in web fetch reads RSS feeds and news pages. Give it
   the feeds/topics you care about once and it remembers them in your notes.
+- The to-do list and notes are **local Markdown files** read/written with the built-in
+  filesystem tools — no MCP required for the notepad.
 
-The to-do list and notes are **local Markdown files** read/written with Claude Code's
-built-in filesystem tools — no MCP required for the notepad. If a server you need is not
-connected, the assistant stops and gives you the exact `claude mcp add ...` command, then
-waits — it never silently skips an integration.
+If a needed server isn't connected, tell the user exactly which one to add and wait.
 
 ## Inputs Needed
 

@@ -1,5 +1,7 @@
 # Personal Assistant — Terminal Edition (Notion)
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 A hands-on personal assistant that runs end-to-end inside Claude Code / the Claude
@@ -11,22 +13,27 @@ to-dos live in Notion so you get its UI, mobile app, and sharing.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
 
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
 - **Notion** — the Notion MCP (read/write pages and databases). This is the notepad and
-  to-do store. Add it from the Anthropic connector directory / HTTP transport and authorize
-  the workspace; the assistant will ask which database (or create a "Inbox & Tasks" database
+  to-do store. Add it from the connector directory / HTTP transport and authorize the
+  workspace; the assistant will ask which database (or create a "Inbox & Tasks" database
   with the properties it needs).
 - **Gmail / email** — the Gmail MCP (read, label, draft, send). Generic IMAP/SMTP is a
   fallback for non-Gmail providers (app password or OAuth token, never a raw password).
-- **Google Calendar** — via the claude.ai Calendar connector (local OAuth not supported);
-  reads appointments and creates events.
+- **Google Calendar** — via the calendar connector; reads appointments and creates events.
 - **News** — no MCP needed; built-in web fetch reads RSS feeds and news pages.
 
-If a server you need is not connected, the assistant stops and gives you the exact command
-(e.g. the Notion connector setup, or `claude mcp add ...` for Gmail), then waits — it never
-silently skips an integration. If the Notion MCP is unavailable, it falls back to local
-Markdown and tells you (that is the local-notes edition's behavior).
+If a needed server isn't connected, tell the user exactly which one to add and wait. If the
+Notion MCP is unavailable, it falls back to local Markdown and tells you (that is the
+local-notes edition's behavior).
 
 ## Inputs Needed
 

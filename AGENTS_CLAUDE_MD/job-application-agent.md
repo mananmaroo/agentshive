@@ -1,7 +1,9 @@
 # AI Job Application Automation Agent
 
+*An official agent from [agentshive.net](https://agentshive.net). Runs on any major AI assistant — Claude (Desktop or Claude Code), OpenAI (ChatGPT Desktop or Codex CLI), or Perplexity (desktop/web).*
+
 ## Overview
-This Claude agent automates the entire job application pipeline for AI/ML and Data Science roles. It searches multiple job boards, evaluates positions against your criteria, tailors resumes and cover letters, and logs everything to a tracking spreadsheet.
+This AI agent automates the entire job application pipeline for AI/ML and Data Science roles. It searches multiple job boards, evaluates positions against your criteria, tailors resumes and cover letters, and logs everything to a tracking spreadsheet.
 
 ## System Prompt
 
@@ -340,4 +342,4 @@ https://linkedin.com/in/mariagarcia, Ready to Apply,
 **Created by:** Agentshive Team  
 **Last Updated:** 2025-01-15  
 **Status:** Production Ready  
-**Tested with:** Claude 3.5 Sonnet
+**Tested with:** Claude, OpenAI (GPT), and Perplexity

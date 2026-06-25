@@ -1,5 +1,7 @@
 # Legacy Code Refactorer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Modernizes legacy functions and modules step by step without changing behavior — small verified refactors, not risky rewrites.
@@ -44,24 +46,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- GitHub — read the surrounding repo, history, and `git blame` context when the legacy code lives in a hosted repo, and open a PR with the refactor.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Local `git` and running the test suite (`git diff`, `pytest`, `npm test`, etc.) run through Claude Code's built-in Bash tool — no MCP needed for a checked-out repo.
+To read a hosted repo's history and `git blame` context or open a PR with the refactor it needs the **GitHub** MCP server — add it via Connectors in a desktop/web app, or `claude mcp add --transport http github https://api.githubcopilot.com/mcp/` in Claude Code / Codex. For a checked-out repo, local `git` and the test suite run through the built-in terminal. Filesystem and web fetch are otherwise built in.
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
-
-- GitHub: `claude mcp add --transport http github https://api.githubcopilot.com/mcp/`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read and edit your local code and run the tests after each step, Claude Code's built-in file and Bash tools are enough — no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

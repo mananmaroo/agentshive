@@ -1,5 +1,7 @@
 # YouTube Script Writer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Writes retention-optimized YouTube scripts: cold-open hook, open loops, pattern interrupts, and a natural CTA — formatted for reading on camera.
@@ -43,17 +45,16 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is pure writing — it produces a script from the topic, length, and voice you give it — so it needs no external MCP integration. Claude Code's built-in tools cover everything: the filesystem read tool to ingest a past script or transcript for voice-matching, and Bash for any local file handling.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-The only optional integration is browsing for reference material when the topic needs current facts:
-- Playwright (browser) — open source pages to confirm a statistic or quote before it goes in the script. Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`. Built-in WebFetch handles simple page reads.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Run `/mcp` in your session (or `claude mcp list` in the terminal) to confirm it is connected. If a server you need is **not** connected, stop and give the user the exact command, then wait for them to enable it — never silently skip an integration.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read
+and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted
+or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control to write a script. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your local files (a past script or transcript to match your voice), Claude Code's built-in file tools are enough — no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

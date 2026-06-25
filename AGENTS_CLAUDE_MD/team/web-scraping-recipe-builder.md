@@ -1,5 +1,7 @@
 # Web Scraping Recipe Builder
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Builds polite, robust scraping scripts for public pages: selector strategy, pagination, rate limiting, and resilient parsing — with legality and robots.txt checks first.
@@ -42,38 +44,20 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-Before doing the work, confirm the integrations this agent relies on are connected.
-Run `/mcp` in your session (or `claude mcp list` in the terminal) and check for the
-servers below.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-Helpful / required MCP servers for this agent:
-- **Playwright (browser)** — inspect the target page's live structure, find stable selectors, and confirm how pagination and dynamic content load before writing the script. Built-in **WebFetch** covers a quick static-HTML peek.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Built-in **Bash** runs the generated script (and `curl`/checks against robots.txt) once it is written.
+To inspect the target page's live structure, find stable selectors, and confirm how pagination and
+dynamic content load before writing the script, it needs the **Playwright (browser)** MCP server —
+add it via Connectors in a desktop/web app, or
+`claude mcp add --transport stdio playwright -- npx @playwright/mcp` in Claude Code / Codex.
+Filesystem and web fetch are otherwise built in.
 
-If a server you need is **not** connected, stop and give the user the exact command,
-then wait for them to enable it — never silently skip an integration:
-
-- Playwright (browser): `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. It can inspect the live page, write the scraping script, run its test mode,
-and save both the script and the first extracted rows.
-
-- **Browser steps** (open the target page, inspect DOM, verify selectors and pagination): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(npx playwright *)`, `mcp__playwright__*`, `Bash(python *)`).
-- Always confirm before any irreversible action (running a full-volume scrape, writing large output files). Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).
 
 > For a fully hands-on version of this agent, install **Web Scraping Recipe Builder — Terminal Edition** from agentshive.net.

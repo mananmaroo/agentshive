@@ -1,5 +1,7 @@
 # Survey Response Analyzer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Turns raw survey exports into insight: cross-tabs, theme extraction from open-ended answers, sentiment, and an executive summary with quotes.
@@ -43,17 +45,16 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by the data, label it clearly as an estimate or assumption — never present it as fact. Always state the sample size and response rate up front and caveat small samples.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent works on a local data file you provide (the survey CSV), so it needs no external MCP integration. Claude Code's built-in tools cover the whole job: the filesystem read/edit tools to load the CSV and write the report, and Bash to run analysis scripts (e.g. `python` with pandas) for cross-tabs, frequencies, and theme counts.
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-There is no MCP server required. If your raw responses live behind a survey tool's API (Typeform, SurveyMonkey, Qualtrics) rather than in an exported file, browse or export them first:
-- Playwright (browser) — log into the survey tool's web UI and export the responses to CSV. Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-Run `/mcp` in your session (or `claude mcp list` in the terminal) to confirm any browser server you need is connected. If a server you need is **not** connected, stop and give the user the exact command, then wait for them to enable it — never silently skip an integration.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read
+and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted
+or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it analyzes a CSV and returns a report, with no browser or desktop control needed. It runs anywhere: Claude Code, Codex, LangChain, or an n8n AI node. To work on your local survey export, Claude Code's built-in file tools plus Bash (for a quick pandas/stats script) are enough — no extra MCP or computer-use permission required. (Add the Playwright MCP above only if you also need it to pull the responses from a survey tool first.)
+> Part of the agent library at [agentshive.net](https://agentshive.net).

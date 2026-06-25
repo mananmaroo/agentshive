@@ -1,16 +1,25 @@
 # Due Diligence Researcher — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **Due Diligence Researcher** agent. Instead of advising, it actually does the task end-to-end inside Claude Code / the Claude terminal — searching registries, filings, news, and reputation sources in a real browser with Playwright, extracting and dating each finding, and writing a sourced diligence memo to a file.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. Before starting, run `/mcp` and confirm:
-- **Playwright** — `claude mcp add --transport stdio playwright -- npx @playwright/mcp`
-If a needed server is missing, tell the user the exact command above and wait.
-The built-in web fetch handles simple static pages; Playwright is needed for registry search forms, paginated dockets, and JS-heavy sources.
-This task does not require a native desktop app, so computer use is not needed.
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
+
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
+
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- **Playwright** — config: `claude mcp add --transport stdio playwright -- npx @playwright/mcp`. Needed for registry search forms, paginated dockets, and JS-heavy sources; built-in web fetch handles simple static pages.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
 
 ## Inputs Needed
 - Company name and domain

@@ -1,5 +1,7 @@
 # Course Outline Designer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Designs complete course curricula from a topic and audience: learning objectives, module sequence, exercises, and assessments — backwards-designed from outcomes.
@@ -42,20 +44,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent is pure reasoning — it designs curricula from your inputs, so it needs no
-external MCP server. The built-in tools cover everything it requires:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- **Filesystem read/edit** — to read source material you provide and write the finished outline to a Markdown file.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No MCP server needs to be connected for this agent to work.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent is text-in, text-out — it needs no browser or desktop control. It runs
-anywhere: Claude Code, Codex, LangChain, or an n8n AI node. If you want it to read your
-local files (e.g. existing syllabi or notes) or save the outline, Claude Code's built-in file tools are enough —
-no extra MCP or computer-use permission required.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

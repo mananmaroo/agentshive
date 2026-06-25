@@ -1,5 +1,7 @@
 # Invoice & Receipt Extractor
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Extract structured data from invoices and receipts so they can be logged into a spreadsheet or accounting tool without manual typing.
@@ -47,32 +49,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent works on local files and needs no external integration or MCP server. Claude Code's built-in tools cover everything it needs:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- the built-in file tools to read the invoice/receipt (PDF or image) and to write the JSON or CSV output;
-- the built-in Bash tool to run a local OCR step or batch over a folder of documents;
-- plain text in/out for the extracted record.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-No `/mcp` setup is required. (Chain it after the PDF Reader agent for mixed document batches.)
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise — reading documents from a folder, OCR-ing scans, and writing the
-extracted rows back to disk.
-
-- **File and OCR steps** (read PDFs/images, run OCR, write JSON/CSV, batch a folder): use
-  Claude Code's built-in file and Bash tools — no MCP needed.
-- **Browser steps** (only if you also want it to log the extracted data into a web-based
-  accounting tool): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native accounting app — open it, click,
-  type): this needs **computer use**. Ask the user to enable it: run `/mcp` in the session
-  and enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(npx playwright *)`, `mcp__playwright__*`).
-- Always confirm before any irreversible action (overwriting files, posting entries into
-  an accounting system). Respect site terms of service, robots.txt, and rate limits.
+> Part of the agent library at [agentshive.net](https://agentshive.net).

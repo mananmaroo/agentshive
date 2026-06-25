@@ -1,5 +1,7 @@
 # Document Visualizer — Terminal Edition
 
+*An official companion from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 The hands-on version of the **Document Visualizer** agent. Give it a document and it builds
@@ -11,19 +13,21 @@ one message per slide, and a clean, consistent master.
 
 ## Runtime & Requirements
 
-Runs in Claude Code. The work is local file processing — no MCP or computer use required.
-It uses the built-in filesystem tools plus the Bash tool to run two well-known Python
-libraries (the agent installs them if missing):
+This companion does real work through MCP tools, so run it in an **MCP-capable desktop or web app** — not a plain chat box:
 
-- **`python-pptx`** — builds the `.pptx` files from a slide master.
-- **`PyMuPDF` (`fitz`)** — extracts highlighted text and annotations from PDFs. For DOCX,
-  highlights are read from run/​highlight formatting via `python-docx`; for Markdown, the
-  convention is `==highlighted==` spans.
+- **Claude Desktop** — add servers under Settings → Connectors.
+- **ChatGPT Desktop** — enable MCP connectors.
+- **Perplexity** (desktop or web) — add servers via Connectors.
 
-Preflight: `pip show python-pptx pymupdf python-docx` (install with
-`pip install python-pptx pymupdf python-docx` if absent). If the user has a brand template
-(`.pptx` or `.potx`), the agent uses it as the master; otherwise it applies the built-in
-consulting template described below.
+(In **Claude Code** you can also add servers from the terminal with `claude mcp add ...`.)
+
+Connect these MCP servers before starting:
+- This companion is local file processing first and needs **no MCP server** — it uses built-in filesystem tools plus the Bash tool to run two well-known Python libraries (installed if missing):
+  - **`python-pptx`** — config: `pip install python-pptx` — builds the `.pptx` files from a slide master.
+  - **`PyMuPDF` (`fitz`)** — config: `pip install pymupdf` — extracts highlighted text and annotations from PDFs. For DOCX, highlights are read from run/​highlight formatting via `python-docx` (`pip install python-docx`); for Markdown, the convention is `==highlighted==` spans.
+  - Preflight: `pip show python-pptx pymupdf python-docx`. If the user has a brand template (`.pptx` or `.potx`), the agent uses it as the master; otherwise it applies the built-in consulting template described below.
+
+If a needed server isn't connected, tell the user exactly which one to add and wait.
 
 ## Inputs Needed
 

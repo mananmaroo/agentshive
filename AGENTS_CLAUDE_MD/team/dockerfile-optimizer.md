@@ -1,5 +1,7 @@
 # Dockerfile Optimizer
 
+*An official agent from [agentshive.net](https://agentshive.net).*
+
 ## Purpose
 
 Audits and rewrites Dockerfiles for smaller images, faster builds, and better caching — multi-stage builds, layer ordering, and pinned bases.
@@ -42,31 +44,14 @@ This agent works to recognized professional standards. Apply these and hold outp
 
 When a claim cannot be backed by a credible source, label it clearly as an estimate or assumption — never present it as fact.
 
-## Running in Claude Code (MCP preflight)
+## Where it runs
 
-This agent reads a local Dockerfile and rewrites it, so it needs no external MCP server.
-The built-in tools cover everything it requires:
+This agent is text-in, text-out, so it runs in any major AI assistant — pick desktop or terminal:
 
-- **Filesystem read/edit** — to read the current Dockerfile (and `.dockerignore`) and write the optimized version.
-- **Bash** — to build both versions and measure the real size/build-time difference (`docker build`, `docker images`) rather than estimating.
+- **Claude** — Claude Desktop (add MCP servers under Settings → Connectors) or **Claude Code** in the terminal.
+- **OpenAI** — ChatGPT Desktop (enable MCP connectors) or the **Codex CLI** in the terminal.
+- **Perplexity** — the Perplexity desktop or web app (add MCP servers via Connectors).
 
-If the source lives in a hosted repo you want it to read, the GitHub MCP can pull it (`claude mcp add --transport http github https://api.githubcopilot.com/mcp/`), but a checked-out repo needs no MCP.
+This one is pure reasoning over the inputs you provide — no MCP server required. Filesystem read and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted or attached content.
 
-(Filesystem read/edit and web fetch are built into Claude Code — no MCP needed for those.)
-
-## Running in Claude Terminal (browser & computer use)
-
-This agent can run hands-on in Claude Code / the Claude terminal and do the work for you,
-not just advise. It reads the Dockerfile with the built-in filesystem tool, writes the
-optimized version, and—if Docker is available—runs `docker build` for both to report the
-actual before/after image size and build time instead of an estimate.
-
-- **Browser steps** (only if you need it to read a Dockerfile from a hosted repo page a tool can't reach): use the Playwright MCP.
-  Add it with `claude mcp add --transport stdio playwright -- npx @playwright/mcp`.
-- **Desktop GUI control** (only if the task needs a native app — open it, click, type):
-  this needs **computer use**. Ask the user to enable it: run `/mcp` in the session and
-  enable the built-in `computer-use` server. (Computer use needs claude.ai auth and a
-  Pro/Max plan; it is CLI-supported on macOS and via the Desktop app on Windows.)
-- **Permissions**: if prompted, the user can pre-allow the tools this agent needs via
-  `/permissions` (e.g. `Bash(docker *)`, `Read`, `Write`).
-- Always confirm before any irreversible action (overwriting the existing Dockerfile, pruning images). Keep the original Dockerfile until the rebuild is verified.
+> Part of the agent library at [agentshive.net](https://agentshive.net).
