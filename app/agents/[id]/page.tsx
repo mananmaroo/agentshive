@@ -88,9 +88,9 @@ export default function AgentDetail() {
         setAgent(agentData);
 
         fetch(`/api/agents/${agentId}/raw`)
-          .then((r) => (r.ok ? r.text() : ''))
-          .then((t) => { if (t) setRawMd(t); })
-          .catch(() => {});
+          .then((r) => (r.ok ? r.text() : null))
+          .then((t) => setRawMd(t || agentData.description || agentData.title))
+          .catch(() => setRawMd(agentData.description || agentData.title));
 
         const { data: creatorData } = await supabase
           .from('users')
@@ -356,7 +356,7 @@ export default function AgentDetail() {
               </p>
               <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
                 <pre className="text-xs text-slate-200 flex-1 overflow-auto max-h-60 whitespace-pre-wrap break-words">
-                  {pasteCommand ?? 'Loading agent instructions…'}
+                  {pasteCommand ?? 'Fetching instructions…'}
                 </pre>
                 <button
                   disabled={!pasteCommand}
