@@ -241,7 +241,7 @@ export default function AgentDetail() {
   // command immediately (robots.txt now allows /api/agents/ so AI tools can fetch it).
   const pasteCommand = rawMd
     ? `Create a file named ${fileSlug}.md (in .claude/agents/ if that folder exists) with exactly the content below, then act as this agent:\n\n${rawMd}`
-    : `Fetch ${installUrl} — it returns the "${agent.title}" agent's full instructions. Save it as ${fileSlug}.md (in .claude/agents/ if that folder exists) and act as that agent.`;
+    : null;
 
   const tags = agent.tags ?? [];
   const categories = agent.category ?? [];
@@ -356,15 +356,17 @@ export default function AgentDetail() {
               </p>
               <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
                 <pre className="text-xs text-slate-200 flex-1 overflow-auto max-h-60 whitespace-pre-wrap break-words">
-                  {pasteCommand}
+                  {pasteCommand ?? 'Loading agent instructions…'}
                 </pre>
                 <button
+                  disabled={!pasteCommand}
                   onClick={async () => {
+                    if (!pasteCommand) return;
                     await navigator.clipboard.writeText(pasteCommand);
                     setPasteCopied(true);
                     setTimeout(() => setPasteCopied(false), 2000);
                   }}
-                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded text-sm font-bold transition"
+                  className="flex-shrink-0 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white px-4 py-2 rounded text-sm font-bold transition"
                 >
                   {pasteCopied ? '✓ Copied!' : 'Copy'}
                 </button>
