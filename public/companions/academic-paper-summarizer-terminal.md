@@ -51,4 +51,20 @@ A single Markdown file (e.g. `<paper-slug>-summary.md`) containing the three-dep
 - ASA statement on p-values — report effect size and confidence interval; flag bare-p-value or p-hacking risks.
 - Verify headline claims against the paper's own figures/tables and at least one independent citation; cite source + access date.
 
+## Loop & Automation
+
+**Recommended loop:** Run once per paper — or on a schedule if you track a field.
+
+- **Research digest loop:** Keep a `reading-list.md` with paper DOIs/URLs. Run this companion daily or weekly; it processes any unread entries, saves summaries, and marks them done. Pair with the **Trend Scout** companion to auto-populate the reading list.
+- **MCP connectors that unlock automation:**
+  - **Filesystem MCP** — reads your `reading-list.md` and writes summaries without prompting for paths each run.
+  - **Playwright MCP** — fetches papers from arXiv, PubMed, or publisher pages automatically.
+  - **Notion / Obsidian MCP** *(optional)* — writes summaries directly into your research knowledge base instead of local files.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (summarise new papers every weekday at 8am)
+  0 8 * * 1-5 claude --mcp-config ~/.claude/mcp.json "Run Academic Paper Summarizer on ~/reading-list.md"
+  ```
+- **Loop tip:** Set `max_iterations` high — long papers need multiple read passes. The companion self-checkpoints so a loop restart picks up where it left off.
+
 > This is the hands-on companion to the **Academic Paper Summarizer** agent on agentshive.net.

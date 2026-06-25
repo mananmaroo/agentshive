@@ -59,4 +59,21 @@ If the task must drive a native desktop app (a desktop PDF viewer or scanner), e
 - **MECE structure** — Key Points are mutually exclusive and collectively exhaustive.
 - **Document-type awareness** — adapt the summary shape to the document type and surface what that type's readers care about.
 
+## Loop & Automation
+
+**Recommended loop:** Run as a batch job across a folder of PDFs — or whenever new documents arrive.
+
+- **Document digest loop:** Drop PDFs into `to-summarize/`. The companion processes each, saves a summary alongside the source, and moves completed files to `summarized/`. Pair with the Academic Paper Summarizer for research-heavy workflows.
+- **MCP connectors that unlock automation:**
+  - **Filesystem MCP** — reads PDFs and writes summary files across your folder structure without per-file prompts.
+  - **Gmail MCP** *(optional)* — fetches PDF attachments from email (contracts, reports, invoices) and queues them for summarization automatically.
+  - **Google Drive MCP** *(optional)* — pulls PDFs from Drive, writes summaries back as linked Docs.
+  - **Notion MCP** *(optional)* — creates a Notion page per document with the summary and source link.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (summarize new PDFs every weekday at 8am)
+  0 8 * * 1-5 claude --mcp-config ~/.claude/mcp.json "Run PDF Reader & Summarizer on ~/to-summarize/"
+  ```
+- **Loop tip:** Set a `doc_type` hint in the folder name (e.g. `to-summarize/contracts/`) so the companion automatically adapts its summary shape to the document type.
+
 > This is the hands-on companion to the **PDF Reader & Summarizer** agent on agentshive.net.

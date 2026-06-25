@@ -117,4 +117,21 @@ This one is pure reasoning over the inputs you provide — no MCP server require
 and web fetch are built into Claude Code and Codex; in a desktop or web app it works from pasted
 or attached content.
 
+## Loop & Automation
+
+**Recommended loop:** Run at the start and end of every coding session — the handoff file is the loop's memory.
+
+- **Session loop:** Start of session → read `HANDOFF.md` → code → end of session → write updated `HANDOFF.md`. Each session picks up exactly where the last ended, even weeks later or across team members.
+- **MCP connectors that unlock more:**
+  - **Filesystem MCP** — reads and writes `HANDOFF.md` and project files across the full repo, not just the open file.
+  - **GitHub MCP** *(optional)* — pulls open PRs, recent commits, and failing CI checks directly into the handoff context so the companion knows the real project state.
+  - **Linear / Jira MCP** *(optional)* — reads the current sprint ticket and links code changes to the ticket automatically in the handoff.
+  - **Slack MCP** *(optional)* — posts an end-of-session summary to your team channel so async collaborators know where things stand.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Alias to start a coding session (reads handoff automatically)
+  alias codestart='claude --mcp-config ~/.claude/mcp.json "Run Smart Coder — read HANDOFF.md and brief me on next steps"'
+  ```
+- **Loop tip:** The handoff file IS the loop state. Never skip writing it at session end — a missing handoff means the next session starts cold. The companion enforces this by refusing to close without confirming the handoff is written.
+
 > Part of the agent library at [agentshive.net](https://agentshive.net).

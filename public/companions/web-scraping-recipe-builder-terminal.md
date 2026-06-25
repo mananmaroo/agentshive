@@ -58,4 +58,21 @@ If the task must drive a native desktop app, enable **computer use** so the assi
 - **PEP 8 / language style guides** — clean, idiomatic scripts; pinned dependencies; clear run instructions.
 - **Resilient-parsing discipline** — stable selectors, typed records with validation, fail-logging, and a test mode before full runs.
 
+## Loop & Automation
+
+**Recommended loop:** Build the recipe once — then run it on a schedule to keep your data fresh.
+
+- **Recurring data pull loop:** Once the companion builds and tests a scraping script for a site, save it as `scrapers/<site-name>.py`. Run it daily/weekly via cron; the companion monitors for site layout changes and alerts you when the script needs updating.
+- **MCP connectors that unlock automation:**
+  - **Playwright MCP** — drives real browser sessions for JavaScript-heavy sites, login-walled pages, and infinite-scroll layouts that plain HTTP can't reach.
+  - **Filesystem MCP** — reads existing scraper scripts and writes new ones plus sample output to your `scrapers/` folder.
+  - **GitHub MCP** *(optional)* — commits the finished scraper script to your repo automatically after testing passes.
+  - **Slack MCP** *(optional)* — alerts your team when a scheduled scraper fails or detects a site layout change.
+- **To run a built scraper on a schedule:**
+  ```
+  # Add to crontab (run price scraper every day at 6am)
+  0 6 * * * python ~/scrapers/target-site-prices.py >> ~/scrapers/logs/target-site.log 2>&1
+  ```
+- **Loop tip:** Always build with a `--test` flag that scrapes one page and prints sample output — the companion generates this flag automatically. Use it in your cron health checks before the full run.
+
 > This is the hands-on companion to the **Web Scraping Recipe Builder** agent on agentshive.net.

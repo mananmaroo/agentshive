@@ -90,4 +90,20 @@ This agent builds decks to recognized communication standards:
   trend, composition, correlation), not by default.
 - **Edward Tufte (data-ink ratio)** — remove chartjunk; every mark earns its place.
 
+## Loop & Automation
+
+**Recommended loop:** Run once per document, or as a batch job across a folder of reports.
+
+- **Batch deck loop:** Drop multiple documents into a `to-visualize/` folder. The companion processes each in turn, saves a `.pptx` per document, and moves the source to `done/`.
+- **MCP connectors that unlock automation:**
+  - **Filesystem MCP** — reads documents and writes decks to your chosen output folder without path prompts each run.
+  - **Google Drive MCP** *(optional)* — pulls documents directly from Drive and uploads finished decks back, skipping local file steps.
+  - **Notion MCP** *(optional)* — reads Notion pages as source documents and exports the deck as an attachment.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (process new documents every night at 11pm)
+  0 23 * * * claude --mcp-config ~/.claude/mcp.json "Run Document Visualizer on ~/to-visualize/ folder"
+  ```
+- **Loop tip:** For recurring report types (weekly metrics, monthly reviews), save the deck template path in `visualizer-config.md` so each run reuses the same layout automatically.
+
 > This is the hands-on companion to the **Document Visualizer** agent on agentshive.net.

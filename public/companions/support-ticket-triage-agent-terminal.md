@@ -60,4 +60,21 @@ If the task must drive a native desktop app, enable **computer use** so the assi
 - **Support metrics (CSAT / NPS / CES)** — minimize customer effort: one clear next step, no jargon.
 - **Empathy-first, de-escalation tone** — acknowledge the specific problem first, especially for churn-risk tickets.
 
+## Loop & Automation
+
+**Recommended loop:** Run every 30 minutes during business hours — or on a webhook trigger when new tickets arrive.
+
+- **Continuous triage loop:** The companion polls your helpdesk queue, triages all new tickets, posts draft replies to a review channel, and auto-sends for P3/P4 tickets after a 10-minute approval window. P1/P2 tickets always require manual approval.
+- **MCP connectors that unlock automation:**
+  - **Playwright MCP** — accesses Zendesk, Intercom, Freshdesk, or any web-based helpdesk to read and update tickets.
+  - **Slack MCP** — posts routed tickets and draft replies to the right support channel; approval reactions trigger send.
+  - **Gmail MCP** *(optional)* — handles email-based support queues directly without a helpdesk platform.
+  - **Linear / Jira MCP** *(optional)* — creates bug tickets automatically from P1 reports, linked to the original support ticket.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (triage tickets every 30 mins during business hours)
+  */30 9-18 * * 1-5 claude --mcp-config ~/.claude/mcp.json "Run Support Ticket Triage Agent — process new tickets"
+  ```
+- **Loop tip:** Save your SLA tiers and routing rules in `triage-config.md` — the companion reads this on each loop and applies them consistently without re-prompting.
+
 > This is the hands-on companion to the **Support Ticket Triage Agent** on agentshive.net.

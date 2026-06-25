@@ -59,4 +59,21 @@ If the task must drive a native desktop app, enable **computer use** so the assi
 - **Triangulation** — size top-down and bottom-up and reconcile the two.
 - **CRAAP test (Currency, Relevance, Authority, Accuracy, Purpose)** — screen sources; separate fact vs estimate vs opinion.
 
+## Loop & Automation
+
+**Recommended loop:** Run quarterly for strategic briefs — or monthly on fast-moving markets.
+
+- **Market pulse loop:** Save your research questions and scope in `market-brief-config.md`. Run monthly; the companion checks the same sources, updates figures, and appends a delta section ("what changed since last month") to your brief.
+- **MCP connectors that unlock automation:**
+  - **Playwright MCP** — browses Gartner, Crunchbase, Statista, news sources, and competitor sites for fresh data.
+  - **Filesystem MCP** — reads your saved research config and writes briefs to a structured `market-research/` folder.
+  - **Gmail MCP** *(optional)* — delivers the updated brief to your team inbox automatically on completion.
+  - **Notion / Google Drive MCP** *(optional)* — saves and versions briefs in your strategy workspace.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (refresh market brief on the 1st of each month)
+  0 8 1 * * claude --mcp-config ~/.claude/mcp.json "Run Market Research Analyst — update brief from market-brief-config.md"
+  ```
+- **Loop tip:** Use the Trend Scout companion as a pre-loop to surface signal changes, then feed those signals into Market Research Analyst for deeper sizing and analysis.
+
 > This is the hands-on companion to the **Market Research Analyst** agent on agentshive.net.

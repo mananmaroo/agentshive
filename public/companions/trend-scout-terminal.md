@@ -59,4 +59,22 @@ If the task must drive a native desktop app, enable **computer use** so the assi
 - **Adoption vs coverage** — distinguish growing-usage curves from growing-media curves.
 - **CRAAP test (Currency, Relevance, Authority, Accuracy, Purpose)** — screen sources; separate confirmed signal from estimate and opinion.
 
+## Loop & Automation
+
+**Recommended loop:** Run weekly — trends move fast and last week's signal is this week's mainstream.
+
+- **Weekly radar loop:** The companion scans your configured sources, scores new signals against last week's watchlist, flags what's rising vs plateauing, and appends a delta section to `trend-radar.md`. Over time you build a living map of your field.
+- **MCP connectors that unlock automation:**
+  - **Playwright MCP** — scrapes Product Hunt, Hacker News, Reddit, arXiv, LinkedIn, and industry news for fresh signals.
+  - **Filesystem MCP** — reads your topic config and writes the updated radar without prompts.
+  - **Gmail MCP** *(optional)* — emails your team the weekly radar digest every Monday morning.
+  - **Slack MCP** *(optional)* — posts a "3 trends to watch this week" summary to your strategy or product channel.
+  - **Notion MCP** *(optional)* — maintains a live trend database with signal strength, source links, and week-over-week change.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (run trend scout every Monday at 7am)
+  0 7 * * 1 claude --mcp-config ~/.claude/mcp.json "Run Trend Scout — weekly radar update for my field"
+  ```
+- **Loop tip:** Pair with Market Research Analyst — Trend Scout surfaces the signals, Market Research Analyst deep-dives the ones that score highest.
+
 > This is the hands-on companion to the **Trend Scout** agent on agentshive.net.

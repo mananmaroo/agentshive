@@ -54,4 +54,21 @@ If a needed server isn't connected, tell the user exactly which one to add and w
 - Tidy data (Hadley Wickham) and reproducible, re-runnable categorization rules.
 - Reconcile category totals back to the original statement; flag anomalies for review.
 
+## Loop & Automation
+
+**Recommended loop:** Run monthly (or whenever a new bank/card statement arrives).
+
+- **Monthly close loop:** Drop new transaction exports into `to-categorize/`. The companion processes each, applies your saved category rules, and appends to `expense-ledger.md`. At month-end it generates a summary report.
+- **MCP connectors that unlock automation:**
+  - **Filesystem MCP** — reads statement CSVs and writes the categorized ledger without path prompts.
+  - **Gmail MCP** *(optional)* — fetches bank statement emails and saves attachments automatically, so you never manually download CSVs.
+  - **Google Sheets MCP** *(optional)* — writes categorized rows directly into your expense tracking spreadsheet.
+  - **Notion MCP** *(optional)* — posts the monthly summary to your finance dashboard.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (process new statements on the 1st of each month)
+  0 9 1 * * claude --mcp-config ~/.claude/mcp.json "Run Expense Report Categorizer on ~/to-categorize/"
+  ```
+- **Loop tip:** Save your category rules and merchant aliases in `categorizer-rules.md` after the first run — subsequent runs apply them automatically with no re-prompting.
+
 > This is the hands-on companion to the **Expense Report Categorizer** agent on agentshive.net.

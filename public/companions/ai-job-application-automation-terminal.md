@@ -56,4 +56,21 @@ If a board requires driving a native desktop app, ask the user to enable **compu
 - No fabrication — surface only real experience.
 - Web scraping ethics: honor robots.txt, terms of service, and rate limits; avoid login-walled or prohibited scraping.
 
+## Loop & Automation
+
+**Recommended loop:** Run daily during an active job search — new listings appear every morning.
+
+- **Daily job hunt loop:** Each morning the companion searches configured job boards, filters by your criteria, and appends new matches to `job-tracker.md`. You review and approve; it applies to the green-lit ones.
+- **MCP connectors that unlock automation:**
+  - **Playwright MCP** — searches LinkedIn, Indeed, and company career pages; fills and submits application forms.
+  - **Filesystem MCP** — reads your master resume/cover letter and writes tailored versions per role without prompting for paths.
+  - **Gmail MCP** *(optional)* — monitors your inbox for recruiter replies and logs them in `job-tracker.md` automatically.
+  - **Google Sheets / Notion MCP** *(optional)* — syncs the application log to a shared spreadsheet or Notion database.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (search for new jobs every weekday at 7am)
+  0 7 * * 1-5 claude --mcp-config ~/.claude/mcp.json "Run AI Job Application Automation — search only, no apply"
+  ```
+- **Loop tip:** Use "search only" mode first each morning to review matches before enabling auto-apply for high-confidence roles.
+
 > This is the hands-on companion to the **AI Job Application Automation Agent** agent on agentshive.net.

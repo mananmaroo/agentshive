@@ -51,4 +51,21 @@ A Markdown diligence memo: summary verdict, findings by category with sources an
 - Authoritative data: SEC EDGAR, national company registries, World Bank/OECD/Eurostat for context; cite source + access date.
 - GAAP / IFRS and ratio analysis (and Damodaran for valuation method) when financials are available.
 
+## Loop & Automation
+
+**Recommended loop:** Run once per company/deal — or weekly on a watchlist to catch new red flags.
+
+- **Portfolio monitoring loop:** Keep a `watchlist.md` of companies you're tracking. Run weekly; the companion checks for news, funding changes, leadership changes, and regulatory filings, appending a delta report to each company file.
+- **MCP connectors that unlock automation:**
+  - **Playwright MCP** — browses Crunchbase, LinkedIn, Companies House, SEC EDGAR, and news sources to pull live data.
+  - **Filesystem MCP** — reads your deal templates and writes reports to a structured `due-diligence/` folder.
+  - **Gmail MCP** *(optional)* — emails the finished memo to your team automatically on completion.
+  - **Notion / Google Drive MCP** *(optional)* — saves the memo directly into your deal room.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (monitor watchlist every Monday morning)
+  0 7 * * 1 claude --mcp-config ~/.claude/mcp.json "Run Due Diligence Researcher — monitor watchlist.md"
+  ```
+- **Loop tip:** Flag each report with `confidence: high/medium/low`. Re-run automatically on `low` reports after 24 hours to allow new sources to surface.
+
 > This is the hands-on companion to the **Due Diligence Researcher** agent on agentshive.net.

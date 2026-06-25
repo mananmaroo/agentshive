@@ -52,4 +52,20 @@ If a needed server isn't connected, tell the user exactly which one to add and w
 - Consistent, sortable naming conventions (ISO 8601 dates); one documented scheme.
 - Archive, never delete; destructive actions are out of scope.
 
+## Loop & Automation
+
+**Recommended loop:** Run weekly on your Downloads and Desktop folders to keep them clean automatically.
+
+- **Inbox-zero loop for files:** The companion scans your `~/Downloads` (or any configured folder), moves files to their correct locations, renames them consistently, and archives duplicates — every week, zero manual sorting.
+- **MCP connectors that unlock automation:**
+  - **Filesystem MCP** — reads and moves files across your entire directory tree, not just the current folder.
+  - **Google Drive MCP** *(optional)* — organizes cloud files in Drive alongside local ones in a single pass.
+  - **Notion MCP** *(optional)* — logs the reorganization summary to a Notion page for easy review.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (organize Downloads every Sunday at 10pm)
+  0 22 * * 0 claude --mcp-config ~/.claude/mcp.json "Run File Organizer Agent on ~/Downloads — dry run first"
+  ```
+- **Loop tip:** Always run in dry-run mode first on a new folder. Save the approved plan as `organizer-rules.md` — the next run applies rules directly and skips the review step.
+
 > This is the hands-on companion to the **File Organizer Agent** agent on agentshive.net.

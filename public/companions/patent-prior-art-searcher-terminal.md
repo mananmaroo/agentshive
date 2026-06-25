@@ -57,4 +57,20 @@ If the task must drive a native desktop app, enable **computer use** so the assi
 - **Claim-language fidelity** — quote the actual overlapping language; cite publication number + date.
 - **Preliminary, not legal** — flag what a qualified patent attorney must review.
 
+## Loop & Automation
+
+**Recommended loop:** Run once at filing time — then quarterly to monitor for new prior art in your space.
+
+- **Patent watch loop:** After the initial search, save your invention's key claims in `patent-watch-config.md`. Run quarterly; the companion searches for patents filed since the last run that overlap your claims and appends a delta report.
+- **MCP connectors that unlock automation:**
+  - **Playwright MCP** — searches Google Patents, USPTO, EPO Espacenet, and WIPO PATENTSCOPE for live results.
+  - **Filesystem MCP** — reads your claim definitions and writes search reports to a `patent-research/` folder.
+  - **Gmail MCP** *(optional)* — emails your patent attorney the quarterly watch report automatically.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (patent watch every quarter — Jan, Apr, Jul, Oct on the 1st)
+  0 8 1 1,4,7,10 * claude --mcp-config ~/.claude/mcp.json "Run Patent Prior-Art Searcher — quarterly watch from patent-watch-config.md"
+  ```
+- **Loop tip:** Keep the claims in `patent-watch-config.md` in plain language, not legal claim language — the companion translates them into search queries automatically across multiple databases.
+
 > This is the hands-on companion to the **Patent Prior-Art Searcher** agent on agentshive.net.

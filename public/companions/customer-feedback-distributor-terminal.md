@@ -54,4 +54,21 @@ If a needed server isn't connected, tell the user exactly which one to add and w
 - Empathy-first tone; one clear next step per routed item.
 - Categorize only from what the message says; flag duplicates as patterns rather than inventing severity.
 
+## Loop & Automation
+
+**Recommended loop:** Run every hour or on a webhook trigger when new feedback arrives.
+
+- **Continuous triage loop:** Poll your feedback inbox (email, Typeform, Intercom, App Store reviews) at a set interval, route each item to the right Slack channel, and mark it processed. Zero backlog by end of day.
+- **MCP connectors that unlock automation:**
+  - **Slack MCP** — posts routed feedback to `#product`, `#support`, `#bug-reports`, etc. without opening the app.
+  - **Gmail MCP** — reads feedback submitted by email; marks triaged so items aren't re-processed.
+  - **Playwright MCP** — scrapes feedback from web portals (App Store, G2, Trustpilot) that don't have an API.
+  - **Notion / Linear MCP** *(optional)* — creates bug or feature tickets directly from high-severity feedback.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (triage feedback every hour during business hours)
+  0 9-18 * * 1-5 claude --mcp-config ~/.claude/mcp.json "Run Customer Feedback Distributor — process new items"
+  ```
+- **Loop tip:** Keep a `processed-ids.json` so each loop run skips already-routed items — the companion writes this file automatically.
+
 > This is the hands-on companion to the **Customer Feedback Distributor Agent** agent on agentshive.net.

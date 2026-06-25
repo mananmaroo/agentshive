@@ -60,4 +60,21 @@ If the task must drive a native desktop app (a scanner or desktop accounting cli
 - **GAAP / IFRS field conventions** — keep tax, discounts, fees, and totals with the accounting meaning the document assigns them.
 - **Source fidelity** — every value traces to a specific field on the document; low-legibility fields get a confidence note, not a guess.
 
+## Loop & Automation
+
+**Recommended loop:** Run daily or whenever new invoices land in your inbox or a shared folder.
+
+- **AP automation loop:** The companion watches an `invoices/inbox/` folder, extracts all new files, validates the math, appends to `invoices-ledger.csv`, and moves processed files to `invoices/done/`. Your accounting spreadsheet stays current automatically.
+- **MCP connectors that unlock automation:**
+  - **Filesystem MCP** — reads invoice files (PDF, image, CSV) and writes to your ledger without prompts.
+  - **Gmail MCP** *(optional)* — fetches invoice attachment emails, saves them to the inbox folder, and marks emails processed — zero manual downloading.
+  - **Google Sheets MCP** *(optional)* — appends extracted rows directly to your accounts-payable spreadsheet.
+  - **Notion MCP** *(optional)* — logs each invoice to a Notion finance database with vendor, amount, and due date.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (extract invoices every weekday at 9am)
+  0 9 * * 1-5 claude --mcp-config ~/.claude/mcp.json "Run Invoice Data Extractor on ~/invoices/inbox/"
+  ```
+- **Loop tip:** Save your chart-of-accounts mapping in `invoice-categories.md` after the first run so vendor → category assignments apply automatically on every subsequent loop.
+
 > This is the hands-on companion to the **Invoice Data Extractor** agent on agentshive.net.

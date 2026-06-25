@@ -51,4 +51,21 @@ A ranked table (Markdown/CSV) of eligible grants with award size, verified deadl
 - Authoritative funding sources: government grant portals, official EU/national/regional program pages, recognized foundation directories.
 - Hard eligibility gating on entity type, location, sector, and stage before ranking.
 
+## Loop & Automation
+
+**Recommended loop:** Run weekly — grant deadlines change and new programmes open constantly.
+
+- **Deadline watchlist loop:** After the first run, the companion saves your eligibility profile and matched grants to `grant-watchlist.md`. Run weekly to catch new openings and flag approaching deadlines (< 30 days).
+- **MCP connectors that unlock automation:**
+  - **Playwright MCP** — browses official grant portals, government databases, and foundation sites to find and verify current listings.
+  - **Filesystem MCP** — reads your eligibility profile and writes the ranked grant list without prompting each run.
+  - **Gmail MCP** *(optional)* — emails you a deadline-alert digest every Monday with grants closing that week.
+  - **Notion / Google Sheets MCP** *(optional)* — maintains a live grant pipeline table with status, deadline, and match score.
+- **To run on a schedule in Claude Code:**
+  ```
+  # Add to crontab (scan for grants every Monday at 8am)
+  0 8 * * 1 claude --mcp-config ~/.claude/mcp.json "Run Grant Finder — update watchlist and alert on deadlines < 30 days"
+  ```
+- **Loop tip:** Keep your eligibility facts in `grant-profile.md`. The more specific your profile (sector, stage, geography, team size), the more precise each loop's results.
+
 > This is the hands-on companion to the **Grant Finder** agent on agentshive.net.
