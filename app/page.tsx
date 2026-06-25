@@ -19,7 +19,7 @@ interface Agent {
   creator_id: string;
   downloads_count: number;
   views_count: number;
-  average_rating: number;
+  average_rating: number | null;
   rating_count: number;
   verified: boolean;
   created_at: string;
@@ -182,7 +182,7 @@ function LandingPage() {
                   <div className="flex items-center gap-4 text-slate-400">
                     <div className="flex items-center gap-1">
                       <Star className="w-4 h-4 text-indigo-400 fill-indigo-400" />
-                      <span className="text-white font-semibold">{agent.average_rating.toFixed(1)}</span>
+                      <span className="text-white font-semibold">{(agent.average_rating ?? 0).toFixed(1)}</span>
                       <span>({agent.rating_count})</span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -447,7 +447,7 @@ function HomePage({ user }: { user: any }) {
                     <div className="flex items-center gap-3 text-slate-400">
                       <div className="flex items-center gap-1">
                         <Star className="w-4 h-4 text-indigo-400 fill-indigo-400" />
-                        <span className="text-white font-semibold">{agent.average_rating.toFixed(1)}</span>
+                        <span className="text-white font-semibold">{(agent.average_rating ?? 0).toFixed(1)}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Download className="w-4 h-4 text-indigo-400" />

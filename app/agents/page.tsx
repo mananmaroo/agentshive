@@ -42,7 +42,7 @@ interface Agent {
   creator_id: string;
   downloads_count: number;
   views_count: number;
-  average_rating: number;
+  average_rating: number | null;
   rating_count: number;
   verified: boolean;
   created_at: string;
@@ -412,7 +412,7 @@ export default function BrowseAgents() {
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {agent.tags.slice(0, 3).map((tag) => (
+                  {(agent.tags ?? []).slice(0, 3).map((tag) => (
                     <span
                       key={tag}
                       className="bg-slate-800 text-slate-400 text-xs px-2 py-1 rounded"
@@ -420,18 +420,18 @@ export default function BrowseAgents() {
                       {tag}
                     </span>
                   ))}
-                  {agent.tags.length > 3 && (
+                  {(agent.tags?.length ?? 0) > 3 && (
                     <span className="bg-slate-800 text-slate-400 text-xs px-2 py-1 rounded">
-                      +{agent.tags.length - 3}
+                      +{(agent.tags?.length ?? 0) - 3}
                     </span>
                   )}
                 </div>
 
                 {/* Category Badge */}
                 <div className="mb-4">
-                  {agent.category.length > 0 && (
+                  {(agent.category?.length ?? 0) > 0 && (
                     <span className="inline-block bg-slate-700 text-white text-xs px-2 py-1 rounded font-medium">
-                      {agent.category[0]}
+                      {agent.category![0]}
                     </span>
                   )}
                 </div>
@@ -451,7 +451,7 @@ export default function BrowseAgents() {
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 text-amber-500" />
                     <span>
-                      {agent.average_rating.toFixed(1)} ({agent.rating_count})
+                      {(agent.average_rating ?? 0).toFixed(1)} ({agent.rating_count})
                     </span>
                   </div>
                   <div className="flex items-center gap-1">

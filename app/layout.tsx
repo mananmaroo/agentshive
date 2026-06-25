@@ -56,6 +56,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://agentshive.net",
   },
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
