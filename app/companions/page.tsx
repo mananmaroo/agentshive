@@ -551,6 +551,12 @@ export default function Companions() {
                 </ul>
               </div>
 
+              {/* What you need */}
+              <div className="mb-3 bg-slate-800/50 rounded-lg px-3 py-2">
+                <p className="text-xs font-semibold text-slate-300 mb-0.5">What you need</p>
+                <p className="text-xs text-slate-400">{c.needs}</p>
+              </div>
+
               {/* MCP connectors */}
               <div className="mb-3">
                 <p className="text-xs font-semibold text-indigo-300 uppercase tracking-wide mb-2 flex items-center gap-1">
