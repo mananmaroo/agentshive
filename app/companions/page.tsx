@@ -10,6 +10,8 @@ import {
   Plus,
   ArrowRight,
   Bot,
+  Plug,
+  RefreshCw,
 } from 'lucide-react';
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
 import { useAuth } from '@/app/lib/auth-context';
@@ -48,6 +50,8 @@ type Companion = {
   does: string[];
   needs: string;
   platforms: Platform[];
+  mcps: string[];       // MCP servers to connect
+  loop: string;         // recommended run cadence
 };
 
 const companions: Companion[] = [
@@ -63,6 +67,8 @@ const companions: Companion[] = [
     ],
     needs: 'Gmail + Google Calendar + local files',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Gmail', 'Google Calendar', 'Filesystem'],
+    loop: 'Every morning',
   },
   {
     file: 'personal-assistant-notion-terminal.md',
@@ -76,6 +82,8 @@ const companions: Companion[] = [
     ],
     needs: 'Notion + Gmail + Google Calendar',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Gmail', 'Google Calendar', 'Notion'],
+    loop: 'Every morning',
   },
   {
     file: 'document-visualizer-terminal.md',
@@ -89,6 +97,8 @@ const companions: Companion[] = [
     ],
     needs: 'Local files only — no extra tools',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Filesystem', 'Google Drive (optional)'],
+    loop: 'Per document / batch nightly',
   },
   {
     file: 'smart-coder.md',
@@ -102,6 +112,8 @@ const companions: Companion[] = [
     ],
     needs: 'Nothing extra — runs anywhere',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Filesystem', 'GitHub (optional)', 'Slack (optional)'],
+    loop: 'Start & end of every session',
   },
   {
     file: 'academic-paper-summarizer-terminal.md',
@@ -115,6 +127,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser) to fetch papers',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Notion (optional)'],
+    loop: 'Per paper / weekly reading list',
   },
   {
     file: 'ai-job-application-automation-terminal.md',
@@ -128,6 +142,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Gmail (optional)'],
+    loop: 'Every morning',
   },
   {
     file: 'calendar-scheduling-assistant-terminal.md',
@@ -141,6 +157,8 @@ const companions: Companion[] = [
     ],
     needs: 'Google Calendar or Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Google Calendar', 'Playwright'],
+    loop: 'On demand',
   },
   {
     file: 'competitor-analysis-agent-terminal.md',
@@ -154,6 +172,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Notion (optional)'],
+    loop: 'Monthly',
   },
   {
     file: 'customer-feedback-distributor-terminal.md',
@@ -167,6 +187,8 @@ const companions: Companion[] = [
     ],
     needs: 'Slack (Playwright optional)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Slack', 'Gmail (optional)', 'Playwright (optional)'],
+    loop: 'Every hour',
   },
   {
     file: 'daily-standup-reporter-terminal.md',
@@ -180,6 +202,8 @@ const companions: Companion[] = [
     ],
     needs: 'GitHub + Slack + local git',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['GitHub', 'Slack', 'Linear / Jira (optional)'],
+    loop: 'Every weekday morning',
   },
   {
     file: 'due-diligence-researcher-terminal.md',
@@ -193,6 +217,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Gmail (optional)'],
+    loop: 'Per company / weekly watchlist',
   },
   {
     file: 'expense-report-categorizer-terminal.md',
@@ -206,6 +232,8 @@ const companions: Companion[] = [
     ],
     needs: 'Local files only — no extra tools',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Filesystem', 'Gmail (optional)', 'Google Sheets (optional)'],
+    loop: 'Monthly',
   },
   {
     file: 'file-organizer-agent-terminal.md',
@@ -219,6 +247,8 @@ const companions: Companion[] = [
     ],
     needs: 'Local files only — no extra tools',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Filesystem', 'Google Drive (optional)'],
+    loop: 'Weekly',
   },
   {
     file: 'grant-finder-terminal.md',
@@ -232,6 +262,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Gmail (optional)'],
+    loop: 'Weekly deadline watch',
   },
   {
     file: 'invoice-data-extractor-terminal.md',
@@ -245,6 +277,8 @@ const companions: Companion[] = [
     ],
     needs: 'Local files (Playwright optional)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Filesystem', 'Gmail (optional)', 'Google Sheets (optional)'],
+    loop: 'Daily / on new invoices',
   },
   {
     file: 'market-research-analyst-terminal.md',
@@ -258,6 +292,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Notion (optional)'],
+    loop: 'Monthly / quarterly',
   },
   {
     file: 'newsletter-curator-terminal.md',
@@ -271,6 +307,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Gmail (optional)'],
+    loop: 'Weekly issue',
   },
   {
     file: 'patent-prior-art-searcher-terminal.md',
@@ -284,6 +322,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Gmail (optional)'],
+    loop: 'Once at filing, then quarterly',
   },
   {
     file: 'pdf-reader-summarizer-terminal.md',
@@ -297,6 +337,8 @@ const companions: Companion[] = [
     ],
     needs: 'Local files (Playwright optional)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Filesystem', 'Gmail (optional)', 'Google Drive (optional)'],
+    loop: 'Per file / batch daily',
   },
   {
     file: 'support-ticket-triage-agent-terminal.md',
@@ -308,8 +350,10 @@ const companions: Companion[] = [
       'Picks the queue and help docs',
       'Drafts a reply, posts after approval',
     ],
-    needs: 'Playwright + Slack (browser)',
+    needs: 'Playwright + Slack',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Slack', 'Linear / Jira (optional)'],
+    loop: 'Every 30 min (business hours)',
   },
   {
     file: 'trend-scout-terminal.md',
@@ -323,6 +367,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'Slack (optional)', 'Notion (optional)'],
+    loop: 'Every Monday',
   },
   {
     file: 'web-scraping-recipe-builder-terminal.md',
@@ -336,6 +382,8 @@ const companions: Companion[] = [
     ],
     needs: 'Playwright (browser)',
     platforms: ['Claude', 'OpenAI', 'Perplexity'],
+    mcps: ['Playwright', 'Filesystem', 'GitHub (optional)'],
+    loop: 'Build once, run on schedule',
   },
 ];
 
@@ -503,9 +551,25 @@ export default function Companions() {
                 </ul>
               </div>
 
-              <div className="mb-4">
+              {/* MCP connectors */}
+              <div className="mb-3">
+                <p className="text-xs font-semibold text-indigo-300 uppercase tracking-wide mb-2 flex items-center gap-1">
+                  <Plug className="w-3 h-3" /> MCP Connectors
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {c.mcps.map((m) => (
+                    <span key={m} className={`text-[11px] px-2 py-0.5 rounded-full font-medium ${m.includes('optional') ? 'bg-slate-700/60 text-slate-400' : 'bg-indigo-900/50 text-indigo-300'}`}>
+                      {m}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Loop cadence */}
+              <div className="mb-4 flex items-center gap-1.5">
+                <RefreshCw className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 <p className="text-xs text-slate-400">
-                  <span className="font-semibold text-slate-300">Needs:</span> {c.needs}
+                  <span className="font-semibold text-emerald-400">Loop:</span> {c.loop}
                 </p>
               </div>
 
