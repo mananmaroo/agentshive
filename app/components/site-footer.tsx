@@ -195,7 +195,19 @@ export function SiteFooter() {
               Agentshive — Open Registry for AI Agents
             </p>
             <p className="text-xs text-slate-500">
-              Created by <span className="text-indigo-400 font-semibold">Mikro-kosmos</span> • Built with Next.js, Supabase, and Tailwind CSS
+              Created by <span className="text-indigo-400 font-semibold">Manan Maroo (mikrocosmos)</span> • Built with Next.js, Supabase, and Tailwind CSS
+            </p>
+            <p className="text-xs text-slate-500 mt-1">
+              Also check out{' '}
+              <a
+                href="https://stockinfo-d4vd.onrender.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-400 hover:text-indigo-300 transition"
+              >
+                StockInfo
+              </a>
+              {' '}— AI-powered supply chain market intelligence
             </p>
           </div>
         </div>
