@@ -12,6 +12,7 @@ import {
   Bot,
   Plug,
   RefreshCw,
+  Search,
 } from 'lucide-react';
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
 import { useAuth } from '@/app/lib/auth-context';
@@ -392,6 +393,7 @@ export default function Companions() {
   const [agents, setAgents] = useState<Agent[]>([]);
   const [creators, setCreators] = useState<Map<string, Creator>>(new Map());
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Monotonic id so a slow earlier response can't overwrite a newer one
   const fetchIdRef = useRef(0);
@@ -492,6 +494,18 @@ export default function Companions() {
           </div>
         </div>
 
+        {/* Search bar */}
+        <div className="relative mb-8">
+          <Search className="absolute left-4 top-3 text-indigo-400 w-5 h-5" />
+          <input
+            type="text"
+            placeholder="Search companions..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-slate-900/60 border border-slate-800 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+          />
+        </div>
+
         {/* How it works */}
         <div className="border border-slate-700 bg-slate-800/40 rounded-lg p-6 mb-12">
           <h2 className="text-lg font-semibold text-white mb-2">How companions work</h2>
@@ -514,7 +528,11 @@ export default function Companions() {
 
         {/* All official companions — one consistent set */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {companions.map((c) => (
+          {companions.filter(c =>
+            !searchQuery ||
+            c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            c.tagline.toLowerCase().includes(searchQuery.toLowerCase())
+          ).map((c) => (
             <div
               key={c.file}
               className="border border-indigo-500/30 bg-indigo-500/5 rounded-lg p-6 flex flex-col"

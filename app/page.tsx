@@ -5,12 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, Upload, TrendingUp, Users, BookOpen, Zap, LogOut, ArrowRight, Star, Download, Terminal, Code, BarChart3, PenTool, FlaskConical, Headphones, GraduationCap, Briefcase } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseAnon = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-);
+import { supabaseAnon } from '@/app/lib/supabase-anon';
 
 interface Agent {
   id: string;
@@ -343,7 +338,7 @@ function HomePage({ user }: { user: any }) {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const q = searchInput.trim();
-    router.push(q ? `/agents?q=${encodeURIComponent(q)}` : '/agents');
+    router.push(q ? `/search?q=${encodeURIComponent(q)}` : '/agents');
   };
 
   useEffect(() => {
@@ -389,7 +384,7 @@ function HomePage({ user }: { user: any }) {
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search agents..."
+              placeholder="Search agents, prompts, companions..."
               className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition"
             />
           </div>

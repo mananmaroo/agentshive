@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { supabase } from './supabase-client';
+import { supabaseAnon as supabase } from './supabase-anon';
 
 export interface UserProfile {
   id: string;
@@ -26,49 +26,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        // ponytail: 5s timeout so a paused/dead Supabase project doesn't freeze every page
-        const sessionPromise = supabase.auth.getSession();
-        const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('auth timeout')), 5000)
-        );
-        const { data: { session } } = await Promise.race([sessionPromise, timeoutPromise]) as Awaited<typeof sessionPromise>;
-
-        if (session?.user) {
-          const { data: profile } = await supabase
-            .from('users')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-
-          setUser(profile);
-        }
-      } catch (error) {
-        console.error('Auth initialization error:', error);
-      } finally {
-        setLoading(false);
-      }
+    const fetchProfile = async (userId: string) => {
+      const { data: profile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      return profile as UserProfile | null;
     };
 
-    initializeAuth();
-
+    // onAuthStateChange fires INITIAL_SESSION on mount — use it as the sole
+    // source of truth so there's no race between getSession + the listener.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setLoading(false);
+          return;
+        }
         if (session?.user) {
           try {
-            const { data: profile } = await supabase
-              .from('users')
-              .select('*')
-              .eq('id', session.user.id)
-              .single();
+            const profile = await fetchProfile(session.user.id);
             setUser(profile);
           } catch (error) {
             console.error('Profile fetch error:', error);
-            setUser(null);
           }
-        } else {
-          setUser(null);
         }
         setLoading(false);
       }

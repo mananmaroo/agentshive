@@ -67,6 +67,7 @@ export default function BrowseAgents() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
 
   const itemsPerPage = 12;
   const categories = [
@@ -82,10 +83,19 @@ export default function BrowseAgents() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
-    if (q) setSearchQuery(q);
+    if (q) { setSearchQuery(q); setSearchInput(q); }
     const cat = params.get('category');
     if (cat && categories.includes(cat)) setSelectedCategory(cat);
   }, []);
+
+  // Debounce search input so we don't fire on every keystroke
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchQuery(searchInput);
+      setCurrentPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   useEffect(() => {
     fetchAgents();
@@ -207,11 +217,8 @@ export default function BrowseAgents() {
             <input
               type="text"
               placeholder="Search agents by name, tags, or description..."
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setCurrentPage(1);
-              }}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               className="w-full bg-slate-900/60 border border-slate-800 rounded-lg pl-12 pr-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
             />
           </div>
@@ -347,24 +354,27 @@ export default function BrowseAgents() {
         </div>
 
         {/* Results Count */}
-        <div className="text-slate-400 text-sm mb-6">
-          {totalCount === 0 ? (
-            'No agents found'
-          ) : (
-            <>
-              Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
-              {Math.min(currentPage * itemsPerPage, totalCount)} of{' '}
-              {totalCount} agents
-            </>
-          )}
-        </div>
+        {!loading && (
+          <div className="text-slate-400 text-sm mb-6">
+            {totalCount === 0 ? (
+              'No agents found'
+            ) : (
+              <>
+                Showing {(currentPage - 1) * itemsPerPage + 1} to{' '}
+                {Math.min(currentPage * itemsPerPage, totalCount)} of{' '}
+                {totalCount} agents
+              </>
+            )}
+          </div>
+        )}
+        {loading && <div className="h-6 mb-6" />}
 
         {/* Agents Grid */}
-        {loading ? (
+        {loading && paginatedAgents.length === 0 ? (
           <div className="flex justify-center items-center py-20">
             <div className="text-slate-400">Loading agents...</div>
           </div>
-        ) : paginatedAgents.length === 0 ? (
+        ) : !loading && paginatedAgents.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-slate-400 text-lg">No agents found matching your criteria</p>
             <Link
@@ -375,7 +385,7 @@ export default function BrowseAgents() {
             </Link>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 transition-opacity duration-200 ${loading ? 'opacity-50 pointer-events-none' : ''}`}>
             {paginatedAgents.map((agent) => (
               <Link
                 key={agent.id}
