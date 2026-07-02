@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Search, Bot, Sparkles, Terminal, Star, Download } from 'lucide-react';
+import { Search, Bot, Sparkles, Terminal, Star, Download, PlusCircle } from 'lucide-react';
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
 
 interface Agent {
@@ -53,34 +53,31 @@ function SearchResults() {
       const term = query.replace(/[,()"{}*:\\]/g, ' ').trim();
       if (!term) { setLoading(false); return; }
 
-      const filter = `title.ilike.%${term}%,description.ilike.%${term}%,tags.cs.{"${term}"}`;
+      const titleFilter = `title.ilike.%${term}%`;
+      const fullFilter = `title.ilike.%${term}%,description.ilike.%${term}%,tags.cs.{"${term}"}`;
 
-      const [agentsRes, promptsRes, companionsRes] = await Promise.all([
-        supabase.from('agents').select('*')
-          .not('category', 'cs', '{"Perfect Prompt"}')
-          .not('category', 'cs', '{"Companion"}')
-          .or(filter)
-          .order('downloads_count', { ascending: false })
-          .limit(30),
-        supabase.from('agents').select('*')
-          .contains('category', ['Perfect Prompt'])
-          .or(filter)
-          .order('downloads_count', { ascending: false })
-          .limit(30),
-        supabase.from('agents').select('*')
-          .contains('category', ['Companion'])
-          .or(filter)
-          .order('downloads_count', { ascending: false })
-          .limit(30),
+      // Helper: merge title-first results then description/tag results, deduping by id
+      const mergeRanked = (titleHits: Agent[], allHits: Agent[]) => {
+        const seen = new Set(titleHits.map((a) => a.id));
+        return [...titleHits, ...allHits.filter((a) => !seen.has(a.id))];
+      };
+
+      const [agentsTitleRes, agentsAllRes, promptsTitleRes, promptsAllRes, companionsTitleRes, companionsAllRes] = await Promise.all([
+        supabase.from('agents').select('*').not('category', 'cs', '{"Perfect Prompt"}').not('category', 'cs', '{"Companion"}').or(titleFilter).order('downloads_count', { ascending: false }).limit(30),
+        supabase.from('agents').select('*').not('category', 'cs', '{"Perfect Prompt"}').not('category', 'cs', '{"Companion"}').or(fullFilter).order('downloads_count', { ascending: false }).limit(30),
+        supabase.from('agents').select('*').contains('category', ['Perfect Prompt']).or(titleFilter).order('downloads_count', { ascending: false }).limit(30),
+        supabase.from('agents').select('*').contains('category', ['Perfect Prompt']).or(fullFilter).order('downloads_count', { ascending: false }).limit(30),
+        supabase.from('agents').select('*').contains('category', ['Companion']).or(titleFilter).order('downloads_count', { ascending: false }).limit(30),
+        supabase.from('agents').select('*').contains('category', ['Companion']).or(fullFilter).order('downloads_count', { ascending: false }).limit(30),
       ]);
 
       if (fetchId !== fetchIdRef.current) return;
 
-      const allItems = [
-        ...(agentsRes.data || []),
-        ...(promptsRes.data || []),
-        ...(companionsRes.data || []),
-      ];
+      const mergedAgents = mergeRanked(agentsTitleRes.data || [], agentsAllRes.data || []);
+      const mergedPrompts = mergeRanked(promptsTitleRes.data || [], promptsAllRes.data || []);
+      const mergedCompanions = mergeRanked(companionsTitleRes.data || [], companionsAllRes.data || []);
+
+      const allItems = [...mergedAgents, ...mergedPrompts, ...mergedCompanions];
       const creatorIds = [...new Set(allItems.map((a) => a.creator_id))];
       let creatorMap = new Map<string, Creator>();
       if (creatorIds.length > 0) {
@@ -90,9 +87,9 @@ function SearchResults() {
       }
 
       if (fetchId !== fetchIdRef.current) return;
-      setAgents(agentsRes.data || []);
-      setPrompts(promptsRes.data || []);
-      setCompanions(companionsRes.data || []);
+      setAgents(mergedAgents);
+      setPrompts(mergedPrompts);
+      setCompanions(mergedCompanions);
       setCreators(creatorMap);
       setLoading(false);
     };
@@ -165,8 +162,20 @@ function SearchResults() {
             {loading ? (
               <div className="text-center py-16 text-slate-400">Searching...</div>
             ) : currentItems.length === 0 ? (
-              <div className="text-center py-16 text-slate-400">
-                No {tabs.find(t => t.key === activeTab)?.label.toLowerCase()} found for &ldquo;{query}&rdquo;
+              <div className="text-center py-16">
+                <p className="text-slate-400 mb-2">
+                  No {tabs.find(t => t.key === activeTab)?.label.toLowerCase()} found for &ldquo;{query}&rdquo;
+                </p>
+                <p className="text-slate-500 text-sm mb-5">
+                  Can&apos;t find what you need? Request it and we&apos;ll build it.
+                </p>
+                <Link
+                  href={`/request-agent?q=${encodeURIComponent(query)}`}
+                  className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg transition"
+                >
+                  <PlusCircle className="w-4 h-4" />
+                  Request this agent
+                </Link>
               </div>
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">

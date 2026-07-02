@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 
-export default function RequestAgentPage() {
+function RequestAgentForm() {
+  const searchParams = useSearchParams();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,6 +13,11 @@ export default function RequestAgentPage() {
     useCase: '',
     budget: '',
   });
+
+  useEffect(() => {
+    const q = searchParams.get('q');
+    if (q) setFormData((prev) => ({ ...prev, description: q }));
+  }, [searchParams]);
 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -232,5 +239,13 @@ export default function RequestAgentPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function RequestAgentPage() {
+  return (
+    <Suspense>
+      <RequestAgentForm />
+    </Suspense>
   );
 }
