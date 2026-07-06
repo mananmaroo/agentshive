@@ -32,7 +32,7 @@ export function SidebarNav() {
 
   return (
     <aside
-      className="group fixed left-0 top-0 h-screen w-16 hover:w-64 bg-[#0d0d1a] border-r border-slate-800 overflow-hidden pt-6 transition-all duration-200 ease-out z-50"
+      className="group fixed left-0 top-0 h-screen w-16 hover:w-64 bg-[#0d0d1a] border-r border-slate-800 overflow-hidden pt-6 transition-all duration-200 ease-out z-[60]"
     >
       {/* Logo */}
       <Link href="/" className="px-4 mb-8 block whitespace-nowrap">

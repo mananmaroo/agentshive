@@ -13,6 +13,7 @@ import {
   CheckCircle,
   Upload,
   Link2,
+  Pencil,
 } from 'lucide-react';
 
 type Level = 'beginner' | 'intermediate' | 'advanced' | 'expert';
@@ -63,6 +64,9 @@ export default function Profile() {
   const needsOnboarding = !user?.onboarded_at;
 
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [editingAnswers, setEditingAnswers] = useState(false);
+  const levelLabel = LEVELS.find((l) => l.value === level)?.label;
+  const interestLabel = INTERESTS.find((i) => i.value === interest)?.label;
   const ownedBadges = sortBadges(user?.badges || []);
   const newBadges = (user?.badges || []).filter(
     (b) => isBadgeId(b) && !(user?.badges_acknowledged || []).includes(b)
@@ -190,6 +194,7 @@ export default function Profile() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || 'Failed to update profile');
+      setEditingAnswers(false);
       setSuccess('Profile saved!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err: any) {
@@ -352,52 +357,83 @@ export default function Profile() {
                 <p className="text-xs text-slate-500 mt-1">{bio.length}/160 characters</p>
               </div>
 
-              {/* Experience level */}
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  How much do you know about AI agents?
-                </label>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {LEVELS.map((l) => (
+              {level && interest && !editingAnswers ? (
+                /* Collapsed summary once answered */
+                <div className="rounded-lg border border-slate-700 bg-slate-900/40 p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-2 text-sm">
+                      <p className="text-slate-300">
+                        <span className="text-slate-500">Agent knowledge:</span>{' '}
+                        <span className="text-white font-medium">{levelLabel}</span>
+                      </p>
+                      <p className="text-slate-300">
+                        <span className="text-slate-500">Here to:</span>{' '}
+                        <span className="text-white font-medium">{interestLabel}</span>
+                      </p>
+                    </div>
                     <button
                       type="button"
-                      key={l.value}
-                      onClick={() => setLevel(l.value)}
-                      className={`text-left p-3 rounded-lg border transition ${
-                        level === l.value
-                          ? 'border-blue-500 bg-blue-500/10'
-                          : 'border-slate-700 bg-slate-900/50 hover:border-slate-500'
-                      }`}
+                      onClick={() => setEditingAnswers(true)}
+                      className="shrink-0 flex items-center gap-1 text-blue-400 hover:text-blue-300 text-sm"
                     >
-                      <div className="text-white text-sm font-medium">{l.label}</div>
-                      <div className="text-xs text-slate-400">{l.hint}</div>
+                      <Pencil className="w-4 h-4" /> Edit
                     </button>
-                  ))}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-3">
+                    These answers just personalize what you see — editing them won&apos;t affect
+                    any badges you&apos;ve earned (badges come from your activity, not this).
+                  </p>
                 </div>
-              </div>
+              ) : (
+                <>
+                  {/* Experience level */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                      How much do you know about AI agents?
+                    </label>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {LEVELS.map((l) => (
+                        <button
+                          type="button"
+                          key={l.value}
+                          onClick={() => setLevel(l.value)}
+                          className={`text-left p-3 rounded-lg border transition ${
+                            level === l.value
+                              ? 'border-blue-500 bg-blue-500/10'
+                              : 'border-slate-700 bg-slate-900/50 hover:border-slate-500'
+                          }`}
+                        >
+                          <div className="text-white text-sm font-medium">{l.label}</div>
+                          <div className="text-xs text-slate-400">{l.hint}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
 
-              {/* Primary interest */}
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">
-                  What brings you here?
-                </label>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {INTERESTS.map((i) => (
-                    <button
-                      type="button"
-                      key={i.value}
-                      onClick={() => setInterest(i.value)}
-                      className={`text-left p-3 rounded-lg border transition text-sm ${
-                        interest === i.value
-                          ? 'border-blue-500 bg-blue-500/10 text-white'
-                          : 'border-slate-700 bg-slate-900/50 hover:border-slate-500 text-slate-300'
-                      }`}
-                    >
-                      {i.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                  {/* Primary interest */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-300 mb-2">
+                      What brings you here?
+                    </label>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      {INTERESTS.map((i) => (
+                        <button
+                          type="button"
+                          key={i.value}
+                          onClick={() => setInterest(i.value)}
+                          className={`text-left p-3 rounded-lg border transition text-sm ${
+                            interest === i.value
+                              ? 'border-blue-500 bg-blue-500/10 text-white'
+                              : 'border-slate-700 bg-slate-900/50 hover:border-slate-500 text-slate-300'
+                          }`}
+                        >
+                          {i.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
 
               <button
                 type="submit"
