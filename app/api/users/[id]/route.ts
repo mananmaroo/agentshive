@@ -95,6 +95,7 @@ export async function PATCH(
       avatar_url,
       github_username,
       website_url,
+      linkedin_url,
       experience_level,
       primary_interest,
       badges_acknowledged,
@@ -145,6 +146,7 @@ export async function PATCH(
     if (avatar_url) updateData.avatar_url = avatar_url;
     if (github_username) updateData.github_username = github_username;
     if (website_url !== undefined) updateData.website_url = website_url || null;
+    if (linkedin_url !== undefined) updateData.linkedin_url = linkedin_url || null;
     if (experience_level) updateData.experience_level = experience_level;
     if (primary_interest) updateData.primary_interest = primary_interest;
     // Stamp first-time onboarding once the user answers the questions.

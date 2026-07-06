@@ -11,6 +11,7 @@ export interface UserProfile {
   bio: string | null;
   github_username: string | null;
   website_url: string | null;
+  linkedin_url: string | null;
   experience_level: 'beginner' | 'intermediate' | 'advanced' | 'expert' | null;
   primary_interest: 'building' | 'browsing' | 'learning' | 'sharing' | null;
   onboarded_at: string | null;

@@ -51,6 +51,8 @@ export default function Profile() {
   const [level, setLevel] = useState<Level | ''>('');
   const [interest, setInterest] = useState<Interest | ''>('');
   const [githubUsername, setGithubUsername] = useState<string | null>(null);
+  const [linkedinUrl, setLinkedinUrl] = useState('');
+  const [websiteUrl, setWebsiteUrl] = useState('');
 
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -124,6 +126,8 @@ export default function Profile() {
     setLevel((user.experience_level as Level) || '');
     setInterest((user.primary_interest as Interest) || '');
     setGithubUsername(user.github_username || null);
+    setLinkedinUrl(user.linkedin_url || '');
+    setWebsiteUrl(user.website_url || '');
     setPageLoading(false);
     loadStats(user.id);
     syncGithubIdentity(user.id, user.github_username || null);
@@ -188,6 +192,8 @@ export default function Profile() {
         body: JSON.stringify({
           username: name,
           bio: bio.trim() || null,
+          linkedin_url: linkedinUrl.trim() || null,
+          website_url: websiteUrl.trim() || null,
           experience_level: level || undefined,
           primary_interest: interest || undefined,
         }),
@@ -357,6 +363,30 @@ export default function Profile() {
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 resize-none"
                 />
                 <p className="text-xs text-slate-500 mt-1">{bio.length}/160 characters</p>
+              </div>
+
+              {/* Social links */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">LinkedIn URL</label>
+                  <input
+                    type="url"
+                    value={linkedinUrl}
+                    onChange={(e) => setLinkedinUrl(e.target.value)}
+                    placeholder="https://linkedin.com/in/you"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Website URL</label>
+                  <input
+                    type="url"
+                    value={websiteUrl}
+                    onChange={(e) => setWebsiteUrl(e.target.value)}
+                    placeholder="https://yoursite.com"
+                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
+                  />
+                </div>
               </div>
 
               {level && interest && !editingAnswers ? (

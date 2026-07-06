@@ -511,6 +511,16 @@ export default function UploadAgent() {
             )}
           </div>
 
+          {/* Multi-file hint */}
+          <div className="bg-slate-800/40 border border-slate-700 rounded-lg p-4 text-sm text-slate-300">
+            <p className="font-medium text-white mb-1">Agent made of multiple scripts?</p>
+            <p className="text-slate-400">
+              Put all your scripts in a GitHub repo and link it in <strong>Repository URL</strong> below.
+              Use the file/paste box above for the <strong>main instructions</strong> (the CLAUDE.md or README)
+              — that&apos;s what people copy to get started, and the repo holds the full project.
+            </p>
+          </div>
+
           {/* Repository & Homepage URLs (Optional) */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
@@ -522,6 +532,7 @@ export default function UploadAgent() {
                 onChange={(e) => setRepositoryUrl(e.target.value)}
                 className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
               />
+              <p className="text-xs text-slate-500 mt-1">Best place for multi-file agents — link the full repo here.</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-300 mb-2">Homepage / Demo URL</label>
