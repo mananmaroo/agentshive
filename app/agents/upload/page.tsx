@@ -125,42 +125,61 @@ export default function UploadAgent() {
 
     setLoading(true);
     try {
-      // Never let a request hang the button forever — fail loudly after 15s.
-      const withTimeout = <T,>(p: PromiseLike<T>, label: string): Promise<T> =>
-        Promise.race([
-          Promise.resolve(p),
-          new Promise<T>((_, reject) =>
-            setTimeout(() => reject(new Error(`${label} timed out. Check your connection and try again.`)), 15000)
-          ),
-        ]);
+      // The supabase-js query builder has been hanging on its internal token
+      // handling, while raw PostgREST responds instantly. So we talk to
+      // PostgREST directly with the user's access token.
+      const { data: sd } = await supabase.auth.getSession();
+      const token = sd.session?.access_token;
+      if (!token) throw new Error('Your session expired. Please log out and back in.');
 
-      const { data: agent, error: agentError } = await withTimeout(
-        supabase
-          .from('agents')
-          .insert({
-            title: agentName.trim(),
-            description: description.trim(),
-            category: [category],
-            tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
-            creator_id: user.id,
-            license,
-            version: version.trim() || '1.0.0',
-            repository_url: repositoryUrl.trim() || null,
-            homepage_url: homepageUrl.trim() || null,
-            downloads_count: 0,
-            views_count: 0,
-            average_rating: 0,
-            rating_count: 0,
-            verified: false,
-            featured: false,
-          })
-          .select()
-          .single(),
-        'Creating agent'
+      const restUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+      const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+      const headers = {
+        apikey: anonKey,
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      };
+
+      const rest = async (path: string, body: unknown, returnRow: boolean) => {
+        const res = await fetch(`${restUrl}/rest/v1/${path}`, {
+          method: 'POST',
+          headers: returnRow ? { ...headers, Prefer: 'return=representation' } : headers,
+          body: JSON.stringify(body),
+          signal: AbortSignal.timeout(20000),
+        });
+        const text = await res.text();
+        if (!res.ok) {
+          let msg = text;
+          try { msg = JSON.parse(text).message || text; } catch {}
+          throw new Error(msg || `Request failed (${res.status})`);
+        }
+        return text ? JSON.parse(text) : null;
+      };
+
+      const inserted = await rest(
+        'agents',
+        {
+          title: agentName.trim(),
+          description: description.trim(),
+          category: [category],
+          tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+          creator_id: user.id,
+          license,
+          version: version.trim() || '1.0.0',
+          repository_url: repositoryUrl.trim() || null,
+          homepage_url: homepageUrl.trim() || null,
+          downloads_count: 0,
+          views_count: 0,
+          average_rating: 0,
+          rating_count: 0,
+          verified: false,
+          featured: false,
+        },
+        true
       );
-      if (agentError) throw agentError;
+      const agent = Array.isArray(inserted) ? inserted[0] : inserted;
 
-      const fileRow: Record<string, string> = isVideo
+      const fileRow = isVideo
         ? { agent_id: agent.id, file_url: videoUrl.trim(), file_type: 'video_url', file_name: 'demo-video' }
         : {
             agent_id: agent.id,
@@ -169,11 +188,7 @@ export default function UploadAgent() {
             file_name: fileName || 'claude.md',
             file_content: fileContent,
           };
-      const { error: fileError } = await withTimeout(
-        supabase.from('agent_files').insert(fileRow),
-        'Saving agent file'
-      );
-      if (fileError) throw fileError;
+      await rest('agent_files', fileRow, false);
 
       router.push(`/agents/${agent.id}`);
     } catch (err: any) {
