@@ -62,6 +62,7 @@ export default function UploadAgent() {
   const [terms, setTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const githubHandle = (user as any)?.github_username as string | undefined;
 
   const handleFile = async (file: File | undefined) => {
     if (!file) return;
@@ -73,6 +74,21 @@ export default function UploadAgent() {
     const url = githubUrl.trim();
     if (!url) {
       setError('Paste a link to a file in your GitHub repo.');
+      return;
+    }
+    // #2: GitHub import requires a connected GitHub account.
+    const linkedHandle = (user as any)?.github_username as string | undefined;
+    if (!linkedHandle) {
+      setError('Connect your GitHub account first (Profile → Connect GitHub) to import from GitHub. This keeps people from uploading others’ work.');
+      return;
+    }
+    // #1: the repo owner in the URL must match the connected GitHub handle.
+    const ownerMatch = url.match(/github\.com\/([^/]+)\//i);
+    const urlOwner = ownerMatch?.[1];
+    if (urlOwner && urlOwner.toLowerCase() !== linkedHandle.toLowerCase()) {
+      setError(
+        `That link is under "@${urlOwner}", but your connected GitHub is "@${linkedHandle}". Only import files from your own GitHub account, or paste the content manually if you have the right to share it.`
+      );
       return;
     }
     // Convert a normal GitHub file page URL to its raw form.
@@ -437,25 +453,38 @@ export default function UploadAgent() {
 
                 {inputMethod === 'github' && (
                   <div className="space-y-3">
+                    {githubHandle ? (
+                      <div className="text-xs text-emerald-400 flex items-center gap-1.5">
+                        <FileText className="w-3.5 h-3.5" />
+                        GitHub connected as @{githubHandle} — you can import files from your own repos.
+                      </div>
+                    ) : (
+                      <div className="bg-amber-500/10 border border-amber-500/30 text-amber-200 px-3 py-2 rounded-lg text-xs">
+                        Connect your GitHub account to import from GitHub.{' '}
+                        <Link href="/profile" className="font-semibold underline">Connect GitHub in your profile</Link>.
+                        This keeps people from uploading others&apos; work. You can still paste text manually.
+                      </div>
+                    )}
                     <div className="flex gap-2">
                       <input
                         type="url"
                         value={githubUrl}
                         onChange={(e) => setGithubUrl(e.target.value)}
-                        placeholder="https://github.com/user/repo/blob/main/agent.md"
-                        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
+                        placeholder={githubHandle ? `https://github.com/${githubHandle}/repo/blob/main/agent.md` : 'https://github.com/user/repo/blob/main/agent.md'}
+                        disabled={!githubHandle}
+                        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 disabled:opacity-50"
                       />
                       <button
                         type="button"
                         onClick={importFromGithub}
-                        disabled={githubLoading}
+                        disabled={githubLoading || !githubHandle}
                         className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition disabled:opacity-50 whitespace-nowrap"
                       >
                         {githubLoading ? 'Fetching…' : 'Fetch file'}
                       </button>
                     </div>
                     <p className="text-xs text-slate-500">
-                      Paste the link to a single file in a public repo. We&apos;ll pull its contents in.
+                      Paste the link to a single file in <strong>your</strong> public repo. We&apos;ll pull its contents in.
                     </p>
                     {fileContent && fileName && (
                       <div className="text-xs text-emerald-400 flex items-center gap-1.5">

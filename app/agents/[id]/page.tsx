@@ -365,9 +365,24 @@ export default function AgentDetail() {
               </div>
               <h2 className="text-xl font-semibold text-white mt-2 mb-1">Copy and paste into any AI chat</h2>
               <p className="text-slate-400 text-sm mb-4">
-                Works with <strong className="text-white">ChatGPT, Claude.ai, Perplexity</strong> — no downloads, no setup.
-                Just copy this, open your AI chat, and paste it in as your first message.
+                Works with <strong className="text-white">ChatGPT, Claude.ai, Perplexity</strong> — no downloads, no setup, no code.
               </p>
+              {/* Absolute-beginner 3 steps */}
+              <div className="grid sm:grid-cols-3 gap-3 mb-4">
+                {[
+                  { n: '1', t: 'Copy', d: 'Tap the Copy button below.' },
+                  { n: '2', t: 'Open an AI chat', d: 'ChatGPT, Claude.ai, or Perplexity.' },
+                  { n: '3', t: 'Paste & chat', d: 'Paste as your first message, then talk normally.' },
+                ].map((s) => (
+                  <div key={s.n} className="bg-slate-900/60 border border-slate-700 rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="w-5 h-5 rounded-full bg-indigo-600 text-white text-xs font-bold flex items-center justify-center">{s.n}</span>
+                      <span className="text-white text-sm font-semibold">{s.t}</span>
+                    </div>
+                    <p className="text-xs text-slate-400">{s.d}</p>
+                  </div>
+                ))}
+              </div>
               <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 flex items-start gap-3">
                 <pre className="text-xs text-slate-200 flex-1 overflow-auto max-h-60 whitespace-pre-wrap break-words">
                   {pasteCommand ?? 'Fetching instructions…'}
