@@ -10,8 +10,12 @@ export function SidebarNav() {
   const { user, signOut } = useAuth();
 
   const handleLogOut = async () => {
-    await signOut();
-    window.location.reload();
+    try {
+      await signOut();
+    } finally {
+      // Always leave the authed view, even if sign-out hiccups.
+      window.location.href = '/';
+    }
   };
 
   const isActive = (path: string) => pathname === path || pathname.startsWith(path + '/');

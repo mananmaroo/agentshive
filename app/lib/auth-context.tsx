@@ -97,8 +97,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    // Clear local state immediately so the UI updates even if the network
+    // sign-out is slow. Use scope 'local' so it doesn't block on a server
+    // round-trip, and never let it hang the caller.
     setUser(null);
+    try {
+      await Promise.race([
+        supabase.auth.signOut({ scope: 'local' }),
+        new Promise((resolve) => setTimeout(resolve, 3000)),
+      ]);
+    } catch (e) {
+      console.error('signOut error (ignored):', e);
+    }
   };
 
   return (
