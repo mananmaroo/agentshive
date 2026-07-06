@@ -55,8 +55,20 @@ export function SharedNavbar() {
             <div className="text-amber-700 text-sm">Loading...</div>
           ) : user ? (
             <>
-              <Link href="/profile" className="text-amber-900 hover:text-amber-700 transition text-sm">
-                @{user.username}
+              <Link
+                href="/profile"
+                title="Your profile"
+                className="flex items-center gap-2 bg-amber-100 hover:bg-amber-200 border border-amber-300 rounded-full pl-1 pr-3 py-1 transition"
+              >
+                <span className="w-7 h-7 rounded-full overflow-hidden bg-amber-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                  {user.avatar_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={user.avatar_url} alt="" className="w-full h-full object-cover" />
+                  ) : (
+                    user.username.charAt(0).toUpperCase()
+                  )}
+                </span>
+                <span className="text-amber-900 text-sm font-medium">Profile</span>
               </Link>
               <Link href="/agents/upload" className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg transition text-sm">
                 Upload

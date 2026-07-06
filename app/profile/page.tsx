@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
 import { supabase } from '@/app/lib/supabase-client';
+import { BADGES, sortBadges, BadgeChip, isBadgeId, type BadgeId } from '@/app/lib/badges';
 import {
   ArrowLeft,
   Save,
@@ -60,6 +61,23 @@ export default function Profile() {
   const [stats, setStats] = useState({ agents: 0, totalDownloads: 0 });
 
   const needsOnboarding = !user?.onboarded_at;
+
+  const [bannerDismissed, setBannerDismissed] = useState(false);
+  const ownedBadges = sortBadges(user?.badges || []);
+  const newBadges = (user?.badges || []).filter(
+    (b) => isBadgeId(b) && !(user?.badges_acknowledged || []).includes(b)
+  ) as BadgeId[];
+  const showBadgeBanner = !bannerDismissed && newBadges.length > 0;
+
+  const acknowledgeBadges = async () => {
+    setBannerDismissed(true);
+    if (!user) return;
+    await fetch(`/api/users/${user.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
+      body: JSON.stringify({ badges_acknowledged: user.badges }),
+    });
+  };
 
   const loadStats = useCallback(async (id: string) => {
     try {
@@ -206,6 +224,33 @@ export default function Profile() {
 
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="space-y-8">
+          {showBadgeBanner && (
+            <div className="bg-gradient-to-r from-amber-500/15 to-emerald-500/15 border border-amber-500/40 rounded-lg p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-white font-semibold mb-1">
+                    🎉 You&apos;ve been given {newBadges.length > 1 ? 'badges' : 'a badge'}!
+                  </p>
+                  <div className="flex flex-wrap items-center gap-2 mt-2">
+                    {newBadges.map((b) => (
+                      <BadgeChip key={b} id={b} />
+                    ))}
+                  </div>
+                  <p className="text-sm text-slate-300 mt-3">
+                    {newBadges.map((b) => BADGES[b].description).join(' ')}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={acknowledgeBadges}
+                  className="shrink-0 bg-white/10 hover:bg-white/20 text-white text-sm px-4 py-2 rounded-lg transition"
+                >
+                  Got it
+                </button>
+              </div>
+            </div>
+          )}
+
           {needsOnboarding && (
             <div className="bg-blue-500/10 border border-blue-500/40 text-blue-200 rounded-lg p-5">
               👋 Welcome! Take 20 seconds to set up your profile — add an avatar and
@@ -257,6 +302,13 @@ export default function Profile() {
                   {uploading ? 'Uploading...' : 'Change avatar'}
                 </button>
                 <p className="text-xs text-slate-500 mt-2">PNG, JPEG, WEBP or GIF, up to 2MB.</p>
+                {ownedBadges.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {ownedBadges.map((b) => (
+                      <BadgeChip key={b} id={b} />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 

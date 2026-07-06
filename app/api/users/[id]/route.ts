@@ -97,7 +97,10 @@ export async function PATCH(
       website_url,
       experience_level,
       primary_interest,
+      badges_acknowledged,
     } = body;
+    // NOTE: `badges` is deliberately NOT read from the body — a user must never
+    // be able to grant themselves a badge. Badges are only set via admin SQL.
 
     const validLevels = ['beginner', 'intermediate', 'advanced', 'expert'];
     const validInterests = ['building', 'browsing', 'learning', 'sharing'];
@@ -147,6 +150,19 @@ export async function PATCH(
     // Stamp first-time onboarding once the user answers the questions.
     if (experience_level || primary_interest) {
       updateData.onboarded_at = new Date().toISOString();
+    }
+    // A user may only acknowledge badges they actually hold — clamp the input
+    // to their real badges so this can't be abused to write arbitrary values.
+    if (Array.isArray(badges_acknowledged)) {
+      const { data: current } = await supabase
+        .from('users')
+        .select('badges')
+        .eq('id', id)
+        .single();
+      const owned: string[] = current?.badges || [];
+      updateData.badges_acknowledged = badges_acknowledged.filter(
+        (b: unknown) => typeof b === 'string' && owned.includes(b)
+      );
     }
 
     const { data: updatedUser, error } = await supabase

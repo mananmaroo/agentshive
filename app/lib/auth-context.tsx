@@ -14,6 +14,8 @@ export interface UserProfile {
   experience_level: 'beginner' | 'intermediate' | 'advanced' | 'expert' | null;
   primary_interest: 'building' | 'browsing' | 'learning' | 'sharing' | null;
   onboarded_at: string | null;
+  badges: string[];
+  badges_acknowledged: string[];
   created_at: string;
 }
 
