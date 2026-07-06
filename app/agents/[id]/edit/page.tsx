@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase-client';
+import { restUpdate, restInsert, restDelete } from '@/app/lib/rest';
 import { useAuth } from '@/app/lib/auth-context';
 import { ArrowLeft, Save } from 'lucide-react';
 
@@ -84,34 +85,29 @@ export default function EditAgent() {
       const contentChanged = content.trim() !== origContent.trim();
       const newVersion = contentChanged ? bumpPatch(version) : version;
 
-      const { error: agentError } = await supabase
-        .from('agents')
-        .update({
-          title: title.trim(),
-          description: description.trim(),
-          category: category ? [category] : [],
-          tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
-          license,
-          version: newVersion,
-          repository_url: repositoryUrl.trim() || null,
-          homepage_url: homepageUrl.trim() || null,
-          updated_at: new Date().toISOString(),
-        })
-        .eq('id', id);
-      if (agentError) throw agentError;
+      await restUpdate('agents', `id=eq.${id}`, {
+        title: title.trim(),
+        description: description.trim(),
+        category: category ? [category] : [],
+        tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+        license,
+        version: newVersion,
+        repository_url: repositoryUrl.trim() || null,
+        homepage_url: homepageUrl.trim() || null,
+        updated_at: new Date().toISOString(),
+      });
       setVersion(newVersion);
 
       if (content.trim()) {
         // agent_files has no UPDATE policy for owners (update is a silent no-op),
         // but DELETE + INSERT are allowed — so replace the claude.md row.
         if (hasFile) {
-          await supabase.from('agent_files').delete().eq('agent_id', id).eq('file_type', 'claude_md');
+          await restDelete('agent_files', `agent_id=eq.${id}&file_type=eq.claude_md`);
         }
-        const { error: fe } = await supabase.from('agent_files').insert({
+        await restInsert('agent_files', {
           agent_id: id, file_url: `agent-${id}-claude.md`, file_type: 'claude_md',
           file_name: 'claude.md', file_content: content,
         });
-        if (fe) throw fe;
         setHasFile(true);
       }
 

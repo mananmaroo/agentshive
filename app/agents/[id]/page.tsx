@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase-client';
 import { useAuth } from '@/app/lib/auth-context';
 import { sortBadges, BadgeChip } from '@/app/lib/badges';
+import { restInsert, restUpdate } from '@/app/lib/rest';
 import {
   Download,
   Star,
@@ -150,9 +151,9 @@ export default function AgentDetail() {
     setSubmittingRating(true);
     try {
       if (userRating) {
-        await supabase.from('ratings').update({ rating }).eq('agent_id', agentId).eq('user_id', user.id);
+        await restUpdate('ratings', `agent_id=eq.${agentId}&user_id=eq.${user.id}`, { rating });
       } else {
-        await supabase.from('ratings').insert({ agent_id: agentId, user_id: user.id, rating });
+        await restInsert('ratings', { agent_id: agentId, user_id: user.id, rating });
       }
       setUserRating(rating);
       const { data: allRatings } = await supabase.from('ratings').select('rating').eq('agent_id', agentId);
@@ -172,12 +173,12 @@ export default function AgentDetail() {
     if (!user) { alert('Please log in to comment'); return; }
     setSubmittingComment(true);
     try {
-      const { data: commentData, error } = await supabase
-        .from('comments')
-        .insert({ agent_id: agentId, user_id: user.id, content: newComment })
-        .select()
-        .single();
-      if (error) throw error;
+      const rows = await restInsert<any[]>(
+        'comments',
+        { agent_id: agentId, user_id: user.id, content: newComment },
+        true
+      );
+      const commentData = Array.isArray(rows) ? rows[0] : rows;
       setComments([{ ...commentData, username: (user as any).username }, ...comments]);
       setNewComment('');
     } catch {

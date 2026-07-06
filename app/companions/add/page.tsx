@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Upload, FileText, Code, Video, BarChart3, ArrowLeft, BookOpen, ExternalLink, Terminal } from 'lucide-react';
-import { supabase } from '@/app/lib/supabase-client';
+import { restInsert } from '@/app/lib/rest';
 import { useAuth } from '@/app/lib/auth-context';
 
 const recommendedReading = [
@@ -95,9 +95,9 @@ export default function AddCompanion() {
         (c, i, arr) => arr.indexOf(c) === i
       );
 
-      const { data: agent, error: agentError } = await supabase
-        .from('agents')
-        .insert({
+      const rows = await restInsert<any[]>(
+        'agents',
+        {
           title: agentName.trim(),
           description: description.trim(),
           category: categories,
@@ -113,30 +113,21 @@ export default function AddCompanion() {
           rating_count: 0,
           verified: false,
           featured: false,
-        })
-        .select()
-        .single();
+        },
+        true
+      );
+      const agent = Array.isArray(rows) ? rows[0] : rows;
 
-      if (agentError) throw agentError;
-
-      if (isVideo) {
-        const { error: fileError } = await supabase.from('agent_files').insert({
-          agent_id: agent.id,
-          file_url: videoUrl.trim(),
-          file_type: 'video_url',
-          file_name: 'demo-video',
-        });
-        if (fileError) throw fileError;
-      } else {
-        const { error: fileError } = await supabase.from('agent_files').insert({
-          agent_id: agent.id,
-          file_url: `agent-${agent.id}-claude.md`,
-          file_type: 'claude_md',
-          file_name: fileName || 'claude.md',
-          file_content: fileContent,
-        });
-        if (fileError) throw fileError;
-      }
+      const fileRow = isVideo
+        ? { agent_id: agent.id, file_url: videoUrl.trim(), file_type: 'video_url', file_name: 'demo-video' }
+        : {
+            agent_id: agent.id,
+            file_url: `agent-${agent.id}-claude.md`,
+            file_type: 'claude_md',
+            file_name: fileName || 'claude.md',
+            file_content: fileContent,
+          };
+      await restInsert('agent_files', fileRow);
 
       router.push('/companions');
     } catch (err: any) {

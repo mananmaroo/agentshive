@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Upload, FileText, Code, Video, BarChart3, ArrowLeft, BookOpen, ExternalLink, ClipboardType, Link2 } from 'lucide-react';
-import { supabase } from '@/app/lib/supabase-client';
+import { restInsert } from '@/app/lib/rest';
 import { useAuth } from '@/app/lib/auth-context';
 
 const recommendedReading = [
@@ -125,38 +125,7 @@ export default function UploadAgent() {
 
     setLoading(true);
     try {
-      // The supabase-js query builder has been hanging on its internal token
-      // handling, while raw PostgREST responds instantly. So we talk to
-      // PostgREST directly with the user's access token.
-      const { data: sd } = await supabase.auth.getSession();
-      const token = sd.session?.access_token;
-      if (!token) throw new Error('Your session expired. Please log out and back in.');
-
-      const restUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-      const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
-      const headers = {
-        apikey: anonKey,
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      };
-
-      const rest = async (path: string, body: unknown, returnRow: boolean) => {
-        const res = await fetch(`${restUrl}/rest/v1/${path}`, {
-          method: 'POST',
-          headers: returnRow ? { ...headers, Prefer: 'return=representation' } : headers,
-          body: JSON.stringify(body),
-          signal: AbortSignal.timeout(20000),
-        });
-        const text = await res.text();
-        if (!res.ok) {
-          let msg = text;
-          try { msg = JSON.parse(text).message || text; } catch {}
-          throw new Error(msg || `Request failed (${res.status})`);
-        }
-        return text ? JSON.parse(text) : null;
-      };
-
-      const inserted = await rest(
+      const inserted = await restInsert<any[]>(
         'agents',
         {
           title: agentName.trim(),
@@ -188,7 +157,7 @@ export default function UploadAgent() {
             file_name: fileName || 'claude.md',
             file_content: fileContent,
           };
-      await rest('agent_files', fileRow, false);
+      await restInsert('agent_files', fileRow);
 
       router.push(`/agents/${agent.id}`);
     } catch (err: any) {
