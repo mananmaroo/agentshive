@@ -1,4 +1,5 @@
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { supabaseAdmin } from '@/app/lib/supabase-admin';
 import { getAuthedUser } from '@/app/lib/auth-helpers';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -98,11 +99,11 @@ export async function POST(request: NextRequest) {
       description,
       category,
       tags,
-      claude_md_file,
       repository_url,
       homepage_url,
       license,
       version,
+      file, // { type: 'claude_md' | 'video_url', name, content, url }
     } = body;
 
     // Validate required fields
@@ -112,16 +113,22 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+    if (!file || (file.type === 'video_url' ? !file.url : !file.content)) {
+      return NextResponse.json(
+        { error: 'Provide file content (or a video URL).' },
+        { status: 400 }
+      );
+    }
 
-    // Insert agent
-    const { data: agent, error } = await supabase
+    // Use the service-role client so the insert isn't blocked by RLS. Identity
+    // is already verified via the JWT above; creator_id is the authed user.
+    const { data: agent, error } = await supabaseAdmin
       .from('agents')
       .insert({
         title,
         description,
         category: category || [],
         tags: tags || [],
-        claude_md_file: claude_md_file || null,
         repository_url: repository_url || null,
         homepage_url: homepage_url || null,
         license: license || 'MIT',
@@ -141,10 +148,31 @@ export async function POST(request: NextRequest) {
       throw error;
     }
 
-    return NextResponse.json(
-      { data: agent },
-      { status: 201 }
-    );
+    // Store the agent's file (claude.md content or a video URL).
+    const fileRow =
+      file.type === 'video_url'
+        ? {
+            agent_id: agent.id,
+            file_url: file.url,
+            file_type: 'video_url',
+            file_name: 'demo-video',
+          }
+        : {
+            agent_id: agent.id,
+            file_url: `agent-${agent.id}-claude.md`,
+            file_type: 'claude_md',
+            file_name: file.name || 'claude.md',
+            file_content: file.content,
+          };
+
+    const { error: fileError } = await supabaseAdmin.from('agent_files').insert(fileRow);
+    if (fileError) {
+      // Roll back the agent so we don't leave a fileless orphan.
+      await supabaseAdmin.from('agents').delete().eq('id', agent.id);
+      throw fileError;
+    }
+
+    return NextResponse.json({ data: agent }, { status: 201 });
   } catch (error: any) {
     console.error('Error creating agent:', error);
     return NextResponse.json(

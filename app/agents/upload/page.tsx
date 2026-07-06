@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Upload, FileText, Code, Video, BarChart3, ArrowLeft, BookOpen, ExternalLink } from 'lucide-react';
+import { Upload, FileText, Code, Video, BarChart3, ArrowLeft, BookOpen, ExternalLink, ClipboardType, Link2 } from 'lucide-react';
 import { supabase } from '@/app/lib/supabase-client';
 import { useAuth } from '@/app/lib/auth-context';
 
@@ -49,8 +49,12 @@ export default function UploadAgent() {
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState('');
   const [uploadFormat, setUploadFormat] = useState('claude-md');
+  const [inputMethod, setInputMethod] = useState<'file' | 'paste' | 'github'>('file');
   const [fileName, setFileName] = useState('');
   const [fileContent, setFileContent] = useState('');
+  const [githubUrl, setGithubUrl] = useState('');
+  const [githubLoading, setGithubLoading] = useState(false);
+  const [version, setVersion] = useState('1.0.0');
   const [videoUrl, setVideoUrl] = useState('');
   const [repositoryUrl, setRepositoryUrl] = useState('');
   const [homepageUrl, setHomepageUrl] = useState('');
@@ -63,6 +67,38 @@ export default function UploadAgent() {
     if (!file) return;
     setFileName(file.name);
     setFileContent(await file.text());
+  };
+
+  const importFromGithub = async () => {
+    const url = githubUrl.trim();
+    if (!url) {
+      setError('Paste a link to a file in your GitHub repo.');
+      return;
+    }
+    // Convert a normal GitHub file page URL to its raw form.
+    //   https://github.com/user/repo/blob/main/agent.md
+    //   -> https://raw.githubusercontent.com/user/repo/main/agent.md
+    const rawUrl = url
+      .replace('https://github.com/', 'https://raw.githubusercontent.com/')
+      .replace('/blob/', '/');
+    setGithubLoading(true);
+    setError('');
+    try {
+      const res = await fetch(rawUrl);
+      if (!res.ok) {
+        throw new Error(
+          'Could not fetch that file. Make sure it links to a single file in a public repo.'
+        );
+      }
+      const text = await res.text();
+      if (!text.trim()) throw new Error('That file appears to be empty.');
+      setFileContent(text);
+      setFileName(rawUrl.split('/').pop() || 'claude.md');
+    } catch (err: any) {
+      setError(err.message || 'Failed to import from GitHub.');
+    } finally {
+      setGithubLoading(false);
+    }
   };
 
   const handleUpload = async (e: React.FormEvent) => {
@@ -89,50 +125,34 @@ export default function UploadAgent() {
 
     setLoading(true);
     try {
-      const { data: agent, error: agentError } = await supabase
-        .from('agents')
-        .insert({
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (!token) {
+        throw new Error('Your session expired. Please log in again.');
+      }
+
+      const res = await fetch('/api/agents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
           title: agentName.trim(),
           description: description.trim(),
           category: [category],
           tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
-          creator_id: user.id,
           license,
-          version: '1.0.0',
+          version: version.trim() || '1.0.0',
           repository_url: repositoryUrl.trim() || null,
           homepage_url: homepageUrl.trim() || null,
-          downloads_count: 0,
-          views_count: 0,
-          average_rating: 0,
-          rating_count: 0,
-          verified: false,
-          featured: false,
-        })
-        .select()
-        .single();
+          file: isVideo
+            ? { type: 'video_url', url: videoUrl.trim() }
+            : { type: 'claude_md', name: fileName || 'claude.md', content: fileContent },
+        }),
+      });
 
-      if (agentError) throw agentError;
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to upload agent.');
 
-      if (isVideo) {
-        const { error: fileError } = await supabase.from('agent_files').insert({
-          agent_id: agent.id,
-          file_url: videoUrl.trim(),
-          file_type: 'video_url',
-          file_name: 'demo-video',
-        });
-        if (fileError) throw fileError;
-      } else {
-        const { error: fileError } = await supabase.from('agent_files').insert({
-          agent_id: agent.id,
-          file_url: `agent-${agent.id}-claude.md`,
-          file_type: 'claude_md',
-          file_name: fileName || 'claude.md',
-          file_content: fileContent,
-        });
-        if (fileError) throw fileError;
-      }
-
-      router.push(`/agents/${agent.id}`);
+      router.push(`/agents/${json.data.id}`);
     } catch (err: any) {
       setError(err.message || 'Failed to upload agent. Please try again.');
       setLoading(false);
@@ -336,32 +356,120 @@ export default function UploadAgent() {
                 className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
               />
             ) : (
-              <label
-                htmlFor="agent-file"
-                className="block border-2 border-dashed border-slate-700 rounded-lg p-8 text-center hover:border-blue-500 transition cursor-pointer bg-slate-800/50"
-              >
-                <Upload className="w-8 h-8 text-slate-400 mx-auto mb-3" />
-                <p className="text-white font-semibold mb-1">
-                  {fileName ? fileName : 'Drop your file here'}
-                </p>
-                <p className="text-sm text-slate-400 mb-4">
-                  {fileName ? 'Click to choose a different file' : 'or click to browse'}
-                </p>
-                <input
-                  id="agent-file"
-                  type="file"
-                  className="hidden"
-                  onChange={(e) => handleFile(e.target.files?.[0])}
-                  accept={
-                    uploadFormat === 'code' ? '.py,.js,.ts' : uploadFormat === 'n8n' ? '.json' : '.txt,.md'
-                  }
-                />
-                <p className="text-xs text-slate-500">
-                  {uploadFormat === 'code' && 'Accepted: .py, .js, .ts'}
-                  {uploadFormat === 'n8n' && 'Accepted: .json'}
-                  {uploadFormat === 'claude-md' && 'Accepted: .md, .txt'}
-                </p>
-              </label>
+              <>
+                {/* Input-method tabs */}
+                <div className="flex gap-2 mb-4">
+                  {[
+                    { id: 'file', label: 'Upload file', icon: Upload },
+                    { id: 'paste', label: 'Paste text', icon: ClipboardType },
+                    { id: 'github', label: 'From GitHub', icon: Link2 },
+                  ].map((m) => {
+                    const MIcon = m.icon;
+                    const active = inputMethod === m.id;
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => setInputMethod(m.id as 'file' | 'paste' | 'github')}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition ${
+                          active
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'
+                        }`}
+                      >
+                        <MIcon className="w-4 h-4" />
+                        {m.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {inputMethod === 'file' && (
+                  <label
+                    htmlFor="agent-file"
+                    className="block border-2 border-dashed border-slate-700 rounded-lg p-8 text-center hover:border-blue-500 transition cursor-pointer bg-slate-800/50"
+                  >
+                    <Upload className="w-8 h-8 text-slate-400 mx-auto mb-3" />
+                    <p className="text-white font-semibold mb-1">
+                      {fileName ? fileName : 'Drop your file here'}
+                    </p>
+                    <p className="text-sm text-slate-400 mb-4">
+                      {fileName ? 'Click to choose a different file' : 'or click to browse'}
+                    </p>
+                    <input
+                      id="agent-file"
+                      type="file"
+                      className="hidden"
+                      onChange={(e) => handleFile(e.target.files?.[0])}
+                      accept={
+                        uploadFormat === 'code' ? '.py,.js,.ts' : uploadFormat === 'n8n' ? '.json' : '.txt,.md'
+                      }
+                    />
+                    <p className="text-xs text-slate-500">
+                      {uploadFormat === 'code' && 'Accepted: .py, .js, .ts'}
+                      {uploadFormat === 'n8n' && 'Accepted: .json'}
+                      {uploadFormat === 'claude-md' && 'Accepted: .md, .txt (double extensions like .md.txt are fine)'}
+                    </p>
+                  </label>
+                )}
+
+                {inputMethod === 'paste' && (
+                  <textarea
+                    value={fileContent}
+                    onChange={(e) => {
+                      setFileContent(e.target.value);
+                      if (!fileName) setFileName('claude.md');
+                    }}
+                    rows={12}
+                    placeholder="Paste your agent instructions / CLAUDE.md content here…"
+                    className="w-full font-mono text-sm bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 resize-y"
+                  />
+                )}
+
+                {inputMethod === 'github' && (
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <input
+                        type="url"
+                        value={githubUrl}
+                        onChange={(e) => setGithubUrl(e.target.value)}
+                        placeholder="https://github.com/user/repo/blob/main/agent.md"
+                        className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={importFromGithub}
+                        disabled={githubLoading}
+                        className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition disabled:opacity-50 whitespace-nowrap"
+                      >
+                        {githubLoading ? 'Fetching…' : 'Fetch file'}
+                      </button>
+                    </div>
+                    <p className="text-xs text-slate-500">
+                      Paste the link to a single file in a public repo. We&apos;ll pull its contents in.
+                    </p>
+                    {fileContent && fileName && (
+                      <div className="text-xs text-emerald-400 flex items-center gap-1.5">
+                        <FileText className="w-3.5 h-3.5" />
+                        Imported {fileName} ({fileContent.length.toLocaleString()} chars)
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Preview when content loaded via file or github */}
+                {inputMethod !== 'paste' && fileContent && (
+                  <details className="mt-3">
+                    <summary className="text-xs text-slate-400 cursor-pointer hover:text-slate-200">
+                      Preview loaded content
+                    </summary>
+                    <pre className="mt-2 max-h-48 overflow-auto bg-slate-950 border border-slate-800 rounded-lg p-3 text-xs text-slate-300 whitespace-pre-wrap">
+                      {fileContent.slice(0, 2000)}
+                      {fileContent.length > 2000 ? '\n…' : ''}
+                    </pre>
+                  </details>
+                )}
+              </>
             )}
           </div>
 
@@ -389,20 +497,33 @@ export default function UploadAgent() {
             </div>
           </div>
 
-          {/* License */}
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">License</label>
-            <select
-              value={license}
-              onChange={(e) => setLicense(e.target.value)}
-              className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
-            >
-              <option>MIT</option>
-              <option>Apache 2.0</option>
-              <option>GPL 3.0</option>
-              <option>BSD 3-Clause</option>
-              <option>Proprietary</option>
-            </select>
+          {/* License + Version */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">License</label>
+              <select
+                value={license}
+                onChange={(e) => setLicense(e.target.value)}
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500"
+              >
+                <option>MIT</option>
+                <option>Apache 2.0</option>
+                <option>GPL 3.0</option>
+                <option>BSD 3-Clause</option>
+                <option>Proprietary</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Version</label>
+              <input
+                type="text"
+                value={version}
+                onChange={(e) => setVersion(e.target.value)}
+                placeholder="1.0.0"
+                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
+              />
+              <p className="text-xs text-slate-500 mt-1">Use semantic versioning, e.g. 1.0.0. Bump it when you update the agent.</p>
+            </div>
           </div>
 
           {/* Terms */}
