@@ -125,29 +125,45 @@ export default function UploadAgent() {
 
     setLoading(true);
     try {
-      // Client-side insert (same proven pattern as the edit page): the browser
-      // client attaches the user's JWT, so RLS (auth.uid() = creator_id) passes.
-      const { data: agent, error: agentError } = await supabase
-        .from('agents')
-        .insert({
-          title: agentName.trim(),
-          description: description.trim(),
-          category: [category],
-          tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
-          creator_id: user.id,
-          license,
-          version: version.trim() || '1.0.0',
-          repository_url: repositoryUrl.trim() || null,
-          homepage_url: homepageUrl.trim() || null,
-          downloads_count: 0,
-          views_count: 0,
-          average_rating: 0,
-          rating_count: 0,
-          verified: false,
-          featured: false,
-        })
-        .select()
-        .single();
+      // Never let a request hang the button forever — fail loudly after 15s.
+      const withTimeout = <T,>(p: PromiseLike<T>, label: string): Promise<T> =>
+        Promise.race([
+          Promise.resolve(p),
+          new Promise<T>((_, reject) =>
+            setTimeout(() => reject(new Error(`${label} timed out. Check your connection and try again.`)), 15000)
+          ),
+        ]);
+
+      // Confirm we actually have a live session/token before writing.
+      const { data: sessionData } = await withTimeout(supabase.auth.getSession(), 'Session check');
+      if (!sessionData.session?.access_token) {
+        throw new Error('Your session expired. Please log out and log back in, then retry.');
+      }
+
+      const { data: agent, error: agentError } = await withTimeout(
+        supabase
+          .from('agents')
+          .insert({
+            title: agentName.trim(),
+            description: description.trim(),
+            category: [category],
+            tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+            creator_id: user.id,
+            license,
+            version: version.trim() || '1.0.0',
+            repository_url: repositoryUrl.trim() || null,
+            homepage_url: homepageUrl.trim() || null,
+            downloads_count: 0,
+            views_count: 0,
+            average_rating: 0,
+            rating_count: 0,
+            verified: false,
+            featured: false,
+          })
+          .select()
+          .single(),
+        'Creating agent'
+      );
       if (agentError) throw agentError;
 
       const fileRow: Record<string, string> = isVideo
@@ -159,12 +175,17 @@ export default function UploadAgent() {
             file_name: fileName || 'claude.md',
             file_content: fileContent,
           };
-      const { error: fileError } = await supabase.from('agent_files').insert(fileRow);
+      const { error: fileError } = await withTimeout(
+        supabase.from('agent_files').insert(fileRow),
+        'Saving agent file'
+      );
       if (fileError) throw fileError;
 
       router.push(`/agents/${agent.id}`);
     } catch (err: any) {
-      setError(err.message || 'Failed to upload agent. Please try again.');
+      console.error('Upload failed:', err);
+      const detail = err?.message || err?.error_description || err?.hint || JSON.stringify(err);
+      setError(`Upload failed: ${detail}`);
       setLoading(false);
     }
   };
