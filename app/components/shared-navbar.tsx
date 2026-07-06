@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { LogOut } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
+import { DiscordCTA } from './discord-cta';
 
 export function SharedNavbar() {
   const { user, loading, signOut } = useAuth();
@@ -50,6 +51,8 @@ export function SharedNavbar() {
           <Link href="/support" className="text-amber-900 hover:text-amber-700 transition text-sm">
             Support
           </Link>
+
+          <DiscordCTA />
 
           {loading ? (
             <div className="text-amber-700 text-sm">Loading...</div>

@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronLeft, Star, Download, Eye, Code, Globe } from 'lucide-react';
 import { supabaseAnon } from '@/app/lib/supabase-anon';
+import { sortBadges, BadgeChip } from '@/app/lib/badges';
 
 interface Creator {
   id: string;
@@ -13,6 +14,7 @@ interface Creator {
   bio: string | null;
   github_username: string | null;
   website_url: string | null;
+  badges: string[] | null;
   created_at: string;
 }
 
@@ -114,7 +116,12 @@ export default function CreatorProfile() {
             </div>
           )}
           <div className="flex-1">
-            <h1 className="text-3xl font-bold text-white mb-1">@{creator.username}</h1>
+            <div className="flex items-center gap-3 mb-1 flex-wrap">
+              <h1 className="text-3xl font-bold text-white">@{creator.username}</h1>
+              {sortBadges(creator.badges || []).map((b) => (
+                <BadgeChip key={b} id={b} />
+              ))}
+            </div>
             <p className="text-sm text-slate-500 mb-3">
               Joined{' '}
               <time dateTime={creator.created_at} suppressHydrationWarning>

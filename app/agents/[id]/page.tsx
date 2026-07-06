@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase-client';
 import { useAuth } from '@/app/lib/auth-context';
+import { sortBadges, BadgeChip } from '@/app/lib/badges';
 import {
   Download,
   Star,
@@ -45,6 +46,7 @@ interface Creator {
   username: string;
   avatar_url: string | null;
   bio: string | null;
+  badges: string[] | null;
   created_at: string;
 }
 
@@ -576,7 +578,12 @@ export default function AgentDetail() {
                     </div>
                   )}
                   <div className="flex-1">
-                    <p className="font-semibold text-white">{creator.username}</p>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="font-semibold text-white">{creator.username}</p>
+                      {sortBadges(creator.badges || []).map((b) => (
+                        <BadgeChip key={b} id={b} />
+                      ))}
+                    </div>
                     <p className="text-xs text-slate-400">Joined {new Date(creator.created_at).toLocaleDateString()}</p>
                   </div>
                 </div>
