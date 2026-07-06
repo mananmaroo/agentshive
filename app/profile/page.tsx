@@ -339,8 +339,10 @@ export default function Profile() {
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
                 />
                 <div className="mt-2 text-xs text-slate-400">
-                  Your profile URL:{' '}
-                  <span className="text-blue-400 font-mono">agentshive.net/@{username || 'username'}</span>
+                  Your public profile:{' '}
+                  <Link href={`/creators/${user?.id}`} className="text-blue-400 hover:text-blue-300 underline">
+                    View public page →
+                  </Link>
                 </div>
               </div>
 

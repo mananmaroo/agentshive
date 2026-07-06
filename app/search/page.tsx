@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Search, Bot, Sparkles, Terminal, Star, Download, PlusCircle } from 'lucide-react';
+import { Search, Bot, Sparkles, Terminal, Star, Download, PlusCircle, Users } from 'lucide-react';
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { sortBadges, BadgeChip } from '@/app/lib/badges';
 
 interface Agent {
   id: string;
@@ -24,7 +25,15 @@ interface Creator {
   username: string;
 }
 
-type Tab = 'agents' | 'perfect-prompts' | 'companions';
+interface CreatorResult {
+  id: string;
+  username: string;
+  avatar_url: string | null;
+  bio: string | null;
+  badges: string[] | null;
+}
+
+type Tab = 'agents' | 'perfect-prompts' | 'companions' | 'creators';
 
 function SearchResults() {
   const searchParams = useSearchParams();
@@ -39,6 +48,7 @@ function SearchResults() {
   const [prompts, setPrompts] = useState<Agent[]>([]);
   const [companions, setCompanions] = useState<Agent[]>([]);
   const [creators, setCreators] = useState<Map<string, Creator>>(new Map());
+  const [creatorResults, setCreatorResults] = useState<CreatorResult[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchIdRef = useRef(0);
@@ -86,11 +96,19 @@ function SearchResults() {
         (creatorData || []).forEach((c) => creatorMap.set(c.id, c));
       }
 
+      // Search creators by username or bio
+      const { data: creatorHits } = await supabase
+        .from('users')
+        .select('id, username, avatar_url, bio, badges')
+        .or(`username.ilike.%${term}%,bio.ilike.%${term}%`)
+        .limit(30);
+
       if (fetchId !== fetchIdRef.current) return;
       setAgents(mergedAgents);
       setPrompts(mergedPrompts);
       setCompanions(mergedCompanions);
       setCreators(creatorMap);
+      setCreatorResults((creatorHits || []) as CreatorResult[]);
       setLoading(false);
     };
 
@@ -109,6 +127,7 @@ function SearchResults() {
     { key: 'agents', label: 'Agents', icon: <Bot className="w-4 h-4" />, count: agents.length },
     { key: 'perfect-prompts', label: 'Perfect Prompts', icon: <Sparkles className="w-4 h-4" />, count: prompts.length },
     { key: 'companions', label: 'Companions', icon: <Terminal className="w-4 h-4" />, count: companions.length },
+    { key: 'creators', label: 'Creators', icon: <Users className="w-4 h-4" />, count: creatorResults.length },
   ];
 
   const currentItems = activeTab === 'agents' ? agents : activeTab === 'perfect-prompts' ? prompts : companions;
@@ -161,6 +180,42 @@ function SearchResults() {
 
             {loading ? (
               <div className="text-center py-16 text-slate-400">Searching...</div>
+            ) : activeTab === 'creators' ? (
+              creatorResults.length === 0 ? (
+                <div className="text-center py-16 text-slate-400">
+                  No creators found for &ldquo;{query}&rdquo;
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {creatorResults.map((c) => (
+                    <Link
+                      key={c.id}
+                      href={`/creators/${c.id}`}
+                      className="border border-slate-800 hover:border-indigo-500 rounded-lg p-5 transition group flex items-start gap-4"
+                    >
+                      {c.avatar_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={c.avatar_url} alt={c.username} className="w-12 h-12 rounded-full object-cover shrink-0" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold shrink-0">
+                          {c.username.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-semibold text-white group-hover:text-indigo-400 transition">
+                            @{c.username}
+                          </span>
+                          {sortBadges(c.badges || []).map((b) => (
+                            <BadgeChip key={b} id={b} showLabel={false} />
+                          ))}
+                        </div>
+                        {c.bio && <p className="text-slate-400 text-sm line-clamp-2 mt-1">{c.bio}</p>}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )
             ) : currentItems.length === 0 ? (
               <div className="text-center py-16">
                 <p className="text-slate-400 mb-2">
