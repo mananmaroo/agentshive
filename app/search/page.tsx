@@ -190,7 +190,7 @@ function SearchResults() {
                   {creatorResults.map((c) => (
                     <Link
                       key={c.id}
-                      href={`/creators/${c.id}`}
+                      href={`/@${c.username}`}
                       className="border border-slate-800 hover:border-indigo-500 rounded-lg p-5 transition group flex items-start gap-4"
                     >
                       {c.avatar_url ? (

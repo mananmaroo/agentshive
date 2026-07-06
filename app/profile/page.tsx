@@ -340,8 +340,8 @@ export default function Profile() {
                 />
                 <div className="mt-2 text-xs text-slate-400">
                   Your public profile:{' '}
-                  <Link href={`/creators/${user?.id}`} className="text-blue-400 hover:text-blue-300 underline">
-                    View public page →
+                  <Link href={`/@${username}`} className="text-blue-400 hover:text-blue-300 font-mono">
+                    agentshive.net/@{username || 'username'}
                   </Link>
                 </div>
               </div>

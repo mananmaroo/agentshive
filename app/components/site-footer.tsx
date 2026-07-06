@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Mail } from 'lucide-react';
+import { DiscordLogo, DISCORD_INVITE } from './discord-cta';
 
 function XIcon({ className }: { className?: string }) {
   return (
@@ -113,6 +114,17 @@ export function SiteFooter() {
             <div>
               <h4 className="font-semibold text-white mb-4">Support</h4>
               <ul className="space-y-2 text-sm">
+                <li>
+                  <a
+                    href={DISCORD_INVITE}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#8b95ff] hover:text-indigo-300 transition flex items-center gap-1.5 font-medium"
+                  >
+                    <DiscordLogo className="w-4 h-4" />
+                    Join our Discord
+                  </a>
+                </li>
                 <li>
                   <Link href="/donate" className="text-slate-400 hover:text-indigo-400 transition">
                     Donate
