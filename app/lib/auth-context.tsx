@@ -10,6 +10,10 @@ export interface UserProfile {
   avatar_url: string | null;
   bio: string | null;
   github_username: string | null;
+  website_url: string | null;
+  experience_level: 'beginner' | 'intermediate' | 'advanced' | 'expert' | null;
+  primary_interest: 'building' | 'browsing' | 'learning' | 'sharing' | null;
+  onboarded_at: string | null;
   created_at: string;
 }
 
@@ -26,13 +30,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProfile = async (userId: string) => {
+    const fetchProfile = async (sessionUser: {
+      id: string;
+      email?: string;
+      user_metadata?: Record<string, unknown>;
+    }) => {
       const { data: profile } = await supabase
         .from('users')
         .select('*')
-        .eq('id', userId)
-        .single();
-      return profile as UserProfile | null;
+        .eq('id', sessionUser.id)
+        .maybeSingle();
+
+      if (profile) return profile as UserProfile;
+
+      // Row not created yet (race with the auth callback, or first login).
+      // Self-heal so the UI never gets stuck as "not signed in".
+      const meta = sessionUser.user_metadata || {};
+      const username =
+        (meta.user_name as string) ||
+        (meta.preferred_username as string) ||
+        (meta.name as string) ||
+        (sessionUser.email ? sessionUser.email.split('@')[0] : `user_${sessionUser.id.slice(0, 8)}`);
+
+      const { data: created } = await supabase
+        .from('users')
+        .upsert(
+          {
+            id: sessionUser.id,
+            username,
+            email: sessionUser.email,
+            avatar_url: (meta.avatar_url as string) ?? null,
+            github_username: (meta.user_name as string) ?? null,
+          },
+          { onConflict: 'id' }
+        )
+        .select('*')
+        .maybeSingle();
+
+      return (created as UserProfile) ?? null;
     };
 
     // onAuthStateChange fires INITIAL_SESSION on mount — use it as the sole
@@ -46,7 +81,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
         if (session?.user) {
           try {
-            const profile = await fetchProfile(session.user.id);
+            const profile = await fetchProfile(session.user);
             setUser(profile);
           } catch (error) {
             console.error('Profile fetch error:', error);

@@ -1,88 +1,178 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/app/lib/auth-context';
 import { supabase } from '@/app/lib/supabase-client';
-import { ArrowLeft, Save, AlertCircle, CheckCircle } from 'lucide-react';
+import {
+  ArrowLeft,
+  Save,
+  AlertCircle,
+  CheckCircle,
+  Upload,
+  Link2,
+} from 'lucide-react';
+
+type Level = 'beginner' | 'intermediate' | 'advanced' | 'expert';
+type Interest = 'building' | 'browsing' | 'learning' | 'sharing';
+
+const LEVELS: { value: Level; label: string; hint: string }[] = [
+  { value: 'beginner', label: 'Just starting', hint: 'New to AI agents' },
+  { value: 'intermediate', label: 'Comfortable', hint: 'Built a few agents' },
+  { value: 'advanced', label: 'Advanced', hint: 'Ship agents regularly' },
+  { value: 'expert', label: 'Expert', hint: 'This is my craft' },
+];
+
+const INTERESTS: { value: Interest; label: string }[] = [
+  { value: 'building', label: '🛠️ Building agents' },
+  { value: 'browsing', label: '🔎 Finding agents to use' },
+  { value: 'learning', label: '📚 Learning how' },
+  { value: 'sharing', label: '📣 Sharing my work' },
+];
+
+async function authHeader(): Promise<Record<string, string>> {
+  const { data } = await supabase.auth.getSession();
+  const token = data.session?.access_token;
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 export default function Profile() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
+  const fileInput = useRef<HTMLInputElement>(null);
 
   const [username, setUsername] = useState('');
   const [bio, setBio] = useState('');
   const [email, setEmail] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [level, setLevel] = useState<Level | ''>('');
+  const [interest, setInterest] = useState<Interest | ''>('');
+  const [githubUsername, setGithubUsername] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [linking, setLinking] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [pageLoading, setPageLoading] = useState(true);
 
-  useEffect(() => {
-    if (!authLoading) {
-      if (!user) {
-        router.push('/auth/login');
-      } else {
-        setUsername(user.username || '');
-        setBio(user.bio || '');
-        setEmail(user.email || '');
-        setPageLoading(false);
-      }
+  const [stats, setStats] = useState({ agents: 0, totalDownloads: 0 });
+
+  const needsOnboarding = !user?.onboarded_at;
+
+  const loadStats = useCallback(async (id: string) => {
+    try {
+      const res = await fetch(`/api/users/${id}`);
+      const json = await res.json();
+      if (json?.data?.stats) setStats(json.data.stats);
+    } catch {
+      /* non-critical */
     }
-  }, [user, authLoading, router]);
+  }, []);
+
+  // Sync a freshly-linked GitHub identity into users.github_username.
+  const syncGithubIdentity = useCallback(async (id: string, current: string | null) => {
+    if (current) return;
+    const { data } = await supabase.auth.getUserIdentities();
+    const gh = data?.identities?.find((i) => i.provider === 'github');
+    const ghName = (gh?.identity_data?.user_name || gh?.identity_data?.preferred_username) as
+      | string
+      | undefined;
+    if (ghName) {
+      await fetch(`/api/users/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
+        body: JSON.stringify({ github_username: ghName }),
+      });
+      setGithubUsername(ghName);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.push('/auth/login');
+      return;
+    }
+    setUsername(user.username || '');
+    setBio(user.bio || '');
+    setEmail(user.email || '');
+    setAvatarUrl(user.avatar_url || null);
+    setLevel((user.experience_level as Level) || '');
+    setInterest((user.primary_interest as Interest) || '');
+    setGithubUsername(user.github_username || null);
+    setPageLoading(false);
+    loadStats(user.id);
+    syncGithubIdentity(user.id, user.github_username || null);
+  }, [user, authLoading, router, loadStats, syncGithubIdentity]);
+
+  const handleAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user) return;
+    setUploading(true);
+    setError('');
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch('/api/avatar', {
+        method: 'POST',
+        headers: { ...(await authHeader()) },
+        body: fd,
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Upload failed');
+      setAvatarUrl(json.data.avatar_url);
+      setSuccess('Avatar updated!');
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err: any) {
+      setError(err.message || 'Failed to upload avatar');
+    } finally {
+      setUploading(false);
+      if (fileInput.current) fileInput.current.value = '';
+    }
+  };
+
+  const handleConnectGithub = async () => {
+    setLinking(true);
+    setError('');
+    const { error: linkError } = await supabase.auth.linkIdentity({
+      provider: 'github',
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (linkError) {
+      setError(linkError.message);
+      setLinking(false);
+    }
+    // On success the browser redirects to GitHub, then back here.
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
     setLoading(true);
     setError('');
     setSuccess('');
-
     try {
-      if (!username.trim()) {
-        setError('Username is required');
+      const name = username.trim();
+      if (name.length < 3 || name.length > 30) {
+        setError('Username must be 3-30 characters');
         setLoading(false);
         return;
       }
-
-      if (username.trim().length < 3) {
-        setError('Username must be at least 3 characters');
-        setLoading(false);
-        return;
-      }
-
-      if (username.trim().length > 30) {
-        setError('Username must be 30 characters or less');
-        setLoading(false);
-        return;
-      }
-
-      // Check if username is available (if changed)
-      if (username.trim() !== user?.username) {
-        const { data: existingUser } = await supabase
-          .from('users')
-          .select('id')
-          .eq('username', username.trim())
-          .single();
-
-        if (existingUser) {
-          setError('This username is already taken');
-          setLoading(false);
-          return;
-        }
-      }
-
-      const { error: updateError } = await supabase
-        .from('users')
-        .update({
-          username: username.trim(),
+      const res = await fetch(`/api/users/${user.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
+        body: JSON.stringify({
+          username: name,
           bio: bio.trim() || null,
-        })
-        .eq('id', user?.id);
-
-      if (updateError) throw updateError;
-
-      setSuccess('Profile updated successfully!');
+          experience_level: level || undefined,
+          primary_interest: interest || undefined,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Failed to update profile');
+      setSuccess('Profile saved!');
       setTimeout(() => setSuccess(''), 3000);
     } catch (err: any) {
       setError(err.message || 'Failed to update profile');
@@ -99,9 +189,10 @@ export default function Profile() {
     );
   }
 
+  const initial = (username || email || '?').charAt(0).toUpperCase();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      {/* Navbar */}
       <nav className="bg-slate-900/50 border-b border-slate-700 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 text-blue-500 hover:text-blue-400">
@@ -113,10 +204,15 @@ export default function Profile() {
         </div>
       </nav>
 
-      {/* Content */}
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="space-y-8">
-          {/* Profile Section */}
+          {needsOnboarding && (
+            <div className="bg-blue-500/10 border border-blue-500/40 text-blue-200 rounded-lg p-5">
+              👋 Welcome! Take 20 seconds to set up your profile — add an avatar and
+              tell us where you&apos;re at with agents so we can tailor what you see.
+            </div>
+          )}
+
           <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-8">
             <h2 className="text-2xl font-bold text-white mb-6">Account Information</h2>
 
@@ -126,7 +222,6 @@ export default function Profile() {
                 <p>{error}</p>
               </div>
             )}
-
             {success && (
               <div className="flex items-center gap-3 bg-green-500/20 border border-green-500/50 text-green-300 px-4 py-3 rounded-lg mb-6">
                 <CheckCircle className="w-5 h-5 flex-shrink-0" />
@@ -134,8 +229,38 @@ export default function Profile() {
               </div>
             )}
 
+            {/* Avatar */}
+            <div className="flex items-center gap-5 mb-8">
+              <div className="w-20 h-20 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center text-2xl font-bold text-white shrink-0">
+                {avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  initial
+                )}
+              </div>
+              <div>
+                <input
+                  ref={fileInput}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp,image/gif"
+                  onChange={handleAvatar}
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => fileInput.current?.click()}
+                  disabled={uploading}
+                  className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition disabled:opacity-50"
+                >
+                  <Upload className="w-4 h-4" />
+                  {uploading ? 'Uploading...' : 'Change avatar'}
+                </button>
+                <p className="text-xs text-slate-500 mt-2">PNG, JPEG, WEBP or GIF, up to 2MB.</p>
+              </div>
+            </div>
+
             <form onSubmit={handleSave} className="space-y-6">
-              {/* Email (Read-only) */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
                 <input
@@ -147,43 +272,81 @@ export default function Profile() {
                 <p className="text-xs text-slate-500 mt-1">Email cannot be changed</p>
               </div>
 
-              {/* Username */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Username</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Choose your unique username"
-                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
-                  />
-                </div>
-                <p className="text-xs text-slate-500 mt-1">
-                  3-30 characters. Can include letters, numbers, and underscores.
-                </p>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Choose your unique username"
+                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500"
+                />
                 <div className="mt-2 text-xs text-slate-400">
-                  Your profile URL: <span className="text-blue-400 font-mono">agentstack.dev/@{username || 'username'}</span>
+                  Your profile URL:{' '}
+                  <span className="text-blue-400 font-mono">agentshive.net/@{username || 'username'}</span>
                 </div>
               </div>
 
-              {/* Bio */}
               <div>
                 <label className="block text-sm font-medium text-slate-300 mb-2">Bio</label>
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  placeholder="Tell us about yourself. What do you build? What are your interests?"
+                  placeholder="Tell us about yourself. What do you build?"
                   maxLength={160}
-                  rows={4}
+                  rows={3}
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 resize-none"
                 />
-                <p className="text-xs text-slate-500 mt-1">
-                  {bio.length}/160 characters
-                </p>
+                <p className="text-xs text-slate-500 mt-1">{bio.length}/160 characters</p>
               </div>
 
-              {/* Save Button */}
+              {/* Experience level */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  How much do you know about AI agents?
+                </label>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {LEVELS.map((l) => (
+                    <button
+                      type="button"
+                      key={l.value}
+                      onClick={() => setLevel(l.value)}
+                      className={`text-left p-3 rounded-lg border transition ${
+                        level === l.value
+                          ? 'border-blue-500 bg-blue-500/10'
+                          : 'border-slate-700 bg-slate-900/50 hover:border-slate-500'
+                      }`}
+                    >
+                      <div className="text-white text-sm font-medium">{l.label}</div>
+                      <div className="text-xs text-slate-400">{l.hint}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Primary interest */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  What brings you here?
+                </label>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {INTERESTS.map((i) => (
+                    <button
+                      type="button"
+                      key={i.value}
+                      onClick={() => setInterest(i.value)}
+                      className={`text-left p-3 rounded-lg border transition text-sm ${
+                        interest === i.value
+                          ? 'border-blue-500 bg-blue-500/10 text-white'
+                          : 'border-slate-700 bg-slate-900/50 hover:border-slate-500 text-slate-300'
+                      }`}
+                    >
+                      {i.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <button
                 type="submit"
                 disabled={loading}
@@ -195,63 +358,55 @@ export default function Profile() {
             </form>
           </div>
 
-          {/* Username Ideas */}
-          <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-8">
-            <h3 className="text-lg font-semibold text-white mb-4">💡 Need Username Inspiration?</h3>
-            <p className="text-slate-300 mb-4">
-              Here are some fun ideas:
-            </p>
-            <div className="grid md:grid-cols-2 gap-4">
-              {[
-                'magicunicorn',
-                'pizzawhisperer',
-                'ninjasquirrel',
-                'rocketpenguin',
-                'thunderlama',
-                'ghostpanda',
-                'sillyoctopus',
-                'cozykoala',
-                'zappyzebra',
-                'luminouslion',
-                'wanderingwhale',
-                'daring_dragon',
-              ].map((name) => (
+          {/* Connected accounts */}
+          <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-8">
+            <h3 className="text-lg font-semibold text-white mb-4">Connected accounts</h3>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Link2 className="w-6 h-6 text-slate-300" />
+                <div>
+                  <p className="text-white text-sm font-medium">GitHub</p>
+                  <p className="text-xs text-slate-400">
+                    {githubUsername
+                      ? `Connected as @${githubUsername}`
+                      : 'Link GitHub to your account'}
+                  </p>
+                </div>
+              </div>
+              {githubUsername ? (
+                <span className="flex items-center gap-1 text-green-400 text-sm">
+                  <CheckCircle className="w-4 h-4" /> Connected
+                </span>
+              ) : (
                 <button
-                  key={name}
-                  onClick={() => setUsername(name)}
-                  className="text-left p-3 bg-slate-900/50 border border-slate-700 rounded-lg hover:border-blue-500 transition text-slate-300 hover:text-blue-400"
+                  type="button"
+                  onClick={handleConnectGithub}
+                  disabled={linking}
+                  className="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition text-sm disabled:opacity-50"
                 >
-                  @{name}
+                  {linking ? 'Connecting...' : 'Connect GitHub'}
                 </button>
-              ))}
+              )}
             </div>
           </div>
 
-          {/* Account Stats */}
-          <div className="grid md:grid-cols-3 gap-4">
+          {/* Live stats */}
+          <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 text-center">
-              <p className="text-2xl font-bold text-blue-500 mb-2">0</p>
+              <p className="text-2xl font-bold text-blue-500 mb-2">{stats.agents}</p>
               <p className="text-sm text-slate-400">Agents Created</p>
             </div>
             <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 text-center">
-              <p className="text-2xl font-bold text-blue-500 mb-2">0</p>
-              <p className="text-sm text-slate-400">Agents Downloaded</p>
-            </div>
-            <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6 text-center">
-              <p className="text-2xl font-bold text-blue-500 mb-2">0</p>
-              <p className="text-sm text-slate-400">Agents Rated</p>
+              <p className="text-2xl font-bold text-blue-500 mb-2">{stats.totalDownloads}</p>
+              <p className="text-sm text-slate-400">Total Downloads</p>
             </div>
           </div>
 
-          {/* Quick Links */}
           <div className="bg-slate-800/30 border border-slate-700 rounded-lg p-6">
             <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
             <div className="space-y-2">
               <Link href="/agents/upload" className="block text-blue-500 hover:text-blue-400">
                 → Upload Your First Agent
-              </Link>
-              <Link href="/learn" className="block text-blue-500 hover:text-blue-400">
-                → Learn How to Build Agents
               </Link>
               <Link href="/agents" className="block text-blue-500 hover:text-blue-400">
                 → Browse Community Agents
@@ -261,7 +416,6 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="border-t border-slate-700 bg-slate-900/50 py-8 mt-20">
         <div className="max-w-7xl mx-auto px-4 text-center text-slate-400">
           <p>Agentshive — Build and Share AI Agents</p>

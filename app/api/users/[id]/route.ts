@@ -89,7 +89,24 @@ export async function PATCH(
     const body = await request.json();
     // Only these fields may be updated; identity/email/timestamps are never
     // taken from the request body.
-    const { username, bio, avatar_url, github_username, website_url } = body;
+    const {
+      username,
+      bio,
+      avatar_url,
+      github_username,
+      website_url,
+      experience_level,
+      primary_interest,
+    } = body;
+
+    const validLevels = ['beginner', 'intermediate', 'advanced', 'expert'];
+    const validInterests = ['building', 'browsing', 'learning', 'sharing'];
+    if (experience_level && !validLevels.includes(experience_level)) {
+      return NextResponse.json({ error: 'Invalid experience level' }, { status: 400 });
+    }
+    if (primary_interest && !validInterests.includes(primary_interest)) {
+      return NextResponse.json({ error: 'Invalid interest' }, { status: 400 });
+    }
 
     // Validate username if changed
     if (username) {
@@ -125,6 +142,12 @@ export async function PATCH(
     if (avatar_url) updateData.avatar_url = avatar_url;
     if (github_username) updateData.github_username = github_username;
     if (website_url !== undefined) updateData.website_url = website_url || null;
+    if (experience_level) updateData.experience_level = experience_level;
+    if (primary_interest) updateData.primary_interest = primary_interest;
+    // Stamp first-time onboarding once the user answers the questions.
+    if (experience_level || primary_interest) {
+      updateData.onboarded_at = new Date().toISOString();
+    }
 
     const { data: updatedUser, error } = await supabase
       .from('users')

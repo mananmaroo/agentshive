@@ -45,6 +45,11 @@ export default function AuthCallback() {
           avatar_url: meta.avatar_url ?? null,
           github_username: meta.user_name ?? null,
         });
+
+        // First-time user: send them through onboarding.
+        localStorage.removeItem('post_auth_redirect');
+        router.replace('/profile');
+        return;
       }
 
       const stored = localStorage.getItem('post_auth_redirect');
