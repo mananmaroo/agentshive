@@ -134,12 +134,6 @@ export default function UploadAgent() {
           ),
         ]);
 
-      // Confirm we actually have a live session/token before writing.
-      const { data: sessionData } = await withTimeout(supabase.auth.getSession(), 'Session check');
-      if (!sessionData.session?.access_token) {
-        throw new Error('Your session expired. Please log out and log back in, then retry.');
-      }
-
       const { data: agent, error: agentError } = await withTimeout(
         supabase
           .from('agents')
