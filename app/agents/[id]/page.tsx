@@ -18,6 +18,7 @@ import {
   Flag,
   Terminal,
   Lock,
+  Pencil,
 } from 'lucide-react';
 
 interface Agent {
@@ -269,6 +270,16 @@ export default function AgentDetail() {
                 )}
                 {agent.featured && (
                   <span className="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full">⭐ Featured</span>
+                )}
+                <span className="text-xs text-slate-500">v{agent.version}</span>
+                {user && creator && user.id === creator.id && (
+                  <Link
+                    href={`/agents/${agent.id}/edit`}
+                    title="Edit agent / upload a new version"
+                    className="inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs px-2.5 py-1 rounded-lg transition"
+                  >
+                    <Pencil className="w-3.5 h-3.5" /> Edit
+                  </Link>
                 )}
               </div>
 

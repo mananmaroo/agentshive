@@ -125,34 +125,44 @@ export default function UploadAgent() {
 
     setLoading(true);
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData.session?.access_token;
-      if (!token) {
-        throw new Error('Your session expired. Please log in again.');
-      }
-
-      const res = await fetch('/api/agents', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
+      // Client-side insert (same proven pattern as the edit page): the browser
+      // client attaches the user's JWT, so RLS (auth.uid() = creator_id) passes.
+      const { data: agent, error: agentError } = await supabase
+        .from('agents')
+        .insert({
           title: agentName.trim(),
           description: description.trim(),
           category: [category],
           tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+          creator_id: user.id,
           license,
           version: version.trim() || '1.0.0',
           repository_url: repositoryUrl.trim() || null,
           homepage_url: homepageUrl.trim() || null,
-          file: isVideo
-            ? { type: 'video_url', url: videoUrl.trim() }
-            : { type: 'claude_md', name: fileName || 'claude.md', content: fileContent },
-        }),
-      });
+          downloads_count: 0,
+          views_count: 0,
+          average_rating: 0,
+          rating_count: 0,
+          verified: false,
+          featured: false,
+        })
+        .select()
+        .single();
+      if (agentError) throw agentError;
 
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Failed to upload agent.');
+      const fileRow: Record<string, string> = isVideo
+        ? { agent_id: agent.id, file_url: videoUrl.trim(), file_type: 'video_url', file_name: 'demo-video' }
+        : {
+            agent_id: agent.id,
+            file_url: `agent-${agent.id}-claude.md`,
+            file_type: 'claude_md',
+            file_name: fileName || 'claude.md',
+            file_content: fileContent,
+          };
+      const { error: fileError } = await supabase.from('agent_files').insert(fileRow);
+      if (fileError) throw fileError;
 
-      router.push(`/agents/${json.data.id}`);
+      router.push(`/agents/${agent.id}`);
     } catch (err: any) {
       setError(err.message || 'Failed to upload agent. Please try again.');
       setLoading(false);

@@ -12,6 +12,15 @@ const categories = [
   'Customer Support', 'Automation', 'Education', 'Other',
 ];
 
+// Bump the last numeric part of a semver-ish string: 1.0.0 -> 1.0.1
+function bumpPatch(v: string): string {
+  const parts = (v || '1.0.0').split('.');
+  const last = parts.length - 1;
+  const n = parseInt(parts[last], 10);
+  parts[last] = String(Number.isNaN(n) ? 1 : n + 1);
+  return parts.join('.');
+}
+
 export default function EditAgent() {
   const params = useParams();
   const id = params?.id as string;
@@ -32,6 +41,8 @@ export default function EditAgent() {
   const [homepageUrl, setHomepageUrl] = useState('');
   const [content, setContent] = useState('');
   const [hasFile, setHasFile] = useState(false);
+  const [version, setVersion] = useState('1.0.0');
+  const [origContent, setOrigContent] = useState('');
 
   useEffect(() => {
     if (authLoading) return;
@@ -49,11 +60,16 @@ export default function EditAgent() {
       setLicense(agent.license || 'MIT');
       setRepositoryUrl(agent.repository_url || '');
       setHomepageUrl(agent.homepage_url || '');
+      setVersion(agent.version || '1.0.0');
 
       const { data: file } = await supabase
         .from('agent_files').select('id, file_content')
         .eq('agent_id', id).eq('file_type', 'claude_md').maybeSingle();
-      if (file) { setHasFile(true); setContent(file.file_content || ''); }
+      if (file) {
+        setHasFile(true);
+        setContent(file.file_content || '');
+        setOrigContent(file.file_content || '');
+      }
 
       setLoading(false);
     })();
@@ -64,6 +80,10 @@ export default function EditAgent() {
     setError('');
     setSaving(true);
     try {
+      // If the agent's instructions changed, bump the patch version.
+      const contentChanged = content.trim() !== origContent.trim();
+      const newVersion = contentChanged ? bumpPatch(version) : version;
+
       const { error: agentError } = await supabase
         .from('agents')
         .update({
@@ -72,12 +92,14 @@ export default function EditAgent() {
           category: category ? [category] : [],
           tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
           license,
+          version: newVersion,
           repository_url: repositoryUrl.trim() || null,
           homepage_url: homepageUrl.trim() || null,
           updated_at: new Date().toISOString(),
         })
         .eq('id', id);
       if (agentError) throw agentError;
+      setVersion(newVersion);
 
       if (content.trim()) {
         // agent_files has no UPDATE policy for owners (update is a silent no-op),
@@ -159,8 +181,11 @@ export default function EditAgent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
-              claude.md content {content || hasFile ? '' : '(none yet — add it here)'}
+            <label className="flex items-center justify-between text-sm font-medium text-slate-300 mb-2">
+              <span>claude.md content {content || hasFile ? '' : '(none yet — add it here)'}</span>
+              <span className="text-xs text-slate-500 font-normal">
+                v{version} · changing the content bumps to v{bumpPatch(version)}
+              </span>
             </label>
             <textarea
               value={content}
