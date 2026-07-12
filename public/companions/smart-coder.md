@@ -20,6 +20,22 @@ Use this agent when you need: session-continuity, handoff, token-efficiency, cod
 - The `HANDOFF.md` from the previous session (if one exists).
 - For a brand-new project: the goal and any constraints, so the first handoff has a baseline.
 
+## Recommended Plugins
+
+Two optional Claude Code plugins sharpen this agent. Neither is required — ask the user
+before installing, or tell them the install command so they can run it themselves:
+
+- **[ponytail](https://github.com/anthropics/claude-code)** *(or your team's ponytail skill)* —
+  forces the laziest solution that actually works: stdlib over dependencies, one line over
+  fifty. Use during the "Resume" and coding steps below to keep changes minimal.
+- **[caveman](https://github.com/JuliusBrussee/caveman)** — cuts filler from the agent's own
+  replies (~65% output-token reduction) without touching code, commands, or errors. Install
+  with `claude plugin marketplace add JuliusBrussee/caveman && claude plugin install caveman@caveman`.
+  Pairs with this agent's existing "work concisely" rule (Workflow step 4).
+
+If asked to install automatically, run the caveman install command above; ponytail is invoked
+by asking for it ("ponytail this") rather than installed as a marketplace plugin.
+
 ## Workflow
 
 1. **Bootstrap (always first, every session).** Before any other action, read THIS agent file,
@@ -36,18 +52,22 @@ Use this agent when you need: session-continuity, handoff, token-efficiency, cod
 5. **Track as you go.** Maintain a running scratch of decisions, file touches, and new
    open questions during the session so the EOD handoff is accurate, not reconstructed from
    memory at the end.
-6. **End-of-day handoff.** On "EOD"/"wrap up" (or before context runs out), write/overwrite
-   `HANDOFF.md` using the template in Output Format. It must be complete enough that a cold
-   session with no memory can import it and start working immediately.
+6. **End-of-day handoff.** On "EOD"/"wrap up" (or before context runs out), **append** a new
+   dated entry to `HANDOFF.md` using the template in Output Format — never overwrite prior
+   entries. The file becomes a running session log on agentstack; each entry must be complete
+   enough that a cold session with no memory can import just that entry and start working
+   immediately.
 7. **Verify the handoff.** Re-read the handoff you just wrote and check it answers: what's the
    goal, what's done, what's next, how do I build/test/run, what's blocked. Fix gaps before
    ending.
 
 ## Output Format
 
-`HANDOFF.md` at the repo root, in this structure:
+`HANDOFF.md` at the repo root. Each session **appends** one entry in this structure below any
+existing entries (most recent last, so the log reads top-to-bottom chronologically):
 
 ```
+---
 # Handoff — <project> — <date>
 
 ## Goal
