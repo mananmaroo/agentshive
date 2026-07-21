@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import RegionalPricing from './RegionalPricing';
 import {
   ArrowRight,
   BadgeCheck,
@@ -37,27 +38,6 @@ const employees = [
     accent: 'emerald',
     languages: ['English', 'Hindi', 'Hinglish', 'Dialect preferences'],
     tasks: ['Instant response', 'Lead qualification', 'Appointment scheduling', 'Daily owner summary'],
-  },
-] as const;
-
-const plans = [
-  {
-    name: 'Pilot',
-    price: '₹0',
-    note: 'For selected early businesses',
-    features: ['One AI employee', 'Web demo channel', 'Human approval mode', 'Basic activity summary'],
-  },
-  {
-    name: 'Starter',
-    price: '₹4,999',
-    note: 'per month — proposed price',
-    features: ['One AI employee', '1,000 monthly tasks', 'Knowledge setup', 'Email support'],
-  },
-  {
-    name: 'Growth',
-    price: '₹14,999',
-    note: 'per month — proposed price',
-    features: ['Up to three employees', 'Approval workflows', 'CRM/calendar connections', 'Advanced reporting'],
   },
 ] as const;
 
@@ -227,34 +207,7 @@ export default function EmployeesMarketplacePage() {
         })}
       </section>
 
-      <section id="pricing" className="border-y border-slate-800 bg-slate-900/40">
-        <div className="mx-auto max-w-7xl px-4 py-20">
-          <div className="text-center">
-            <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Display-only pricing</p>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Simple plans for the pilot</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-slate-400">No checkout is connected yet. These prices communicate the intended product structure.</p>
-          </div>
-          <div className="mt-12 grid gap-6 lg:grid-cols-3">
-            {plans.map((plan) => (
-              <article key={plan.name} className="rounded-2xl border border-slate-800 bg-slate-950 p-7">
-                <h3 className="text-xl font-bold">{plan.name}</h3>
-                <p className="mt-5 text-4xl font-bold">{plan.price}</p>
-                <p className="mt-2 text-sm text-slate-500">{plan.note}</p>
-                <div className="mt-6 space-y-3">
-                  {plan.features.map((feature) => (
-                    <p key={feature} className="flex items-center gap-2 text-sm text-slate-300">
-                      <Check className="h-4 w-4 text-emerald-400" /> {feature}
-                    </p>
-                  ))}
-                </div>
-                <span className="mt-8 block w-full rounded-lg border border-slate-700 px-4 py-3 text-center text-sm font-semibold text-slate-400">
-                  Payments coming later
-                </span>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <RegionalPricing />
 
       <footer className="bg-slate-950">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-4 py-10 text-center sm:flex-row sm:text-left">
