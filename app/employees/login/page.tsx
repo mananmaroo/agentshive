@@ -56,13 +56,13 @@ export default function BusinessLoginPage() {
             </div>
             <h1 className="mt-7 text-4xl font-bold leading-tight">Sign in to manage your AI employees.</h1>
             <p className="mt-5 max-w-lg leading-7 text-slate-400">
-              This portal is for coaching institutes and business customers. Community agent publishing remains in the separate AgentsHive account experience.
+              This portal is for business customers managing AI employees. Community agent publishing remains in the separate AgentsHive account experience.
             </p>
             <div className="mt-9 space-y-4">
               {[
                 [BookOpenCheck, 'Approve website knowledge before Aarya uses it'],
                 [ShieldCheck, 'Control languages, dialects and human escalation'],
-                [Lock, 'Keep each institute’s information private'],
+                [Lock, 'Keep each business’s information private'],
               ].map(([Icon, text]) => {
                 const ItemIcon = Icon as typeof ShieldCheck;
                 return <div key={text as string} className="flex items-center gap-3 text-sm text-slate-300"><ItemIcon className="h-5 w-5 text-emerald-400" />{text as string}</div>;
@@ -71,9 +71,9 @@ export default function BusinessLoginPage() {
           </section>
 
           <section className="p-8 sm:p-12">
-            <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Institute access</p>
+            <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Business login</p>
             <h2 className="mt-2 text-2xl font-bold">Welcome back</h2>
-            <p className="mt-2 text-sm text-slate-500">Use the account approved for your business pilot.</p>
+            <p className="mt-2 text-sm text-slate-500">Use the account approved for your business workspace.</p>
 
             {error && <div className="mt-6 rounded-xl border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-200">{error}</div>}
 
@@ -81,7 +81,7 @@ export default function BusinessLoginPage() {
               <label className="block text-sm font-semibold text-slate-300">Business email
                 <div className="relative mt-2">
                   <Mail className="absolute left-3 top-3.5 h-5 w-5 text-slate-500" />
-                  <input required type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@institute.edu" className="w-full rounded-xl border border-slate-700 bg-slate-900 py-3 pl-11 pr-4 text-white outline-none focus:border-emerald-500" />
+                  <input required type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="you@business.com" className="w-full rounded-xl border border-slate-700 bg-slate-900 py-3 pl-11 pr-4 text-white outline-none focus:border-emerald-500" />
                 </div>
               </label>
               <label className="block text-sm font-semibold text-slate-300">Password
