@@ -8,17 +8,19 @@ import { SiteFooter } from './site-footer';
 export function LayoutWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isExperienceChoice = pathname === '/';
+  const isBusinessExperience = pathname.startsWith('/employees');
+  const usesAgentNavigation = !isExperienceChoice && !isBusinessExperience;
 
   return (
     <>
-      {!isExperienceChoice && <SidebarNav />}
+      {usesAgentNavigation && <SidebarNav />}
       <div
-        className={`${isExperienceChoice ? '' : 'ml-16'} min-h-screen flex flex-col bg-slate-950 overflow-x-hidden`}
+        className={`${usesAgentNavigation ? 'ml-16' : ''} min-h-screen flex flex-col bg-slate-950 overflow-x-hidden`}
       >
         <main className="flex-1">
           {children}
         </main>
-        <SiteFooter />
+        {!isBusinessExperience && <SiteFooter />}
       </div>
     </>
   );
