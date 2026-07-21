@@ -73,6 +73,7 @@ export default function EmployeesMarketplacePage() {
           <div className="flex items-center gap-5 text-sm font-semibold">
             <a href="#employees" className="text-slate-300 hover:text-white">Employees</a>
             <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>
+            <Link href="/employees/login" className="text-emerald-300 hover:text-emerald-200">Business login</Link>
             <Link href="/agents" className="text-indigo-300 hover:text-indigo-200">Explore Agents</Link>
           </div>
         </nav>
