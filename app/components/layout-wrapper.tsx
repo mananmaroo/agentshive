@@ -9,7 +9,9 @@ export function LayoutWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isExperienceChoice = pathname === '/';
   const isBusinessExperience = pathname.startsWith('/employees');
-  const usesAgentNavigation = !isExperienceChoice && !isBusinessExperience;
+  const isEmbeddedExperience = pathname.startsWith('/embed');
+  const usesAgentNavigation =
+    !isExperienceChoice && !isBusinessExperience && !isEmbeddedExperience;
 
   return (
     <>
@@ -20,7 +22,7 @@ export function LayoutWrapper({ children }: { children: ReactNode }) {
         <main className="flex-1">
           {children}
         </main>
-        {!isBusinessExperience && <SiteFooter />}
+        {!isBusinessExperience && !isEmbeddedExperience && <SiteFooter />}
       </div>
     </>
   );
