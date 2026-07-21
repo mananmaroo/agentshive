@@ -95,6 +95,9 @@ export default function EmployeesMarketplacePage() {
             <a href="#employees" className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold transition hover:bg-emerald-500">
               Meet the employees <ArrowRight className="h-4 w-4" />
             </a>
+            <Link href="/employees/setup" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-emerald-500">
+              Configure a pilot employee
+            </Link>
             <a href="#client-view" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-slate-500">
               See the client dashboard
             </a>
