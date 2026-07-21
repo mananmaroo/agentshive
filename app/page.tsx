@@ -29,302 +29,75 @@ interface Creator {
 
 // Landing Page Component (for logged-out users)
 function LandingPage() {
-  const [demoAgents, setDemoAgents] = useState<(Agent & { creator: Creator })[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState<{ agents: number; downloads: number } | null>(null);
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const [agentsRes, downloadsRes] = await Promise.all([
-          supabaseAnon.from('agents').select('id', { count: 'exact', head: true }),
-          supabaseAnon.from('agents').select('downloads_count'),
-        ]);
-        const totalDownloads = (downloadsRes.data || []).reduce(
-          (sum: number, a: { downloads_count: number }) => sum + (a.downloads_count || 0),
-          0
-        );
-        setStats({
-          agents: agentsRes.count || 0,
-          downloads: totalDownloads,
-        });
-      } catch {
-        // stats strip simply doesn't render if the fetch fails
-      }
-    };
-    fetchStats();
-
-    const fetchDemoAgents = async () => {
-      try {
-        // Fetch the 2 demo agents: Customer Feedback Distributor and AI Job Application Automation
-        const { data: agents } = await supabaseAnon
-          .from('agents')
-          .select('*, creator:users(id, username, avatar_url)')
-          .in('title', ['Customer Feedback Distributor', 'AI Job Application Automation'])
-          .limit(2);
-
-        if (agents && agents.length > 0) {
-          setDemoAgents(agents as (Agent & { creator: Creator })[]);
-        }
-      } catch (error) {
-        console.error('Failed to fetch demo agents:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDemoAgents();
-  }, []);
-
   return (
-    <div className="min-h-screen bg-slate-950">
-      {/* Hero Section with Stars */}
-      <section className="stars-bg min-h-screen flex flex-col items-center justify-center px-4 py-20 relative">
-        <div className="max-w-4xl mx-auto text-center z-10 w-full">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-6 leading-tight text-balance">
-            The Free Library of <span className="bg-gradient-to-r from-indigo-400 to-indigo-600 bg-clip-text text-transparent">AI Agents</span>
-          </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-slate-300 mb-6 max-w-3xl mx-auto">
-            Think of agents like apps for your AI. Each one gives ChatGPT or Claude a specific job —
-            writing emails, doing research, organising files — and it just does it.
-          </p>
-
-          <p className="text-base text-slate-400 mb-10 max-w-2xl mx-auto">
-            Browse free, ready-made agents. Copy one. Paste it into your AI. Done.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex gap-4 justify-center flex-wrap mb-12">
-            <Link
-              href="/agents"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold transition inline-flex items-center gap-2"
-            >
-              <Zap className="w-5 h-5" />
-              Browse Agents
-            </Link>
-            <Link
-              href="/auth/signup"
-              className="bg-slate-800 hover:bg-slate-700 text-indigo-300 border border-slate-700 px-8 py-4 rounded-lg font-semibold transition"
-            >
-              Sign Up Free
-            </Link>
-          </div>
-
-          {/* Live stats */}
-          {stats && stats.agents > 0 && (
-            <div className="flex gap-8 md:gap-14 justify-center flex-wrap text-center">
-              <div>
-                <p className="text-3xl font-bold text-white">{stats.agents.toLocaleString()}+</p>
-                <p className="text-sm text-slate-400">Agents</p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold text-white">{stats.downloads.toLocaleString()}+</p>
-                <p className="text-sm text-slate-400">Downloads</p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold text-white">7</p>
-                <p className="text-sm text-slate-400">Categories</p>
-              </div>
-              <div>
-                <p className="text-3xl font-bold text-white">100%</p>
-                <p className="text-sm text-slate-400">Free & Open</p>
-              </div>
+    <main className="min-h-screen bg-slate-950 text-white">
+      <section className="grid min-h-[82vh] lg:grid-cols-2">
+        <Link
+          href="/agents"
+          className="group flex min-h-[420px] flex-col justify-between border-b border-slate-800 bg-[radial-gradient(circle_at_top_left,#312e81_0%,#020617_56%)] p-8 transition hover:bg-slate-900 sm:p-14 lg:border-b-0 lg:border-r"
+        >
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-400/30 bg-indigo-500/10 px-4 py-2 text-sm text-indigo-200">
+              <Zap className="h-4 w-4" />
+              Free community library
             </div>
-          )}
-        </div>
-      </section>
-
-      {/* Demo Agents Section */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <h2 className="text-3xl font-bold text-white mb-12 text-center">Popular Agent Automations</h2>
-
-        {loading ? (
-          <div className="text-center text-slate-400">Loading agents...</div>
-        ) : demoAgents.length > 0 ? (
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {demoAgents.map((agent) => (
-              <Link
-                key={agent.id}
-                href={`/agents/${agent.id}`}
-                className="bg-slate-900 border border-slate-700 rounded-lg p-6 hover:border-indigo-500 transition group"
-              >
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-white group-hover:text-indigo-400 transition mb-2">
-                    {agent.title}
-                  </h3>
-                  {agent.verified && (
-                    <span className="inline-block bg-indigo-900/50 text-indigo-300 px-2 py-1 rounded text-xs font-semibold">
-                      ✓ Verified
-                    </span>
-                  )}
-                </div>
-
-                <p className="text-slate-400 mb-4 line-clamp-2">
-                  {agent.description}
-                </p>
-
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-4 text-slate-400">
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-indigo-400 fill-indigo-400" />
-                      <span className="text-white font-semibold">{(agent.average_rating ?? 0).toFixed(1)}</span>
-                      <span>({agent.rating_count})</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Download className="w-4 h-4 text-indigo-400" />
-                      <span>{agent.downloads_count.toLocaleString()}</span>
-                    </div>
-                  </div>
-                  <span className="text-indigo-400">→</span>
-                </div>
-
-                <p className="text-xs text-slate-500 mt-4">
-                  by @{agent.creator.username}
-                </p>
-              </Link>
-            ))}
+            <h1 className="mt-8 max-w-xl text-4xl font-bold leading-tight sm:text-6xl">
+              Explore AI Agents
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
+              Discover ready-made agents for ChatGPT, Claude, and other AI tools. Copy one,
+              customise it, and put it to work.
+            </p>
           </div>
-        ) : null}
+          <span className="mt-10 inline-flex items-center gap-2 text-lg font-semibold text-indigo-300">
+            Enter the agent library
+            <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
+          </span>
+        </Link>
 
-        {/* Feature Strip */}
-        <div className="grid md:grid-cols-3 gap-6 my-20">
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 text-center">
-            <Upload className="w-10 h-10 text-indigo-400 mx-auto mb-3" />
-            <h3 className="text-white font-semibold mb-2">Upload Any Format</h3>
-            <p className="text-slate-400 text-sm">Markdown, n8n, code, or videos — works with any AI tool</p>
-          </div>
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 text-center">
-            <Star className="w-10 h-10 text-indigo-400 mx-auto mb-3" />
-            <h3 className="text-white font-semibold mb-2">Star & Rate</h3>
-            <p className="text-slate-400 text-sm">Help the community find the best agents</p>
-          </div>
-          <div className="bg-slate-900 border border-slate-700 rounded-lg p-6 text-center">
-            <BookOpen className="w-10 h-10 text-indigo-400 mx-auto mb-3" />
-            <h3 className="text-white font-semibold mb-2">Learn & Improve</h3>
-            <p className="text-slate-400 text-sm">Discover new techniques and best practices</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Browse by Role */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <h2 className="text-3xl font-bold text-white mb-3 text-center">What can agents do for you?</h2>
-        <p className="text-slate-400 text-center mb-12 max-w-2xl mx-auto">
-          Whatever your role, there&apos;s an agent that takes work off your plate. Pick yours.
-        </p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[
-            {
-              icon: Code,
-              role: 'Developers',
-              desc: 'Review code, generate tests, write commit messages, optimize Dockerfiles.',
-              category: 'Code Generation',
-            },
-            {
-              icon: BarChart3,
-              role: 'Data Analysts',
-              desc: 'Profile CSVs, analyze A/B tests, build cleaning pipelines, design dashboards.',
-              category: 'Data Analysis',
-            },
-            {
-              icon: PenTool,
-              role: 'Marketers & Creators',
-              desc: 'SEO blog posts, LinkedIn ghostwriting, YouTube scripts, content calendars.',
-              category: 'Content Creation',
-            },
-            {
-              icon: FlaskConical,
-              role: 'Founders & Researchers',
-              desc: 'Market sizing, competitor teardowns, due diligence, trend scouting.',
-              category: 'Research',
-            },
-            {
-              icon: Headphones,
-              role: 'Support Teams',
-              desc: 'Triage tickets, generate FAQs, detect churn risk, handle refunds consistently.',
-              category: 'Customer Support',
-            },
-            {
-              icon: Briefcase,
-              role: 'Busy Professionals',
-              desc: 'Meeting notes, inbox zero, expense reports, daily standups — on autopilot.',
-              category: 'Automation',
-            },
-            {
-              icon: GraduationCap,
-              role: 'Students & Job Seekers',
-              desc: 'Interview prep, flashcards, resume reviews, step-by-step tutoring.',
-              category: 'Education',
-            },
-          ].map(({ icon: Icon, role, desc, category }) => (
-            <Link
-              key={role}
-              href={`/agents?category=${encodeURIComponent(category)}`}
-              className="bg-slate-900 border border-slate-700 rounded-lg p-6 hover:border-indigo-500 transition group"
-            >
-              <Icon className="w-8 h-8 text-indigo-400 mb-3" />
-              <h3 className="text-white font-semibold mb-2 group-hover:text-indigo-400 transition">{role}</h3>
-              <p className="text-slate-400 text-sm mb-4">{desc}</p>
-              <span className="text-indigo-400 text-sm font-semibold inline-flex items-center gap-1">
-                Browse agents <ArrowRight className="w-4 h-4" />
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Blog/Video Teaser */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <h2 className="text-3xl font-bold text-white mb-8 text-center">Learn from the Community</h2>
-        <div className="bg-slate-900 border border-slate-700 rounded-lg overflow-hidden hover:border-indigo-500 transition">
-          <div className="grid md:grid-cols-2">
-            <div className="bg-gradient-to-br from-indigo-600 to-indigo-900 h-48 md:h-auto flex items-center justify-center">
-              <BookOpen className="w-20 h-20 text-indigo-300" />
+        <Link
+          href="/employees"
+          className="group flex min-h-[420px] flex-col justify-between bg-[radial-gradient(circle_at_top_right,#064e3b_0%,#020617_56%)] p-8 transition hover:bg-slate-900 sm:p-14"
+        >
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-200">
+              <Briefcase className="h-4 w-4" />
+              Built for Indian businesses
             </div>
-            <div className="p-8 flex flex-col justify-center">
-              <h3 className="text-2xl font-bold text-white mb-3">
-                Getting Started with AI Agents
-              </h3>
-              <p className="text-slate-400 mb-6">
-                Learn how to build your own AI agents, step by step — from first setup to going live. Pick up handy tips along the way.
-              </p>
-              <Link
-                href="/learn-videos"
-                className="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 font-semibold transition w-fit"
-              >
-                Explore Tutorials <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+            <h2 className="mt-8 max-w-xl text-4xl font-bold leading-tight sm:text-6xl">
+              Hire AI Employees
+            </h2>
+            <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
+              Meet AI employees for coaching admissions and everyday lead follow-up—designed
+              for English, Hindi, Hinglish, and local language preferences.
+            </p>
           </div>
-        </div>
+          <span className="mt-10 inline-flex items-center gap-2 text-lg font-semibold text-emerald-300">
+            Explore business employees
+            <ArrowRight className="h-5 w-5 transition group-hover:translate-x-1" />
+          </span>
+        </Link>
       </section>
 
-      {/* Final CTA Banner */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <div className="bg-gradient-to-r from-indigo-900 to-indigo-800 rounded-lg p-12 text-center border border-indigo-700">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Join the community sharing agents
-          </h2>
-          <p className="text-indigo-200 mb-8 max-w-2xl mx-auto">
-            Start uploading your agents, discovering new tools, and building with the community today.
-          </p>
-          <div className="flex gap-4 justify-center flex-wrap">
-            <Link
-              href="/auth/signup"
-              className="bg-white hover:bg-slate-100 text-indigo-900 px-8 py-3 rounded-lg font-semibold transition"
-            >
-              Create Account
+      <section className="border-t border-slate-800 bg-slate-900/40 px-4 py-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 text-center sm:flex-row sm:text-left">
+          <div>
+            <p className="font-semibold">One AgentsHive, two ways to work with AI.</p>
+            <p className="mt-1 text-sm text-slate-400">
+              Community agents remain free. Business employees are being introduced through a controlled pilot.
+            </p>
+          </div>
+          <div className="flex gap-5 text-sm font-semibold">
+            <Link href="/agents" className="text-indigo-300 hover:text-indigo-200">
+              AI Agents
             </Link>
-            <Link
-              href="/auth/login"
-              className="bg-indigo-700 hover:bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold transition"
-            >
-              Already a member? Log In
+            <Link href="/employees" className="text-emerald-300 hover:text-emerald-200">
+              AI Employees
             </Link>
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }
 
