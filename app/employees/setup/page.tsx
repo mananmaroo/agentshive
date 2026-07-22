@@ -115,7 +115,7 @@ export default function EmployeeSetupPage() {
           <ShieldCheck className="mx-auto h-10 w-10 text-emerald-400" />
           <h1 className="mt-5 text-2xl font-bold">Sign in to configure an employee</h1>
           <p className="mt-3 text-slate-400">The same AgentsHive account protects institute knowledge and channel settings.</p>
-          <Link href="/login" className="mt-6 inline-block rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Sign in</Link>
+          <Link href="/employees/login" className="mt-6 inline-block rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Sign in</Link>
         </section>
       </main>
     );
