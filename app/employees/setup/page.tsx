@@ -50,6 +50,28 @@ export default function EmployeeSetupPage() {
     setSaving(true);
     setError('');
     try {
+      const { data: organizationId, error: organizationError } = await supabaseAnon.rpc(
+        'business_ensure_organization',
+        {
+          p_name: instituteName.trim() || 'Unnamed institute',
+          p_root_url: rootUrl,
+        }
+      );
+      if (organizationError || !organizationId) throw organizationError || new Error('Could not prepare the organization workspace.');
+
+      const { error: knowledgeError } = await supabaseAnon.from('business_approved_knowledge').upsert(
+        pages.map((page) => ({
+          organization_id: organizationId,
+          source_url: page.url,
+          title: page.title,
+          content: page.content,
+          approved: true,
+          updated_at: new Date().toISOString(),
+        })),
+        { onConflict: 'organization_id,source_url' }
+      );
+      if (knowledgeError) throw knowledgeError;
+
       const { data: source, error: sourceError } = await supabaseAnon
         .from('business_knowledge_sources')
         .insert({
@@ -76,7 +98,7 @@ export default function EmployeeSetupPage() {
         }))
       );
       if (pagesError) throw pagesError;
-      setNotice('Knowledge approved and saved. Aarya can use these sourced pages once the runtime connection is enabled.');
+      setNotice('Knowledge approved and live. Aarya will answer only from these sourced pages.');
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not save the approved knowledge.');
     } finally {
@@ -93,7 +115,7 @@ export default function EmployeeSetupPage() {
           <ShieldCheck className="mx-auto h-10 w-10 text-emerald-400" />
           <h1 className="mt-5 text-2xl font-bold">Sign in to configure an employee</h1>
           <p className="mt-3 text-slate-400">The same AgentsHive account protects institute knowledge and channel settings.</p>
-          <Link href="/employees/login" className="mt-6 inline-block rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Sign in</Link>
+          <Link href="/login" className="mt-6 inline-block rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Sign in</Link>
         </section>
       </main>
     );
@@ -102,7 +124,7 @@ export default function EmployeeSetupPage() {
   return (
     <main className="min-h-screen bg-slate-950 px-4 py-12 text-white">
       <div className="mx-auto max-w-6xl">
-        <Link href="/employees" className="text-sm font-semibold text-emerald-300 hover:text-emerald-200">← Back to AI Employees</Link>
+        <div className="flex flex-wrap gap-5 text-sm font-semibold"><Link href="/employees" className="text-emerald-300 hover:text-emerald-200">← Back to AI Employees</Link><Link href="/employees/dashboard" className="text-indigo-300 hover:text-indigo-200">Open client dashboard →</Link></div>
         <div className="mt-6 max-w-3xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Employee setup · pilot</p>
           <h1 className="mt-3 text-4xl font-bold">Prepare Aarya for an institute</h1>
