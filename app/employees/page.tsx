@@ -9,6 +9,7 @@ import {
   CircleAlert,
   Clock3,
   Languages,
+  Menu,
   MessageSquareText,
   ShieldCheck,
   Sparkles,
@@ -44,18 +45,32 @@ const employees = [
 export default function EmployeesMarketplacePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <header className="border-b border-slate-800 bg-slate-950/90">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4" aria-label="Business navigation">
-          <Link href="/" className="inline-flex items-center gap-2 font-bold">
-            <Bot className="h-6 w-6 text-emerald-400" />
-            AgentsHive Business
+      <header className="border-b border-slate-800 bg-slate-950/95">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4" aria-label="Business navigation">
+          <Link href="/" className="inline-flex min-w-0 items-center gap-2 font-bold">
+            <Bot className="h-6 w-6 shrink-0 text-emerald-400" />
+            <span className="truncate">AgentsHive Business</span>
           </Link>
-          <div className="flex items-center gap-5 text-sm font-semibold">
+          <div className="hidden items-center gap-5 text-sm font-semibold md:flex">
             <a href="#employees" className="text-slate-300 hover:text-white">Employees</a>
-            <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>\n            <Link href="/employees/waitlist" className="text-emerald-300 hover:text-emerald-200">Join waitlist</Link>
+            <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>
+            <Link href="/employees/waitlist" className="text-emerald-300 hover:text-emerald-200">Join waitlist</Link>
             <Link href="/employees/login" className="text-emerald-300 hover:text-emerald-200">Business login</Link>
-            <Link href="/agents" className="text-indigo-300 hover:text-indigo-200">Explore Agents</Link>
+            <Link href="/registry/home" className="text-indigo-300 hover:text-indigo-200">Agent Registry</Link>
           </div>
+          <details className="group relative md:hidden">
+            <summary className="flex cursor-pointer list-none items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-200 marker:content-none">
+              <Menu className="h-4 w-4" /> Menu
+            </summary>
+            <div className="absolute right-0 top-12 z-50 flex w-56 flex-col rounded-xl border border-slate-700 bg-slate-950 p-2 text-sm font-semibold shadow-2xl">
+              <a href="#employees" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Employees</a>
+              <a href="#pricing" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Pricing</a>
+              <Link href="/employees/waitlist" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Join waitlist</Link>
+              <Link href="/employees/login" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Business login</Link>
+              <Link href="/registry/home" className="rounded-lg px-3 py-2 text-indigo-300 hover:bg-slate-800">Agent Registry</Link>
+              <Link href="/" className="rounded-lg px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-white">Switch experience</Link>
+            </div>
+          </details>
         </nav>
       </header>
 
@@ -217,7 +232,7 @@ export default function EmployeesMarketplacePage() {
           </div>
           <div className="flex gap-5 text-sm font-semibold">
             <Link href="/" className="text-slate-300 hover:text-white">Choose experience</Link>
-            <Link href="/agents" className="text-indigo-300 hover:text-indigo-200">Explore AI Agents</Link>
+            <Link href="/registry/home" className="text-indigo-300 hover:text-indigo-200">Explore AI Agents</Link>
           </div>
         </div>
       </footer>
