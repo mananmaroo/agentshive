@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookOpen, Briefcase, Coffee, FileText, Folder, HelpCircle, Home, LayoutGrid, LogOut, Sparkles, Terminal, Users, Zap } from 'lucide-react';
+import { BookOpen, Briefcase, Coffee, FileText, Folder, HelpCircle, Home, LogOut, Sparkles, Terminal, Users, Zap } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
 
 export function SidebarNav() {
@@ -37,7 +37,6 @@ export function SidebarNav() {
       {user && <div className="mb-2 shrink-0 whitespace-nowrap border-b border-slate-800 px-3 pb-2"><Link href="/profile" className="flex items-center gap-2 py-1 text-slate-300 hover:text-indigo-300"><span className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-full bg-indigo-600 text-xs font-bold text-white">{user.avatar_url ? <img src={user.avatar_url} alt="" className="h-full w-full object-cover" /> : user.username.charAt(0).toUpperCase()}</span><span className="text-xs font-semibold opacity-0 transition-opacity group-hover:opacity-100">@{user.username}</span></Link></div>}
 
       <nav className="scrollbar-thin flex-1 space-y-0.5 overflow-y-auto overflow-x-hidden px-2">
-        <Link href="/" className="flex items-center gap-3 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-900/30"><LayoutGrid className="h-5 w-5 shrink-0" /><span className="opacity-0 transition-opacity group-hover:opacity-100">Switch experience</span></Link>
         <Link href="/employees" className="flex items-center gap-3 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-900/30"><Briefcase className="h-5 w-5 shrink-0" /><span className="opacity-0 transition-opacity group-hover:opacity-100">AI Employees</span></Link>
         <div className="my-2 border-t border-slate-800" />
         {navItems.map((item) => { const Icon=item.icon; const active=isActive(item.href); return <Link key={item.href} href={item.href} className={`flex items-center gap-3 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm transition-colors ${active?'bg-indigo-900/40 font-semibold text-indigo-300':'text-slate-400 hover:bg-slate-800/60 hover:text-slate-100'}`}><Icon className="h-5 w-5 shrink-0" /><span className="opacity-0 transition-opacity group-hover:opacity-100">{item.label}</span></Link>; })}
