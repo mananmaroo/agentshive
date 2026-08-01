@@ -29,7 +29,7 @@ export async function formBody(request: NextRequest) {
 
 export function publicWebhookUrl(request: NextRequest) {
   const base = process.env.VOICE_WEBHOOK_BASE_URL?.replace(/\/$/, '');
-  return base ? `${base}${request.nextUrl.pathname}` : request.url;
+  return base ? `${base}${request.nextUrl.pathname}${request.nextUrl.search}` : request.url;
 }
 
 export function validTwilioSignature(request: NextRequest, params: Record<string, string>) {
