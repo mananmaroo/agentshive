@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { allowSimulator, forbidden, formBody, MAX_CALL_SECONDS, serviceSupabase, twiml, UNKNOWN_REPLY, validTwilioSignature, xml } from '@/app/lib/voice/twilio';
+import { allowSimulator, forbidden, formBody, MAX_CALL_SECONDS, serviceSupabase, twiml, UNKNOWN_REPLY, transferEnabled, validTwilioSignature, xml } from '@/app/lib/voice/twilio';
 
 export const runtime = 'nodejs';
 
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
 
   if (humanRequired(speech)) {
     await supabase.rpc('business_record_voice_turn', { p_session_id: sessionId, p_question: speech, p_answer: 'Human transfer requested.', p_needs_human: true, p_source_urls: [] });
-    if (context.transfer_phone_e164) return twiml(`<Say>I will transfer you to an admissions counsellor now.</Say><Dial timeout="20">${xml(context.transfer_phone_e164)}</Dial><Say>The counsellor was unavailable. We have marked this for follow-up.</Say><Hangup/>`);
+    if (transferEnabled() && context.transfer_phone_e164) return twiml(`<Say>I will transfer you to an admissions counsellor now.</Say><Dial timeout="20">${xml(context.transfer_phone_e164)}</Dial><Say>The counsellor was unavailable. We have marked this for follow-up.</Say><Hangup/>`);
     return twiml('<Say>I have marked this for an admissions counsellor to follow up. Goodbye.</Say><Hangup/>');
   }
 
