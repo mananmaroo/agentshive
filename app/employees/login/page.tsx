@@ -7,6 +7,18 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase-client';
 import { useAuth } from '@/app/lib/auth-context';
 
+const getBusinessDestination = async (userId: string) => {
+  const { data: membership, error } = await supabase
+    .from('business_organization_members')
+    .select('organization_id')
+    .eq('user_id', userId)
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw error;
+  return membership?.organization_id ? '/employees/dashboard' : '/employees/setup';
+};
+
 export default function BusinessLoginPage() {
   const { user, loading: checkingSession } = useAuth();
   const router = useRouter();
@@ -16,20 +28,41 @@ export default function BusinessLoginPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (!checkingSession && user) router.replace('/employees/setup');
+    if (checkingSession || !user) return;
+
+    let cancelled = false;
+    void getBusinessDestination(user.id)
+      .then((destination) => {
+        if (!cancelled) router.replace(destination);
+      })
+      .catch((destinationError) => {
+        if (!cancelled) setError(destinationError instanceof Error ? destinationError.message : 'Could not open your business workspace.');
+      });
+
+    return () => { cancelled = true; };
   }, [checkingSession, router, user]);
 
   const signIn = async (event: FormEvent) => {
     event.preventDefault();
     setSubmitting(true);
     setError('');
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     if (signInError) {
       setError(signInError.message);
       setSubmitting(false);
       return;
     }
-    router.replace('/employees/setup');
+
+    try {
+      const destination = signInData.user
+        ? await getBusinessDestination(signInData.user.id)
+        : '/employees/setup';
+      router.replace(destination);
+      router.refresh();
+    } catch (destinationError) {
+      setError(destinationError instanceof Error ? destinationError.message : 'Could not open your business workspace.');
+      setSubmitting(false);
+    }
   };
 
   const signInWithGoogle = async () => {
@@ -90,8 +123,8 @@ export default function BusinessLoginPage() {
                   <input required type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Your password" className="w-full rounded-xl border border-slate-700 bg-slate-900 py-3 pl-11 pr-4 text-white outline-none focus:border-emerald-500" />
                 </div>
               </label>
-              <button disabled={submitting || checkingSession} className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-semibold hover:bg-emerald-500 disabled:opacity-60">
-                {(submitting || checkingSession) && <Loader2 className="h-4 w-4 animate-spin" />}
+              <button disabled={submitting} className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3 font-semibold hover:bg-emerald-500 disabled:opacity-60">
+                {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
                 {submitting ? 'Signing in…' : 'Sign in to Business'}
               </button>
             </form>
