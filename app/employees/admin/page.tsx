@@ -35,6 +35,7 @@ export default function BusinessAdminPage() {
 
   useEffect(() => {
     if (window.location.search.includes('template=aarohan')) {
+      setEmail('aluminus99@gmail.com');
       setOrganizationName('Aarohan University Demo');
       setRootUrl('https://aarohan-university-demo.vercel.app');
       setEmployeeType('aarya_admissions');
