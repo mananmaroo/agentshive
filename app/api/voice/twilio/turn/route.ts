@@ -3,8 +3,23 @@ import { allowSimulator, forbidden, formBody, MAX_CALL_SECONDS, serviceSupabase,
 
 export const runtime = 'nodejs';
 
+const STOP_WORDS = new Set(['about','after','also','and','are','can','for','from','have','how','into','is','me','of','please','tell','the','this','to','what','when','where','with','you']);
+type KnowledgeRow = { source_url: string; title: string; content: string };
+
 function humanRequired(value: string) {
   return /(human|person|counsell?or|scholarship|discount|refund|complaint|legal|medical|guarantee|exception|payment|unsafe|emergency)/i.test(value);
+}
+
+function answerFromKnowledge(question: string, rows: KnowledgeRow[]) {
+  const terms = [...new Set(question.toLowerCase().match(/[a-z0-9\u0900-\u097f]{3,}/g) || [])].filter((term) => !STOP_WORDS.has(term)).slice(0, 12);
+  const best = rows.map((row) => ({
+    row,
+    score: terms.reduce((score, term) => score + (row.title.toLowerCase().includes(term) ? 4 : 0) + (row.content.toLowerCase().includes(term) ? 1 : 0), 0),
+  })).sort((a, b) => b.score - a.score)[0];
+  if (!best || best.score < 1) return null;
+  const sentences = best.row.content.split(/(?<=[.!?])\s+/).filter(Boolean);
+  const answer = sentences.filter((sentence) => terms.some((term) => sentence.toLowerCase().includes(term))).slice(0, 2).join(' ');
+  return answer ? { answer, sources: [best.row.source_url] } : null;
 }
 
 export async function POST(request: NextRequest) {
@@ -35,16 +50,17 @@ export async function POST(request: NextRequest) {
     return twiml('<Say>I have marked this for an admissions counsellor to follow up. Goodbye.</Say><Hangup/>');
   }
 
-  const response = await fetch(`${request.nextUrl.origin}/api/business/aarya/respond`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ widgetKey: context.widget_key, question: speech, conversationId: context.conversation_id }),
+  const { data: knowledgeRows, error: knowledgeError } = await supabase.rpc('aarya_get_approved_knowledge', { p_widget_key: context.widget_key });
+  const matched = knowledgeError ? null : answerFromKnowledge(speech, (knowledgeRows || []) as KnowledgeRow[]);
+  const answer = matched?.answer || UNKNOWN_REPLY;
+  const needsHuman = !matched;
+  await supabase.rpc('business_record_voice_turn', {
+    p_session_id: sessionId,
+    p_question: speech,
+    p_answer: answer,
+    p_needs_human: needsHuman,
+    p_source_urls: matched?.sources || [],
   });
-  const answerData = response.ok ? await response.json() : null;
-  const answer = answerData?.answer || UNKNOWN_REPLY;
-  const needsHuman = !response.ok || Boolean(answerData?.needsHuman);
-  const sources = Array.isArray(answerData?.citations) ? answerData.citations.map((item: { url?: string }) => item.url).filter(Boolean) : [];
-  await supabase.rpc('business_record_voice_turn', { p_session_id: sessionId, p_question: speech, p_answer: answer, p_needs_human: needsHuman, p_source_urls: sources });
 
   if (needsHuman) return twiml(`<Say>${xml(answer)}</Say><Hangup/>`);
   const action = request.url;
