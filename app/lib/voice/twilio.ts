@@ -62,6 +62,10 @@ export function forbidden() {
   return new Response('Invalid Twilio signature.', { status: 403 });
 }
 
+export function transferEnabled() {
+  return process.env.VOICE_TRANSFER_ENABLED === 'true';
+}
+
 export function voiceGloballyEnabled() {
   return process.env.VOICE_GLOBAL_ENABLED === 'true' && process.env.VOICE_OUTBOUND_ENABLED !== 'true';
 }
