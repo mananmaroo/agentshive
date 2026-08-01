@@ -20,6 +20,7 @@ Safe gates and policy:
 
 - `VOICE_GLOBAL_ENABLED=false` until explicit approval
 - `VOICE_OUTBOUND_ENABLED=false` permanently for this pilot
+- `VOICE_TRANSFER_ENABLED=false` until the separately billable transfer leg is approved
 - `VOICE_MAX_CALL_SECONDS=300`
 - `VOICE_AI_DISCLOSURE`
 - `VOICE_DAILY_SPEND_LIMIT_USD=10`
