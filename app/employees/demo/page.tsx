@@ -9,7 +9,7 @@ import {
   Download,
   Eye,
   Instagram,
-  BriefcaseBusiness,
+  Briefcase,
   MessageSquareText,
   ShieldCheck,
   Sparkles,
@@ -20,7 +20,7 @@ type Tone = 'Friendly' | 'Professional' | 'Bold' | 'Educational';
 
 const platformOptions: { name: Platform; icon: typeof Instagram }[] = [
   { name: 'Instagram', icon: Instagram },
-  { name: 'LinkedIn', icon: BriefcaseBusiness },
+  { name: 'LinkedIn', icon: Briefcase },
   { name: 'Facebook', icon: MessageSquareText },
 ];
 
