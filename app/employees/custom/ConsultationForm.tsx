@@ -42,6 +42,8 @@ export default function ConsultationForm({
       budgetBand: form.get('budget_band'),
       customBudget: form.get('custom_budget'),
       consent: form.get('consent') === 'on',
+      integrationCostsAcknowledged: form.get('integration_costs_acknowledged') === 'on',
+      commercialTermsAcknowledged: form.get('commercial_terms_acknowledged') === 'on',
       companyFax: form.get('company_fax'),
     };
 
@@ -176,7 +178,26 @@ export default function ConsultationForm({
               <input name="other_systems" maxLength={500} placeholder="Other systems or versions" className={inputClass} />
             </fieldset>
 
+            <section className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-5 text-sm leading-6 text-slate-400">
+              <h3 className="font-semibold text-amber-200">Commercial and integration checklist</h3>
+              <ul className="mt-3 list-disc space-y-2 pl-5">
+                <li>A scoped setup fee may be due before work begins. Once work begins it is non-refundable, except when AgentsHive cannot deliver the agreed core scope or applicable law requires otherwise.</li>
+                <li>No monthly subscription is charged before activation. After setup, the client has three business days to report in-scope defects during acceptance review.</li>
+                <li>Change requests and work outside the agreed scope are quoted separately. Cancelling during setup stops future work but does not refund completed or committed setup effort.</li>
+                <li>You provide and authorise required integration accounts or OAuth access. ChatGPT or Claude consumer subscriptions do not include production API usage.</li>
+                <li>Provider charges—including model APIs, messaging, CRM, email, storage or other third-party usage—are disclosed in the proposal and may be billed separately.</li>
+                <li>Failed recurring payment triggers notice and a three-day grace period; access may then be paused, but data is not automatically deleted.</li>
+              </ul>
+            </section>
             <label className="hidden" aria-hidden="true">Company fax<input name="company_fax" tabIndex={-1} autoComplete="off" /></label>
+            <label className="flex items-start gap-3 text-sm leading-6 text-slate-400">
+              <input required name="integration_costs_acknowledged" type="checkbox" className="mt-1 h-4 w-4 shrink-0 accent-emerald-500" />
+              I understand that required OAuth/integration accounts, API access and third-party usage charges are separate from consumer ChatGPT or Claude subscriptions.
+            </label>
+            <label className="flex items-start gap-3 text-sm leading-6 text-slate-400">
+              <input required name="commercial_terms_acknowledged" type="checkbox" className="mt-1 h-4 w-4 shrink-0 accent-emerald-500" />
+              I acknowledge the setup, acceptance, change-request, cancellation and failed-payment principles above; final binding terms will be included in the scoped proposal.
+            </label>
             <label className="flex items-start gap-3 text-sm leading-6 text-slate-400">
               <input required name="consent" type="checkbox" className="mt-1 h-4 w-4 shrink-0 accent-emerald-500" />
               I agree that AgentsHive may store this request and contact me about consultation, proposal and setup. I understand this form does not activate a service or start billing.
