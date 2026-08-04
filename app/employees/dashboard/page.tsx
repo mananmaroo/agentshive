@@ -19,6 +19,7 @@ export default function EmployeeDashboardPage() {
   const [attention, setAttention] = useState<Attention[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [exporting, setExporting] = useState('');
 
   const loadDashboard = useCallback(async () => {
     if (!user) return;
@@ -85,6 +86,35 @@ export default function EmployeeDashboardPage() {
     }
   }, [user]);
 
+  async function exportCsv(dataset: 'leads' | 'conversations' | 'attention') {
+    setExporting(dataset);
+    setError('');
+    try {
+      const { data } = await supabaseAnon.auth.getSession();
+      if (!data.session?.access_token) throw new Error('Sign in again before exporting.');
+      const response = await fetch(`/api/business/export?dataset=${dataset}`, {
+        headers: { authorization: `Bearer ${data.session.access_token}` },
+      });
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.error || 'Export failed.');
+      }
+      const blob = await response.blob();
+      const disposition = response.headers.get('content-disposition') || '';
+      const filename = disposition.match(/filename="([^"]+)"/)?.[1] || `agentshive-${dataset}.csv`;
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Export failed.');
+    } finally {
+      setExporting('');
+    }
+  }
+
   useEffect(() => { void loadDashboard(); }, [loadDashboard]);
 
   if (authLoading) {
@@ -108,6 +138,22 @@ export default function EmployeeDashboardPage() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 py-10">
+        <section className="mb-7 rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h2 className="font-bold">Download your scoped data</h2>
+              <p className="mt-1 text-sm text-slate-500">Exports include only this workspace and are limited to the latest 1,000 rows.</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {(['leads','conversations','attention'] as const).map((dataset) => (
+                <button key={dataset} type="button" onClick={() => void exportCsv(dataset)} disabled={Boolean(exporting)} className="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-slate-300 hover:border-emerald-500 disabled:opacity-50">
+                  {exporting === dataset ? 'Preparing…' : `Export ${dataset} CSV`}
+                </button>
+              ))}
+              <span className="rounded-lg border border-slate-800 px-3 py-2 text-sm text-slate-600" title="Media bundles will appear only when real organization-owned media exists.">Media bundle · Coming later</span>
+            </div>
+          </div>
+        </section>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wide text-emerald-400">Client workspace</p>
