@@ -65,3 +65,222 @@ begin
     execute 'revoke execute on function public.rls_auto_enable() from public, anon, authenticated';
   end if;
 end $$;
+
+
+-- One authoritative access decision for every client and runtime surface.
+-- Access is effective only while the organization is active/pilot, explicitly
+-- granted, paid or waived, and inside either its access term or grace period.
+alter table public.business_organizations
+  add column if not exists access_grace_until timestamptz;
+
+create or replace function public.business_has_effective_access(
+  p_organization_id uuid,
+  p_user_id uuid default auth.uid(),
+  p_require_membership boolean default true
+) returns boolean
+language sql stable security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1
+    from public.business_organizations o
+    where o.id = p_organization_id
+      and o.status in ('pilot','active')
+      and o.pilot_access_status = 'active'
+      and o.payment_status in ('manual_confirmed','waived')
+      and (
+        o.access_expires_at is null
+        or o.access_expires_at > now()
+        or (o.access_grace_until is not null and o.access_grace_until > now())
+      )
+      and (
+        not p_require_membership
+        or (
+          p_user_id is not null
+          and exists (
+            select 1
+            from public.business_organization_members m
+            where m.organization_id = o.id
+              and m.user_id = p_user_id
+          )
+        )
+      )
+  )
+$$;
+
+create or replace function public.business_require_current_organization()
+returns uuid
+language plpgsql stable security definer
+set search_path = ''
+as $$
+declare
+  v_user uuid := auth.uid();
+  v_org uuid;
+begin
+  if v_user is null then raise exception 'Authentication required'; end if;
+  select m.organization_id into v_org
+  from public.business_organization_members m
+  where m.user_id = v_user
+    and public.business_has_effective_access(m.organization_id, v_user, true)
+  order by m.created_at
+  limit 1;
+  if v_org is null then raise exception 'Organization access is inactive, unpaid, revoked, or expired'; end if;
+  return v_org;
+end
+$$;
+
+-- Existing setup may update an already provisioned organization, but it may no
+-- longer create a workspace that bypasses admin access/payment controls.
+create or replace function public.business_ensure_organization(p_name text,p_root_url text)
+returns uuid
+language plpgsql security definer
+set search_path = ''
+as $$
+declare
+  v_org uuid := public.business_require_current_organization();
+begin
+  if char_length(trim(p_name)) < 2 or char_length(trim(p_name)) > 160 then raise exception 'Invalid organization name'; end if;
+  if p_root_url !~ '^https?://' then raise exception 'Invalid organization URL'; end if;
+  update public.business_organizations
+  set name=trim(p_name),root_url=trim(p_root_url),updated_at=now()
+  where id=v_org;
+  if not found then raise exception 'Organization access denied'; end if;
+  return v_org;
+end
+$$;
+
+create or replace function public.business_save_voice_readiness(p_organization_id uuid,p_phone_e164 text)
+returns void
+language plpgsql security definer
+set search_path = ''
+as $$
+begin
+  if auth.uid() is null then raise exception 'Authentication required'; end if;
+  if p_phone_e164 !~ '^\+[1-9][0-9]{7,14}$' then raise exception 'Enter a valid E.164 phone number'; end if;
+  if not public.business_has_effective_access(p_organization_id, auth.uid(), true) then
+    raise exception 'Organization access is inactive, unpaid, revoked, or expired';
+  end if;
+  update public.business_organizations
+  set voice_phone_e164=p_phone_e164,voice_status='configuration_saved',voice_updated_at=now(),updated_at=now()
+  where id=p_organization_id;
+  if not found then raise exception 'Organization access denied'; end if;
+end
+$$;
+
+create or replace function public.aarya_get_approved_knowledge(p_widget_key uuid)
+returns table(organization_id uuid,organization_name text,source_url text,title text,content text)
+language sql stable security definer
+set search_path = ''
+as $$
+  select o.id,o.name,k.source_url,k.title,k.content
+  from public.business_organizations o
+  join public.business_approved_knowledge k on k.organization_id=o.id
+  where o.widget_key=p_widget_key
+    and public.business_has_effective_access(o.id,null,false)
+    and k.approved
+  order by k.updated_at desc
+  limit 10
+$$;
+
+create or replace function public.aarya_record_exchange(
+ p_widget_key uuid,p_conversation_id uuid,p_question text,p_answer text,p_needs_human boolean,
+ p_source_urls text[] default '{}',p_visitor_name text default null,p_visitor_email text default null,
+ p_visitor_phone text default null,p_course_interest text default null) returns uuid
+language plpgsql security definer
+set search_path=''
+as $$
+declare v_org uuid; v_conversation uuid;
+begin
+ if char_length(trim(p_question)) not between 1 and 2000 then raise exception 'Invalid question'; end if;
+ if char_length(trim(p_answer)) not between 1 and 5000 then raise exception 'Invalid answer'; end if;
+ select id into v_org from public.business_organizations
+ where widget_key=p_widget_key and public.business_has_effective_access(id,null,false);
+ if v_org is null then raise exception 'Employee access is inactive, unpaid, revoked, or expired'; end if;
+ if p_conversation_id is not null then
+   select id into v_conversation from public.business_conversations
+   where id=p_conversation_id and organization_id=v_org;
+ end if;
+ if v_conversation is null then
+   insert into public.business_conversations(organization_id,visitor_name,visitor_email,visitor_phone,status)
+   values(v_org,nullif(trim(p_visitor_name),''),nullif(lower(trim(p_visitor_email)),''),nullif(trim(p_visitor_phone),''),case when p_needs_human then 'needs_attention' else 'open' end)
+   returning id into v_conversation;
+ else
+   update public.business_conversations
+   set last_message_at=now(),status=case when p_needs_human then 'needs_attention' else status end,
+       visitor_name=coalesce(nullif(trim(p_visitor_name),''),visitor_name),
+       visitor_email=coalesce(nullif(lower(trim(p_visitor_email)),''),visitor_email),
+       visitor_phone=coalesce(nullif(trim(p_visitor_phone),''),visitor_phone)
+   where id=v_conversation;
+ end if;
+ insert into public.business_messages(conversation_id,sender,content)
+ values(v_conversation,'visitor',trim(p_question));
+ insert into public.business_messages(conversation_id,sender,content,source_urls,needs_human)
+ values(v_conversation,'aarya',trim(p_answer),coalesce(p_source_urls,'{}'),p_needs_human);
+ if p_needs_human then
+   insert into public.business_attention_items(organization_id,conversation_id,reason)
+   values(v_org,v_conversation,'Aarya could not safely answer from approved knowledge or the visitor requested human review.');
+ end if;
+ if nullif(trim(p_visitor_name),'') is not null or nullif(trim(p_visitor_email),'') is not null or nullif(trim(p_visitor_phone),'') is not null then
+   insert into public.business_leads(organization_id,conversation_id,name,email,phone,course_interest)
+   values(v_org,v_conversation,nullif(trim(p_visitor_name),''),nullif(lower(trim(p_visitor_email)),''),nullif(trim(p_visitor_phone),''),nullif(trim(p_course_interest),''));
+ end if;
+ return v_conversation;
+end
+$$;
+
+-- Replace every member-facing policy with the same effective-access predicate.
+drop policy if exists "members read own memberships" on public.business_organization_members;
+create policy "members read own memberships" on public.business_organization_members for select to authenticated
+using ((select auth.uid()) = user_id and public.business_has_effective_access(organization_id,(select auth.uid()),true));
+
+drop policy if exists "members read organizations" on public.business_organizations;
+create policy "members read organizations" on public.business_organizations for select to authenticated
+using (public.business_has_effective_access(id,(select auth.uid()),true));
+
+drop policy if exists "members read approved knowledge" on public.business_approved_knowledge;
+create policy "members read approved knowledge" on public.business_approved_knowledge for select to authenticated
+using (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+drop policy if exists "members insert approved knowledge" on public.business_approved_knowledge;
+create policy "members insert approved knowledge" on public.business_approved_knowledge for insert to authenticated
+with check (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+drop policy if exists "members update approved knowledge" on public.business_approved_knowledge;
+create policy "members update approved knowledge" on public.business_approved_knowledge for update to authenticated
+using (public.business_has_effective_access(organization_id,(select auth.uid()),true))
+with check (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+
+drop policy if exists "members read conversations" on public.business_conversations;
+create policy "members read conversations" on public.business_conversations for select to authenticated
+using (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+drop policy if exists "members update conversations" on public.business_conversations;
+create policy "members update conversations" on public.business_conversations for update to authenticated
+using (public.business_has_effective_access(organization_id,(select auth.uid()),true))
+with check (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+
+drop policy if exists "members read messages" on public.business_messages;
+create policy "members read messages" on public.business_messages for select to authenticated
+using (exists (
+ select 1 from public.business_conversations c
+ where c.id=business_messages.conversation_id
+ and public.business_has_effective_access(c.organization_id,(select auth.uid()),true)
+));
+
+drop policy if exists "members read leads" on public.business_leads;
+create policy "members read leads" on public.business_leads for select to authenticated
+using (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+drop policy if exists "members update leads" on public.business_leads;
+create policy "members update leads" on public.business_leads for update to authenticated
+using (public.business_has_effective_access(organization_id,(select auth.uid()),true))
+with check (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+
+drop policy if exists "members read attention" on public.business_attention_items;
+create policy "members read attention" on public.business_attention_items for select to authenticated
+using (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+drop policy if exists "members update attention" on public.business_attention_items;
+create policy "members update attention" on public.business_attention_items for update to authenticated
+using (public.business_has_effective_access(organization_id,(select auth.uid()),true))
+with check (public.business_has_effective_access(organization_id,(select auth.uid()),true));
+
+revoke all on function public.business_has_effective_access(uuid,uuid,boolean) from public,anon;
+grant execute on function public.business_has_effective_access(uuid,uuid,boolean) to authenticated,service_role;
+revoke all on function public.business_require_current_organization() from public,anon;
+grant execute on function public.business_require_current_organization() to authenticated,service_role;
