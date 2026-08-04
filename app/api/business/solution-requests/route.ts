@@ -80,6 +80,7 @@ export async function POST(request: NextRequest) {
     if (!languages) throw new Error('Tell us which languages are needed.');
     if (budgetBand === 'custom' && !customBudget) throw new Error('Add the custom budget details.');
     if (body.consent !== true) throw new Error('Consent is required before we can contact you.');
+    if (body.integrationCostsAcknowledged !== true || body.commercialTermsAcknowledged !== true) throw new Error('Review and accept the integration and commercial acknowledgements.');
 
     const secret = required('BUSINESS_REQUEST_HASH_SECRET');
     const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
@@ -116,6 +117,8 @@ export async function POST(request: NextRequest) {
       budget_band: budgetBand,
       custom_budget: customBudget || null,
       consent_to_contact: true,
+      integration_costs_acknowledged: true,
+      commercial_terms_acknowledged: true,
       consented_at: new Date().toISOString(),
       source: 'business_consultation_page',
       ip_hash: ipHash,
