@@ -96,7 +96,8 @@ export async function POST(request: NextRequest) {
         pilot_access_status: 'active',
         access_expires_at: expiresAt.toISOString(),
         plan_code: 'pilot',
-        payment_status: 'unpaid',
+        payment_status: 'waived',
+        access_grace_until: new Date(expiresAt.getTime() + 3 * 86400000).toISOString(),
         status: 'pilot',
       }).select('id').single();
       if (error) throw error;
@@ -107,8 +108,11 @@ export async function POST(request: NextRequest) {
         employee_type: employeeType,
         pilot_access_status: 'active',
         access_expires_at: expiresAt.toISOString(),
+        access_grace_until: new Date(expiresAt.getTime() + 3 * 86400000).toISOString(),
+        payment_status: 'waived',
+        status: 'pilot',
         access_updated_at: new Date().toISOString(),
-      }).eq('id', organizationId);
+      }).eq('id', organizationId).select('id').single();
       if (error) throw error;
     }
 
@@ -119,12 +123,13 @@ export async function POST(request: NextRequest) {
     }, { onConflict: 'organization_id,user_id' });
     if (membershipError) throw membershipError;
 
-    await admin.from('business_admin_audit_events').insert({
+    const { error: auditError } = await admin.from('business_admin_audit_events').insert({
       admin_user_id: platformAdmin.id,
       organization_id: organizationId,
       action: invitationSent ? 'pilot_invited' : 'pilot_access_granted',
-      details: { email, employee_type: employeeType, expires_at: expiresAt.toISOString() },
+      details: { email, employee_type: employeeType, expires_at: expiresAt.toISOString(), payment_status: 'waived' },
     });
+    if (auditError) throw new Error(`Provisioning audit failed: ${auditError.message}`);
 
     return NextResponse.json({ organizationId, invitationSent, email });
   } catch (error) {
@@ -144,24 +149,29 @@ export async function PATCH(request: NextRequest) {
     const admin = createBusinessAdminClient();
     let changes: Record<string, unknown>;
     if (body.action === 'revoke') changes = { pilot_access_status: 'revoked', access_updated_at: new Date().toISOString() };
-    else if (body.action === 'grant') changes = { pilot_access_status: 'active', access_updated_at: new Date().toISOString() };
+    else if (body.action === 'grant') {
+      const renewedExpiry = new Date(Date.now() + 30 * 86400000);
+      changes = { pilot_access_status: 'active', access_expires_at: renewedExpiry.toISOString(), access_grace_until: new Date(renewedExpiry.getTime() + 3 * 86400000).toISOString(), access_updated_at: new Date().toISOString() };
+    }
     else if (body.action === 'extend') {
       const expiresAt = body.expiresAt ? new Date(body.expiresAt) : null;
       if (!expiresAt || Number.isNaN(expiresAt.getTime()) || expiresAt <= new Date()) throw new Error('Choose a future expiry.');
-      changes = { pilot_access_status: 'active', access_expires_at: expiresAt.toISOString(), access_updated_at: new Date().toISOString() };
+      changes = { pilot_access_status: 'active', access_expires_at: expiresAt.toISOString(), access_grace_until: new Date(expiresAt.getTime() + 3 * 86400000).toISOString(), access_updated_at: new Date().toISOString() };
     } else if (body.action === 'payment') {
       if (!PAYMENTS.has(body.paymentStatus || '') || !PLANS.has(body.planCode || '')) throw new Error('Invalid payment or plan value.');
       changes = { payment_status: body.paymentStatus, plan_code: body.planCode, payment_notes: body.paymentNotes?.slice(0, 500) || null, access_updated_at: new Date().toISOString() };
     } else throw new Error('Unsupported admin action.');
 
-    const { error } = await admin.from('business_organizations').update(changes).eq('id', organizationId);
+    const { data: updated, error } = await admin.from('business_organizations').update(changes).eq('id', organizationId).select('id').maybeSingle();
     if (error) throw error;
-    await admin.from('business_admin_audit_events').insert({
+    if (!updated) throw new Error('No organization was updated. Refresh the admin portal and try again.');
+    const { error: auditError } = await admin.from('business_admin_audit_events').insert({
       admin_user_id: platformAdmin.id,
       organization_id: organizationId,
       action: `access_${body.action}`,
       details: changes,
     });
+    if (auditError) throw new Error(`Access audit failed: ${auditError.message}`);
     return NextResponse.json({ ok: true });
   } catch (error) {
     return failure(error);
