@@ -73,28 +73,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return (created as UserProfile) ?? null;
     };
 
-    // onAuthStateChange fires INITIAL_SESSION on mount — use it as the sole
-    // source of truth so there's no race between getSession + the listener.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event === 'SIGNED_OUT') {
-          setUser(null);
-          setLoading(false);
-          return;
-        }
-        if (session?.user) {
-          try {
-            const profile = await fetchProfile(session.user);
-            setUser(profile);
-          } catch (error) {
-            console.error('Profile fetch error:', error);
-          }
-        }
-        setLoading(false);
-      }
-    );
+    let cancelled = false;
+    const pending = new Set<number>();
 
-    return () => subscription?.unsubscribe();
+    const handleAuthChange = async (
+      event: string,
+      session: { user?: { id: string; email?: string; user_metadata?: Record<string, unknown> } } | null
+    ) => {
+      if (cancelled) return;
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+      if (session?.user) {
+        try {
+          const profile = await fetchProfile(session.user);
+          if (!cancelled) setUser(profile);
+        } catch (error) {
+          console.error('Profile fetch error:', error);
+        }
+      }
+      if (!cancelled) setLoading(false);
+    };
+
+    // Supabase holds an internal auth lock while invoking this callback.
+    // Return immediately, then perform profile queries on the next task so
+    // later RPC calls cannot wait forever behind the auth callback.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      const timer = window.setTimeout(() => {
+        pending.delete(timer);
+        void handleAuthChange(event, session);
+      }, 0);
+      pending.add(timer);
+    });
+
+    return () => {
+      cancelled = true;
+      pending.forEach((timer) => window.clearTimeout(timer));
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const signOut = async () => {
