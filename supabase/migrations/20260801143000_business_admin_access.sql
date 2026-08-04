@@ -52,3 +52,16 @@ revoke all on public.business_admin_audit_events from public,anon,authenticated;
 revoke all on sequence public.business_admin_audit_events_id_seq from public,anon,authenticated;
 grant all on public.business_admin_audit_events to service_role;
 grant usage,select on sequence public.business_admin_audit_events_id_seq to service_role;
+
+
+-- Internal trigger functions must not be callable through the Data API.
+-- Revoking API roles does not affect their execution by database triggers.
+do $$
+begin
+  if to_regprocedure('public.handle_new_user()') is not null then
+    execute 'revoke execute on function public.handle_new_user() from public, anon, authenticated';
+  end if;
+  if to_regprocedure('public.rls_auto_enable()') is not null then
+    execute 'revoke execute on function public.rls_auto_enable() from public, anon, authenticated';
+  end if;
+end $$;
