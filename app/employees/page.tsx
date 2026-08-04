@@ -38,7 +38,8 @@ export default function EmployeesMarketplacePage() {
           </Link>
           <div className="hidden items-center gap-5 text-sm font-semibold md:flex">
             <a href="#employees" className="text-slate-300 hover:text-white">Employees</a>
-            <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>\n            <Link href="/employees/custom" className="text-slate-300 hover:text-white">Request a solution</Link>
+            <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>
+            <Link href="/employees/custom" className="text-slate-300 hover:text-white">Request a solution</Link>
             <Link href="/employees/waitlist" className="text-emerald-300 hover:text-emerald-200">Join waitlist</Link>
             <Link href="/employees/login" className="text-emerald-300 hover:text-emerald-200">Business login</Link>
             <Link href="/registry/home" className="text-indigo-300 hover:text-indigo-200">Agent Registry</Link>
@@ -49,7 +50,8 @@ export default function EmployeesMarketplacePage() {
             </summary>
             <div className="absolute right-0 top-12 z-50 flex w-56 flex-col rounded-xl border border-slate-700 bg-slate-950 p-2 text-sm font-semibold shadow-2xl">
               <a href="#employees" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Employees</a>
-              <a href="#pricing" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Pricing</a>\n              <Link href="/employees/custom" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Request a solution</Link>
+              <a href="#pricing" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Pricing</a>
+              <Link href="/employees/custom" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Request a solution</Link>
               <Link href="/employees/waitlist" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Join waitlist</Link>
               <Link href="/employees/login" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Business login</Link>
               <Link href="/registry/home" className="rounded-lg px-3 py-2 text-indigo-300 hover:bg-slate-800">Agent Registry</Link>
@@ -69,14 +71,24 @@ export default function EmployeesMarketplacePage() {
             Follow up with every student and every lead.
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            Hire focused AI employees for coaching admissions or general lead follow-up.
-            Configure how they speak, what they may say, and when a person must take over.
+            Start with a measurable workflow, then configure the knowledge, systems, languages and human controls it needs.
+            Every unbuilt capability is scoped through consultation before we make a delivery promise.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <a href="#employees" className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold transition hover:bg-emerald-500">
               Explore solutions <ArrowRight className="h-4 w-4" />
             </a>
-            <Link href="/employees/setup" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6      <section id="employees" className="mx-auto max-w-7xl px-4 py-20">
+            <Link href="/employees/setup" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-emerald-500">
+              Configure a pilot employee
+            </Link>
+            <a href="#client-view" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-slate-500">
+              See the client dashboard
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="employees" className="mx-auto max-w-7xl px-4 py-20">
         <div className="mb-12 max-w-4xl">
           <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Consultation-led AI solutions</p>
           <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Choose the outcome you want to improve</h2>
@@ -85,29 +97,25 @@ export default function EmployeesMarketplacePage() {
             WhatsApp workflows are provider-neutral and inactive until approved provider access is configured. Phone and voice appear last because live calling is not ready.
           </p>
         </div>
-
         <div className="space-y-14">
           {SOLUTION_GROUPS.map((group) => {
             const groupSolutions = BUSINESS_SOLUTIONS.filter((solution) => solution.group === group);
+            const groupId = `solution-group-${group.replaceAll(' ', '-').toLowerCase()}`;
             return (
-              <section key={group} aria-labelledby={`solution-group-${group.replaceAll(' ', '-').toLowerCase()}`}>
-                <h3 id={`solution-group-${group.replaceAll(' ', '-').toLowerCase()}`} className="text-xl font-bold text-slate-200">{group}</h3>
+              <section key={group} aria-labelledby={groupId}>
+                <h3 id={groupId} className="text-xl font-bold text-slate-200">{group}</h3>
                 <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                   {groupSolutions.map((solution) => (
                     <article key={solution.slug} className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
                       <div className="flex items-start justify-between gap-4">
                         <div className="rounded-xl bg-emerald-500/10 p-3 text-emerald-300"><Bot className="h-6 w-6" /></div>
-                        <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${statusClass(solution.status)}`}>
-                          {STATUS_LABELS[solution.status]}
-                        </span>
+                        <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${statusClass(solution.status)}`}>{STATUS_LABELS[solution.status]}</span>
                       </div>
                       <h4 className="mt-5 text-xl font-bold">{solution.name}</h4>
                       <p className="mt-2 text-sm font-semibold text-emerald-300">{solution.outcome}</p>
                       <p className="mt-3 text-sm leading-6 text-slate-400">{solution.description}</p>
                       <div className="mt-5 space-y-2">
-                        {solution.examples.map((example) => (
-                          <p key={example} className="flex items-center gap-2 text-sm text-slate-300"><Check className="h-4 w-4 text-emerald-400" /> {example}</p>
-                        ))}
+                        {solution.examples.map((example) => <p key={example} className="flex items-center gap-2 text-sm text-slate-300"><Check className="h-4 w-4 text-emerald-400" /> {example}</p>)}
                       </div>
                       <p className="mt-5 border-t border-slate-800 pt-4 text-xs leading-5 text-slate-500">{solution.availability}</p>
                       <Link href={`/employees/custom?solution=${solution.slug}`} className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 hover:border-emerald-500 hover:text-white">
@@ -119,19 +127,6 @@ export default function EmployeesMarketplacePage() {
               </section>
             );
           })}
-        </div>
-      </section>
-
-4" /> Language setup
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {languages.map((language) => (
-                    <span key={language} className="rounded-md bg-slate-800 px-2.5 py-1 text-xs text-slate-300">{language}</span>
-                  ))}
-                </div>
-              </div>
-            </article>
-          ))}
         </div>
       </section>
 
