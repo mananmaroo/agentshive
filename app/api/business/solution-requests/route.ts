@@ -129,8 +129,13 @@ export async function POST(request: NextRequest) {
     if (error && error.code !== '23505') throw error;
     return NextResponse.json({ accepted: true });
   } catch (cause) {
-    const message = cause instanceof Error ? cause.message : 'Your request could not be saved.';
-    const safeMessage = message.includes('configured') ? 'Consultation requests are temporarily unavailable. Please email info@agentshive.net.' : message;
+    const message = cause instanceof Error ? cause.message : '';
+    const validationPrefixes = ['Enter ', 'Country,', 'Choose ', 'Describe ', 'Tell us ', 'Add the ', 'Consent ', 'Review and '];
+    const safeMessage = message.includes('configured')
+      ? 'Consultation requests are temporarily unavailable. Please email info@agentshive.net.'
+      : validationPrefixes.some((prefix) => message.startsWith(prefix))
+        ? message
+        : 'Your request could not be saved. Please try again or email info@agentshive.net.';
     return NextResponse.json({ error: safeMessage }, { status: 400 });
   }
 }
