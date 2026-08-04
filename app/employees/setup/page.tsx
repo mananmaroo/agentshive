@@ -8,6 +8,7 @@ import { supabaseAnon } from '@/app/lib/supabase-anon';
 
 type ImportedPage = { url: string; title: string; content: string; wordCount: number };
 type SetupStep = 'knowledge' | 'phone' | 'complete';
+const PHONE_SAVE_TIMEOUT_MS = 12000;
 
 const normalizeE164 = (value: string) => {
   const compact = value.trim().replace(/[\s().-]/g, '');
@@ -99,18 +100,28 @@ export default function EmployeeSetupPage() {
     if (!organizationId) { setError('Approve website knowledge before saving phone readiness.'); return; }
     if (!normalized) { setError('Enter a valid international number, such as +14155552671.'); return; }
     setSavingPhone(true);
+    let timeoutId: number | undefined;
     try {
-      const { error: phoneError } = await supabaseAnon.rpc('business_save_voice_readiness', {
+      const saveRequest = Promise.resolve(supabaseAnon.rpc('business_save_voice_readiness', {
         p_organization_id: organizationId,
         p_phone_e164: normalized,
+      }));
+      const timeout = new Promise<never>((_, reject) => {
+        timeoutId = window.setTimeout(
+          () => reject(new Error('Saving took too long. Nothing was activated. Please retry, skip this step, or refresh the page.')),
+          PHONE_SAVE_TIMEOUT_MS
+        );
       });
+      const { error: phoneError } = await Promise.race([saveRequest, timeout]);
       if (phoneError) throw phoneError;
+
       setPhoneNumber(normalized);
       setStep('complete');
       setNotice('Phone readiness saved. Voice is not active: no number was purchased, verified, called, or connected to a carrier.');
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Could not save phone readiness. No telephone service was activated.');
     } finally {
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
       setSavingPhone(false);
     }
   };
