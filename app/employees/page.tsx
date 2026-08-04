@@ -39,7 +39,6 @@ export default function EmployeesMarketplacePage() {
           <div className="hidden items-center gap-5 text-sm font-semibold md:flex">
             <a href="#employees" className="text-slate-300 hover:text-white">Employees</a>
             <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>
-            <Link href="/employees/demo" className="text-cyan-300 hover:text-cyan-200">Guided demo</Link>
             <Link href="/employees/custom" className="text-slate-300 hover:text-white">Request a solution</Link>
             <Link href="/employees/waitlist" className="text-emerald-300 hover:text-emerald-200">Join waitlist</Link>
             <Link href="/employees/login" className="text-emerald-300 hover:text-emerald-200">Business login</Link>
@@ -52,11 +51,11 @@ export default function EmployeesMarketplacePage() {
             <div className="absolute right-0 top-12 z-50 flex w-56 flex-col rounded-xl border border-slate-700 bg-slate-950 p-2 text-sm font-semibold shadow-2xl">
               <a href="#employees" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Employees</a>
               <a href="#pricing" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Pricing</a>
-              <Link href="/employees/demo" className="rounded-lg px-3 py-2 text-cyan-300 hover:bg-slate-800">Guided demo</Link>
               <Link href="/employees/custom" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Request a solution</Link>
               <Link href="/employees/waitlist" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Join waitlist</Link>
               <Link href="/employees/login" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Business login</Link>
               <Link href="/registry/home" className="rounded-lg px-3 py-2 text-indigo-300 hover:bg-slate-800">Agent Registry</Link>
+              <Link href="/" className="rounded-lg px-3 py-2 text-slate-400 hover:bg-slate-800 hover:text-white">Switch experience</Link>
             </div>
           </details>
         </nav>
@@ -79,11 +78,8 @@ export default function EmployeesMarketplacePage() {
             <a href="#employees" className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold transition hover:bg-emerald-500">
               Explore solutions <ArrowRight className="h-4 w-4" />
             </a>
-            <Link href="/employees/demo" className="rounded-lg border border-cyan-500/50 bg-cyan-500/10 px-6 py-3 font-semibold text-cyan-100 transition hover:bg-cyan-500/20">
-              Try the social media demo
-            </Link>
-            <Link href="/embed/admissions-demo" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-emerald-500">
-              Open Aarya admissions demo
+            <Link href="/employees/setup" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-emerald-500">
+              Configure a pilot employee
             </Link>
             <a href="#client-view" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-slate-500">
               See the client dashboard
@@ -122,8 +118,8 @@ export default function EmployeesMarketplacePage() {
                         {solution.examples.map((example) => <p key={example} className="flex items-center gap-2 text-sm text-slate-300"><Check className="h-4 w-4 text-emerald-400" /> {example}</p>)}
                       </div>
                       <p className="mt-5 border-t border-slate-800 pt-4 text-xs leading-5 text-slate-500">{solution.availability}</p>
-                      <Link href={solution.slug === 'social-media-automation' ? '/employees/demo' : `/employees/custom?solution=${solution.slug}`} className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 hover:border-emerald-500 hover:text-white">
-                        {solution.slug === 'social-media-automation' ? 'Try guided demo' : solution.status === 'coming_later' ? 'Register future interest' : 'Request consultation'} <ArrowRight className="h-4 w-4" />
+                      <Link href={`/employees/custom?solution=${solution.slug}`} className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 hover:border-emerald-500 hover:text-white">
+                        {solution.status === 'coming_later' ? 'Register future interest' : 'Request consultation'} <ArrowRight className="h-4 w-4" />
                       </Link>
                     </article>
                   ))}
