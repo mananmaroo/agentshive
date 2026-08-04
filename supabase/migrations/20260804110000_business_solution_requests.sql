@@ -64,13 +64,12 @@ begin
     insert into public.business_solution_request_events(request_id,from_status,to_status)
     values(new.id,old.status,new.status);
   end if;
-  new.updated_at=now();
   return new;
 end $$;
 
 drop trigger if exists business_solution_request_status_audit on public.business_solution_requests;
 create trigger business_solution_request_status_audit
-before insert or update on public.business_solution_requests
+after insert or update on public.business_solution_requests
 for each row execute function public.record_business_solution_request_status();
 
 revoke all on public.business_solution_requests,public.business_solution_request_events from public,anon,authenticated;
