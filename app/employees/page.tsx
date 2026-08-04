@@ -39,7 +39,7 @@ export default function EmployeesMarketplacePage() {
           <div className="hidden items-center gap-5 text-sm font-semibold md:flex">
             <a href="#employees" className="text-slate-300 hover:text-white">Employees</a>
             <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>
-            <Link href="/employees/custom" className="text-slate-300 hover:text-white">Request a solution</Link>
+            <Link href="/employees/demo" className="text-violet-300 hover:text-violet-200">Try demo</Link>\n            <Link href="/employees/custom" className="text-slate-300 hover:text-white">Request a solution</Link>
             <Link href="/employees/waitlist" className="text-emerald-300 hover:text-emerald-200">Join waitlist</Link>
             <Link href="/employees/login" className="text-emerald-300 hover:text-emerald-200">Business login</Link>
             <Link href="/registry/home" className="text-indigo-300 hover:text-indigo-200">Agent Registry</Link>
@@ -51,7 +51,7 @@ export default function EmployeesMarketplacePage() {
             <div className="absolute right-0 top-12 z-50 flex w-56 flex-col rounded-xl border border-slate-700 bg-slate-950 p-2 text-sm font-semibold shadow-2xl">
               <a href="#employees" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Employees</a>
               <a href="#pricing" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Pricing</a>
-              <Link href="/employees/custom" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Request a solution</Link>
+              <Link href="/employees/demo" className="rounded-lg px-3 py-2 text-violet-300 hover:bg-slate-800">Try demo</Link>\n              <Link href="/employees/custom" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Request a solution</Link>
               <Link href="/employees/waitlist" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Join waitlist</Link>
               <Link href="/employees/login" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Business login</Link>
               <Link href="/registry/home" className="rounded-lg px-3 py-2 text-indigo-300 hover:bg-slate-800">Agent Registry</Link>
