@@ -1,4 +1,3 @@
-/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 # Razorpay Standard Checkout — gated rollout
 
 This draft adds test-ready checkout code only. It performs no real transaction and must remain behind PR #17 → PR #20 → PR #21.
