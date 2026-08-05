@@ -1,4 +1,3 @@
-/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
 export const PRICE_BOOK = Object.freeze({
