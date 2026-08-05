@@ -1,4 +1,3 @@
-/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 import type { NextRequest } from 'next/server';
 import { paymentSignaturePayload, secureSignature } from '@/app/lib/payments/razorpay-core.mjs';
 import { razorpayClient, requirePaymentUser, routeError } from '@/app/lib/payments/razorpay-server';
