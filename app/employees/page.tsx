@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import RegionalPricing from './RegionalPricing';
+import { BUSINESS_SOLUTIONS, SOLUTION_GROUPS, STATUS_LABELS, type SolutionStatus } from './catalog';
 import {
   ArrowRight,
   BadgeCheck,
@@ -17,30 +18,14 @@ import {
   Users,
 } from 'lucide-react';
 
-const employees = [
-  {
-    name: 'Aarya',
-    role: 'AI Admissions Employee',
-    audience: 'For coaching institutes',
-    description:
-      'Answers course enquiries, captures student details, checks approved eligibility rules, books counselling calls, and follows up with interested students.',
-    icon: BookOpenCheck,
-    accent: 'indigo',
-    languages: ['English', 'Hindi', 'Hinglish', 'Local-language ready'],
-    tasks: ['Course enquiries', 'Lead qualification', 'Counselling bookings', 'Follow-up reminders'],
-  },
-  {
-    name: 'Kabir',
-    role: 'AI Lead Follow-up Employee',
-    audience: 'For service businesses',
-    description:
-      'Responds to new leads, asks approved qualifying questions, schedules the next step, updates the lead record, and escalates exceptions.',
-    icon: MessageSquareText,
-    accent: 'emerald',
-    languages: ['English', 'Hindi', 'Hinglish', 'Dialect preferences'],
-    tasks: ['Instant response', 'Lead qualification', 'Appointment scheduling', 'Daily owner summary'],
-  },
-] as const;
+
+
+function statusClass(status: SolutionStatus) {
+  if (status === 'controlled_pilot') return 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200';
+  if (status === 'consultation_available') return 'border-sky-500/30 bg-sky-500/10 text-sky-200';
+  if (status === 'custom_build') return 'border-indigo-500/30 bg-indigo-500/10 text-indigo-200';
+  return 'border-amber-500/30 bg-amber-500/10 text-amber-200';
+}
 
 export default function EmployeesMarketplacePage() {
   return (
@@ -54,6 +39,7 @@ export default function EmployeesMarketplacePage() {
           <div className="hidden items-center gap-5 text-sm font-semibold md:flex">
             <a href="#employees" className="text-slate-300 hover:text-white">Employees</a>
             <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>
+            <Link href="/employees/custom" className="text-slate-300 hover:text-white">Request a solution</Link>
             <Link href="/employees/waitlist" className="text-emerald-300 hover:text-emerald-200">Join waitlist</Link>
             <Link href="/employees/login" className="text-emerald-300 hover:text-emerald-200">Business login</Link>
             <Link href="/registry/home" className="text-indigo-300 hover:text-indigo-200">Agent Registry</Link>
@@ -65,6 +51,7 @@ export default function EmployeesMarketplacePage() {
             <div className="absolute right-0 top-12 z-50 flex w-56 flex-col rounded-xl border border-slate-700 bg-slate-950 p-2 text-sm font-semibold shadow-2xl">
               <a href="#employees" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Employees</a>
               <a href="#pricing" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Pricing</a>
+              <Link href="/employees/custom" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Request a solution</Link>
               <Link href="/employees/waitlist" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Join waitlist</Link>
               <Link href="/employees/login" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Business login</Link>
               <Link href="/registry/home" className="rounded-lg px-3 py-2 text-indigo-300 hover:bg-slate-800">Agent Registry</Link>
@@ -84,12 +71,12 @@ export default function EmployeesMarketplacePage() {
             Follow up with every student and every lead.
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            Hire focused AI employees for coaching admissions or general lead follow-up.
-            Configure how they speak, what they may say, and when a person must take over.
+            Start with a measurable workflow, then configure the knowledge, systems, languages and human controls it needs.
+            Every unbuilt capability is scoped through consultation before we make a delivery promise.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <a href="#employees" className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold transition hover:bg-emerald-500">
-              Meet the employees <ArrowRight className="h-4 w-4" />
+              Explore solutions <ArrowRight className="h-4 w-4" />
             </a>
             <Link href="/employees/setup" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-emerald-500">
               Configure a pilot employee
@@ -102,42 +89,44 @@ export default function EmployeesMarketplacePage() {
       </section>
 
       <section id="employees" className="mx-auto max-w-7xl px-4 py-20">
-        <div className="mb-10 max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Employee marketplace</p>
-          <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Start with one clear job</h2>
-          <p className="mt-4 text-slate-400">
-            These are the only two business employees in the initial release. Both begin in human-approval mode.
+        <div className="mb-12 max-w-4xl">
+          <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Consultation-led AI solutions</p>
+          <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Choose the outcome you want to improve</h2>
+          <p className="mt-4 leading-7 text-slate-400">
+            Aarya is available as a controlled website pilot. Other solutions are consultation-led custom builds unless marked Coming later.
+            WhatsApp workflows are provider-neutral and inactive until approved provider access is configured. Phone and voice appear last because live calling is not ready.
           </p>
         </div>
-        <div className="grid gap-6 lg:grid-cols-2">
-          {employees.map(({ name, role, audience, description, icon: Icon, languages, tasks }) => (
-            <article key={name} className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/70 p-7">
-              <div className="flex items-start justify-between gap-4">
-                <div className="rounded-xl bg-emerald-500/10 p-3 text-emerald-300"><Icon className="h-7 w-7" /></div>
-                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs text-emerald-200">Pilot</span>
-              </div>
-              <p className="mt-6 text-sm font-semibold text-emerald-300">{name} · {audience}</p>
-              <h3 className="mt-1 text-2xl font-bold">{role}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">{description}</p>
-              <div className="mt-6 grid gap-2 sm:grid-cols-2">
-                {tasks.map((task) => (
-                  <div key={task} className="flex items-center gap-2 text-sm text-slate-300">
-                    <Check className="h-4 w-4 text-emerald-400" /> {task}
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 border-t border-slate-800 pt-5">
-                <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  <Languages className="h-4 w-4" /> Language setup
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {languages.map((language) => (
-                    <span key={language} className="rounded-md bg-slate-800 px-2.5 py-1 text-xs text-slate-300">{language}</span>
+        <div className="space-y-14">
+          {SOLUTION_GROUPS.map((group) => {
+            const groupSolutions = BUSINESS_SOLUTIONS.filter((solution) => solution.group === group);
+            const groupId = `solution-group-${group.replaceAll(' ', '-').toLowerCase()}`;
+            return (
+              <section key={group} aria-labelledby={groupId}>
+                <h3 id={groupId} className="text-xl font-bold text-slate-200">{group}</h3>
+                <div className="mt-5 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                  {groupSolutions.map((solution) => (
+                    <article key={solution.slug} className="flex flex-col rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="rounded-xl bg-emerald-500/10 p-3 text-emerald-300"><Bot className="h-6 w-6" /></div>
+                        <span className={`rounded-full border px-3 py-1 text-xs font-semibold ${statusClass(solution.status)}`}>{STATUS_LABELS[solution.status]}</span>
+                      </div>
+                      <h4 className="mt-5 text-xl font-bold">{solution.name}</h4>
+                      <p className="mt-2 text-sm font-semibold text-emerald-300">{solution.outcome}</p>
+                      <p className="mt-3 text-sm leading-6 text-slate-400">{solution.description}</p>
+                      <div className="mt-5 space-y-2">
+                        {solution.examples.map((example) => <p key={example} className="flex items-center gap-2 text-sm text-slate-300"><Check className="h-4 w-4 text-emerald-400" /> {example}</p>)}
+                      </div>
+                      <p className="mt-5 border-t border-slate-800 pt-4 text-xs leading-5 text-slate-500">{solution.availability}</p>
+                      <Link href={`/employees/custom?solution=${solution.slug}`} className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 hover:border-emerald-500 hover:text-white">
+                        {solution.status === 'coming_later' ? 'Register future interest' : 'Request consultation'} <ArrowRight className="h-4 w-4" />
+                      </Link>
+                    </article>
                   ))}
                 </div>
-              </div>
-            </article>
-          ))}
+              </section>
+            );
+          })}
         </div>
       </section>
 
