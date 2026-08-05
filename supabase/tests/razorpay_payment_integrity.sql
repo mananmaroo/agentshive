@@ -1,0 +1,15 @@
+begin;
+select plan(11);
+select has_table('public','business_payment_proposals','payment proposals exist');
+select has_table('public','business_payment_orders','payment orders exist');
+select has_table('public','business_payment_webhook_events','webhook replay ledger exists');
+select col_is_pk('public','business_payment_orders','id','orders have primary key');
+select has_index('public','business_payment_orders','business_payment_orders_provider_order_id_key','provider order is unique');
+select has_index('public','business_payment_orders','business_payment_orders_created_by_idempotency_key_key','callback idempotency is unique');
+select isnt_empty($$select 1 from pg_class where relname='business_payment_orders' and relrowsecurity$$,'orders use RLS');
+select isnt_empty($$select 1 from pg_class where relname='business_payment_webhook_events' and relrowsecurity$$,'webhooks use RLS');
+select isnt_empty($$select 1 from pg_constraint c join pg_class t on t.oid=c.conrelid where t.relname='business_payment_orders' and c.contype='c' and pg_get_constraintdef(c.oid) like '%amount >= 100%'$$,'minimum 100 subunits is database-enforced');
+select isnt_empty($$select 1 from pg_proc where proname='business_has_effective_access' and pg_get_functiondef(oid) like '%gateway_confirmed%'$$,'authoritative gate recognizes only confirmed gateway payment');
+select isnt_empty($$select 1 from pg_proc where proname='business_finalize_razorpay_event' and prosecdef$$,'webhook finalization is atomic and privileged');
+select * from finish();
+rollback;
