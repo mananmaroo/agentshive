@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from 'react';
 import Link from 'next/link';
-import { BookOpenCheck, Check, ExternalLink, Loader2, Phone, RefreshCw, ShieldCheck } from 'lucide-react';
+import { BookOpenCheck, Check, ExternalLink, Loader2, LogOut, Phone, RefreshCw, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
 import { supabaseAnon } from '@/app/lib/supabase-anon';
 
@@ -16,7 +16,7 @@ const normalizeE164 = (value: string) => {
 };
 
 export default function EmployeeSetupPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const [website, setWebsite] = useState('https://aarohan-university-demo.vercel.app');
   const [instituteName, setInstituteName] = useState('Aarohan University Demo');
   const [pages, setPages] = useState<ImportedPage[]>([]);
@@ -132,7 +132,7 @@ export default function EmployeeSetupPage() {
   return (
     <main className="min-h-screen bg-slate-950 px-4 py-12 text-white">
       <div className="mx-auto max-w-6xl">
-        <div className="flex flex-wrap gap-5 text-sm font-semibold"><Link href="/employees" className="text-emerald-300 hover:text-emerald-200">← Back to AI Employees</Link><Link href="/employees/dashboard" className="text-indigo-300 hover:text-indigo-200">Open client dashboard →</Link></div>
+        <div className="flex flex-wrap items-center justify-between gap-4 text-sm font-semibold"><div className="flex flex-wrap gap-5"><Link href="/employees" className="text-emerald-300 hover:text-emerald-200">← Back to AI Employees</Link><Link href="/employees/dashboard" className="text-indigo-300 hover:text-indigo-200">Open client dashboard →</Link></div><button type="button" onClick={async () => { await signOut(); window.location.assign('/employees/login'); }} className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-slate-500 hover:text-white"><LogOut className="h-4 w-4" /> Log out</button></div>
         <div className="mt-6 max-w-3xl"><p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Employee setup · pilot</p><h1 className="mt-3 text-4xl font-bold">Prepare Aarya for an institute</h1><p className="mt-4 leading-7 text-slate-400">Approve website knowledge, then optionally save an existing international phone number for future voice readiness. Saving never activates telephony.</p></div>
 
         <ol className="mt-8 flex gap-3 text-sm" aria-label="Setup progress">
