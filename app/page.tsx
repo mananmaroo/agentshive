@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { ArrowRight, Briefcase, Zap } from 'lucide-react';
+import { OAuthLandingGuard } from '@/app/components/oauth-landing-guard';
 
 export default function ExperienceSelector() {
   return (
+    <OAuthLandingGuard>
     <main className="min-h-screen bg-slate-950 text-white">
       <section className="grid min-h-[82vh] lg:grid-cols-2">
         <Link
@@ -67,5 +69,6 @@ export default function ExperienceSelector() {
         </div>
       </section>
     </main>
+    </OAuthLandingGuard>
   );
 }
