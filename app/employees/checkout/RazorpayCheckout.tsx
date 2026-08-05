@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { supabaseAnon } from '@/app/lib/supabase-anon';
 
 declare global { interface Window { Razorpay?: new (options: Record<string, unknown>) => { open(): void; on(event: string, cb: (response: unknown) => void): void } } }
 
@@ -24,8 +24,7 @@ export default function RazorpayCheckout({ proposalId }: { proposalId: string })
   async function begin() {
     setState('loading'); setMessage('Preparing secure checkout…');
     try {
-      const supabase = createClientComponentClient();
-      const { data } = await supabase.auth.getSession();
+      const { data } = await supabaseAnon.auth.getSession();
       const token = data.session?.access_token;
       if (!token) throw new Error('Please sign in to your Business account first.');
       await loadCheckout();
