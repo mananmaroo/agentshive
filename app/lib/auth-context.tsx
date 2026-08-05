@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from 'react';
 import { supabaseAnon as supabase } from './supabase-anon';
 
 export interface UserProfile {
@@ -31,6 +31,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const authEpoch = useRef(0);
 
   useEffect(() => {
     const fetchProfile = async (sessionUser: {
@@ -82,14 +83,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     ) => {
       if (cancelled) return;
       if (event === 'SIGNED_OUT') {
+        authEpoch.current += 1;
         setUser(null);
         setLoading(false);
         return;
       }
       if (session?.user) {
+        const epoch = ++authEpoch.current;
         try {
           const profile = await fetchProfile(session.user);
-          if (!cancelled) setUser(profile);
+          if (!cancelled && epoch === authEpoch.current) setUser(profile);
         } catch (error) {
           console.error('Profile fetch error:', error);
         }
@@ -116,17 +119,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
-    // Clear local state immediately so the UI updates even if the network
-    // sign-out is slow. Use scope 'local' so it doesn't block on a server
-    // round-trip, and never let it hang the caller.
+    // Invalidate any in-flight profile lookup before clearing the session.
+    // Do not navigate until Supabase confirms that the local session is gone.
+    authEpoch.current += 1;
     setUser(null);
+    setLoading(true);
     try {
-      await Promise.race([
-        supabase.auth.signOut({ scope: 'local' }),
-        new Promise((resolve) => setTimeout(resolve, 3000)),
-      ]);
-    } catch (e) {
-      console.error('signOut error (ignored):', e);
+      const { error } = await supabase.auth.signOut({ scope: 'local' });
+      if (error) throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
