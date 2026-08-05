@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://agentshive.net"),
   title: {
-    default: "Agentshive — The Open Registry for AI Agents",
+    default: "AgentsHive — AI Agents and AI Employees",
     template: "%s | Agentshive",
   },
   description:
@@ -39,9 +39,9 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://agentshive.net",
     siteName: "Agentshive",
-    title: "Agentshive — The Open Registry for AI Agents",
+    title: "AgentsHive — AI Agents and AI Employees",
     description:
-      "Discover, share, and install ready-made AI agents for Claude Code, Codex, n8n, LangChain and more. One-command install. Free and open.",
+      "Discover community AI agent templates and practical AI employees for business workflows.",
   },
   twitter: {
     card: "summary_large_image",
