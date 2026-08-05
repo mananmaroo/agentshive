@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { BookOpenCheck, Check, ExternalLink, Loader2, LogOut, Phone, RefreshCw, ShieldCheck } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
@@ -29,6 +29,22 @@ export default function EmployeeSetupPage() {
   const [savingPhone, setSavingPhone] = useState(false);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
+  const [accessChecking, setAccessChecking] = useState(true);
+  const [accessAllowed, setAccessAllowed] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    const checkAccess = async () => {
+      if (!user) { if (!cancelled) setAccessChecking(false); return; }
+      const { data, error: accessError } = await supabaseAnon.rpc('business_require_current_organization');
+      if (cancelled) return;
+      setAccessAllowed(Boolean(data) && !accessError);
+      if (accessError || !data) setError('Business access is inactive, unpaid, revoked, or expired. Contact AgentsHive to restore access.');
+      setAccessChecking(false);
+    };
+    void checkAccess();
+    return () => { cancelled = true; };
+  }, [user]);
 
   const importWebsite = async (event: FormEvent) => {
     event.preventDefault();
@@ -126,8 +142,9 @@ export default function EmployeeSetupPage() {
     }
   };
 
-  if (loading) return <main className="min-h-screen bg-slate-950 p-10 text-slate-400">Loading setup…</main>;
+  if (loading || accessChecking) return <main className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-300"><div className="text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-emerald-400" aria-label="Checking business access" /><p className="mt-3 text-sm">Checking your business access…</p></div></main>;
   if (!user) return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white"><section className="max-w-lg rounded-2xl border border-slate-800 bg-slate-900 p-8 text-center"><ShieldCheck className="mx-auto h-10 w-10 text-emerald-400" /><h1 className="mt-5 text-2xl font-bold">Sign in to configure an employee</h1><p className="mt-3 text-slate-400">Your business account protects institute knowledge and channel settings.</p><Link href="/employees/login" className="mt-6 inline-block rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Business login</Link></section></main>;
+  if (!accessAllowed) return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white"><section className="max-w-lg rounded-2xl border border-rose-500/30 bg-slate-900 p-8 text-center"><ShieldCheck className="mx-auto h-10 w-10 text-rose-300" /><h1 className="mt-5 text-2xl font-bold">Business access unavailable</h1><p role="alert" className="mt-3 text-slate-300">{error || 'This workspace is inactive, unpaid, revoked, or expired.'}</p><div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row"><button type="button" onClick={async () => { try { await signOut(); window.location.replace('/employees/login'); } catch { setError('Could not log out. Please try again.'); } }} className="rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Use another account</button><Link href="/employees" className="rounded-lg border border-slate-700 px-5 py-3 font-semibold">Return to AgentsHive Business</Link></div></section></main>;
 
   return (
     <main className="min-h-screen bg-slate-950 px-4 py-12 text-white">
