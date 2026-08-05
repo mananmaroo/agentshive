@@ -38,7 +38,7 @@ export class BlogService {
     }
 
     const { data, count, error } = await query
-      .order('published_at', { ascending: false })
+      .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
     if (error) throw error;
@@ -55,7 +55,6 @@ export class BlogService {
 
     if (error) throw error;
 
-    // Increment view count
     await supabase
       .from('blog_posts')
       .update({ view_count: (data.view_count || 0) + 1 })
@@ -107,8 +106,7 @@ export class BlogService {
       .from('blog_posts')
       .select('*, author:author_id(username, avatar_url)')
       .eq('published', true)
-      .not('featured_image_url', 'is', null)
-      .order('view_count', { ascending: false })
+      .order('created_at', { ascending: false })
       .limit(limit);
 
     if (error) throw error;
