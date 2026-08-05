@@ -46,6 +46,7 @@ interface Agent {
   rating_count: number;
   verified: boolean;
   created_at: string;
+  creator: Creator | null;
 }
 
 interface Creator {
@@ -58,7 +59,6 @@ type SortBy = 'trending' | 'newest' | 'rating' | 'downloads';
 
 export default function BrowseAgents() {
   const [agents, setAgents] = useState<Agent[]>([]);
-  const [creators, setCreators] = useState<Map<string, Creator>>(new Map());
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -108,7 +108,7 @@ export default function BrowseAgents() {
     const fetchId = ++fetchIdRef.current;
     setLoading(true);
     try {
-      let query = supabase.from('agents').select('*', { count: 'exact' });
+      let query = supabase.from('agents').select('*, creator:users(id,username,avatar_url)', { count: 'exact' });
 
       // Keep the Agent pool clean: Perfect Prompts and Companions live in their
       // own tabs, so exclude those categories from the default Browse listing.
@@ -165,20 +165,6 @@ export default function BrowseAgents() {
       setAgents(data || []);
       setTotalCount(count || 0);
 
-      // Fetch creator info for all agents
-      const creatorIds = [...new Set((data || []).map((a) => a.creator_id))];
-      if (creatorIds.length > 0) {
-        const { data: creatorData } = await supabase
-          .from('users')
-          .select('id, username, avatar_url')
-          .in('id', creatorIds);
-
-        const creatorMap = new Map();
-        (creatorData || []).forEach((creator) => {
-          creatorMap.set(creator.id, creator);
-        });
-        setCreators(creatorMap);
-      }
     } catch (error) {
       console.error('Failed to fetch agents:', error);
     } finally {
@@ -191,9 +177,7 @@ export default function BrowseAgents() {
   const paginatedAgents = agents;
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
-  const getCreatorName = (creatorId: string) => {
-    return creators.get(creatorId)?.username || 'Unknown';
-  };
+  const getCreatorName = (agent: Agent) => agent.creator?.username || 'community';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
@@ -406,11 +390,16 @@ export default function BrowseAgents() {
                     <h3 className="text-base font-semibold text-white group-hover:text-indigo-400 transition mb-1">
                       {agent.title}
                     </h3>
-                    {agent.verified && (
-                      <span className="inline-block bg-slate-800/60 text-slate-400 text-xs px-2 py-0.5 rounded">
-                        ✓ Verified
+                    <div className="flex flex-wrap gap-2">
+                      {agent.verified && (
+                        <span className="inline-block bg-slate-800/60 text-slate-400 text-xs px-2 py-0.5 rounded">
+                          ✓ Verified
+                        </span>
+                      )}
+                      <span title="The AgentsHive template itself is free to copy; connected services may have separate costs." className="inline-block rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-300">
+                        Free template
                       </span>
-                    )}
+                    </div>
                   </div>
                 </div>
 
@@ -448,7 +437,7 @@ export default function BrowseAgents() {
                 {/* Creator */}
                 <div className="border-t border-slate-700 pt-3 mb-3">
                   <p className="text-xs text-slate-400">
-                    By <span className="text-white font-semibold">{getCreatorName(agent.creator_id)}</span>
+                    By <span className="text-white font-semibold">{getCreatorName(agent)}</span>
                   </p>
                   <p className="text-[11px] text-slate-500 mt-1">
                     Works in: Claude · ChatGPT · Perplexity desktop apps
