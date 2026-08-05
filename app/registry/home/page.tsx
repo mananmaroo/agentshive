@@ -61,9 +61,6 @@ export default function RegistryHome() {
               Browse community-built agents, prompts, and companions without losing your way back to the main AgentsHive experience.
             </p>
           </div>
-          <Link href="/" className="inline-flex items-center gap-2 font-semibold text-slate-300 hover:text-white">
-            Switch experience <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
 
         <form onSubmit={search} className="mt-10 max-w-2xl">
