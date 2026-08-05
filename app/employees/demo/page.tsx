@@ -79,8 +79,13 @@ export default function EmployeeDemoPage() {
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = 'agentshive-social-media-demo.txt';
+    anchor.style.display = 'none';
+    document.body.appendChild(anchor);
     anchor.click();
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => {
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    }, 1_000);
   }
 
   const field = 'mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none focus:border-violet-400';
