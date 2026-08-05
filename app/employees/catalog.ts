@@ -1,0 +1,228 @@
+export type SolutionStatus = 'controlled_pilot' | 'consultation_available' | 'custom_build' | 'coming_later';
+
+export type BusinessSolution = {
+  slug: string;
+  name: string;
+  outcome: string;
+  group: 'Growth' | 'Customer experience' | 'Business operations' | 'People and finance' | 'Custom and future';
+  status: SolutionStatus;
+  description: string;
+  examples: readonly string[];
+  availability: string;
+};
+
+export const STATUS_LABELS: Record<SolutionStatus, string> = {
+  controlled_pilot: 'Controlled pilot',
+  consultation_available: 'Consultation available',
+  custom_build: 'Custom build',
+  coming_later: 'Coming later',
+};
+
+export const BUSINESS_SOLUTIONS: readonly BusinessSolution[] = [
+  {
+    slug: 'aarya-admissions',
+    name: 'Aarya · Admissions',
+    outcome: 'Respond to prospective students consistently',
+    group: 'Growth',
+    status: 'controlled_pilot',
+    description: 'Uses approved institutional knowledge to answer website enquiries, capture interest and escalate unsupported questions.',
+    examples: ['Approved course answers', 'Student enquiry capture', 'Human escalation'],
+    availability: 'Website-based controlled pilot. Email, WhatsApp and voice are not active by default.',
+  },
+  {
+    slug: 'lead-follow-up',
+    name: 'Lead follow-up',
+    outcome: 'Help more enquiries reach the next step',
+    group: 'Growth',
+    status: 'consultation_available',
+    description: 'A scoped follow-up workflow designed around your lead sources, approved questions and human handoff rules.',
+    examples: ['Lead qualification', 'Follow-up reminders', 'Appointment intent'],
+    availability: 'Built and configured only after a workflow consultation.',
+  },
+  {
+    slug: 'social-media-automation',
+    name: 'Social media automation',
+    outcome: 'Prepare and coordinate repeatable content work',
+    group: 'Growth',
+    status: 'custom_build',
+    description: 'Plan drafts, approvals and publishing handoffs without claiming autonomous posting before integrations are configured.',
+    examples: ['Content briefs', 'Approval queues', 'Publishing handoff'],
+    availability: 'Custom build; channel permissions and review rules are scoped first.',
+  },
+  {
+    slug: 'sales-qualification',
+    name: 'Sales qualification',
+    outcome: 'Prioritise sales conversations',
+    group: 'Growth',
+    status: 'custom_build',
+    description: 'Collects approved qualification details and routes suitable opportunities to a person.',
+    examples: ['Discovery questions', 'Lead routing', 'Sales summaries'],
+    availability: 'Custom build after qualification criteria are approved.',
+  },
+  {
+    slug: 'review-follow-up',
+    name: 'Review and reputation follow-up',
+    outcome: 'Create a consistent feedback process',
+    group: 'Growth',
+    status: 'custom_build',
+    description: 'Coordinates review requests and escalates unhappy-customer feedback for human handling.',
+    examples: ['Feedback requests', 'Issue routing', 'Response drafts'],
+    availability: 'Custom build; no public response is posted without configured approval.',
+  },
+  {
+    slug: 'email-triage',
+    name: 'Email triage',
+    outcome: 'Reduce inbox backlog',
+    group: 'Customer experience',
+    status: 'custom_build',
+    description: 'Classifies agreed inbox categories, drafts grounded replies and flags messages needing a person.',
+    examples: ['Inbox classification', 'Reply drafts', 'Priority escalation'],
+    availability: 'Custom build; mailbox access requires customer-controlled OAuth configuration.',
+  },
+  {
+    slug: 'customer-support',
+    name: 'Customer support',
+    outcome: 'Answer repeat questions safely',
+    group: 'Customer experience',
+    status: 'custom_build',
+    description: 'Answers from approved support knowledge and hands policy exceptions to your team.',
+    examples: ['FAQ assistance', 'Ticket intake', 'Escalation'],
+    availability: 'Custom build after knowledge, channels and escalation rules are reviewed.',
+  },
+  {
+    slug: 'scheduling',
+    name: 'Scheduling coordinator',
+    outcome: 'Move suitable conversations to a meeting',
+    group: 'Customer experience',
+    status: 'custom_build',
+    description: 'Collects scheduling preferences and coordinates the next step with configured calendar rules.',
+    examples: ['Availability intake', 'Booking requests', 'Reminder handoff'],
+    availability: 'Custom build; calendar actions remain inactive until authorised.',
+  },
+  {
+    slug: 'customer-onboarding',
+    name: 'Customer onboarding',
+    outcome: 'Guide new customers through repeatable steps',
+    group: 'Customer experience',
+    status: 'custom_build',
+    description: 'Explains approved setup steps, collects missing information and highlights blockers.',
+    examples: ['Setup checklists', 'Document requests', 'Blocker alerts'],
+    availability: 'Custom build around the customer’s actual onboarding process.',
+  },
+  {
+    slug: 'ecommerce-support',
+    name: 'Ecommerce support',
+    outcome: 'Organise order and return enquiries',
+    group: 'Customer experience',
+    status: 'custom_build',
+    description: 'Collects order context and prepares approved support actions without making unauthorised refunds.',
+    examples: ['Order intake', 'Return triage', 'Policy escalation'],
+    availability: 'Custom build; commerce access and refund authority are scoped separately.',
+  },
+  {
+    slug: 'crm-assistant',
+    name: 'CRM assistant',
+    outcome: 'Keep lead records more complete',
+    group: 'Business operations',
+    status: 'custom_build',
+    description: 'Structures conversation outcomes and prepares customer-approved CRM updates.',
+    examples: ['Record preparation', 'Follow-up tasks', 'Pipeline hygiene'],
+    availability: 'Custom build; CRM writes stay inactive until integration approval.',
+  },
+  {
+    slug: 'ai-crm',
+    name: 'AI CRM workspace',
+    outcome: 'Combine enquiries, follow-ups and attention items',
+    group: 'Business operations',
+    status: 'custom_build',
+    description: 'A scoped workspace for teams that need a simpler operating view rather than another generic CRM.',
+    examples: ['Lead workspace', 'Attention queue', 'Activity summaries'],
+    availability: 'Custom build after data model and migration scope are agreed.',
+  },
+  {
+    slug: 'reporting',
+    name: 'Reporting assistant',
+    outcome: 'Turn activity into a regular operating summary',
+    group: 'Business operations',
+    status: 'custom_build',
+    description: 'Produces agreed summaries from authorised data sources with traceable inputs.',
+    examples: ['Daily summaries', 'Exception reports', 'CSV exports'],
+    availability: 'Custom build; metrics depend on available source data.',
+  },
+  {
+    slug: 'documents',
+    name: 'Document workflow',
+    outcome: 'Extract and organise repeat document work',
+    group: 'Business operations',
+    status: 'custom_build',
+    description: 'Classifies authorised documents, extracts agreed fields and routes uncertain items for review.',
+    examples: ['Document intake', 'Field extraction', 'Review queue'],
+    availability: 'Custom build after document types, retention and sensitivity are scoped.',
+  },
+  {
+    slug: 'operations-coordinator',
+    name: 'Operations coordinator',
+    outcome: 'Coordinate recurring internal follow-ups',
+    group: 'Business operations',
+    status: 'custom_build',
+    description: 'Tracks agreed recurring actions and raises missed handoffs without pretending to replace operational ownership.',
+    examples: ['Task follow-up', 'Handoff tracking', 'Exception alerts'],
+    availability: 'Custom build around one measurable workflow.',
+  },
+  {
+    slug: 'recruitment',
+    name: 'Recruitment coordinator',
+    outcome: 'Organise candidate communication',
+    group: 'People and finance',
+    status: 'custom_build',
+    description: 'Collects role-relevant information and coordinates scheduling; hiring decisions remain with people.',
+    examples: ['Candidate intake', 'Interview scheduling', 'Status updates'],
+    availability: 'Custom build with bias, privacy and human-decision safeguards.',
+  },
+  {
+    slug: 'payment-reminders',
+    name: 'Payment reminder workflow',
+    outcome: 'Follow up on approved outstanding payments',
+    group: 'People and finance',
+    status: 'custom_build',
+    description: 'Coordinates polite reminders from approved billing records and escalates disputes.',
+    examples: ['Reminder schedules', 'Promise-to-pay capture', 'Dispute escalation'],
+    availability: 'Custom build; it does not take payments or make credit decisions by default.',
+  },
+  {
+    slug: 'whatsapp-ready',
+    name: 'WhatsApp-ready workflow',
+    outcome: 'Prepare an approved messaging workflow',
+    group: 'Custom and future',
+    status: 'consultation_available',
+    description: 'Designs provider-neutral message, consent, template and handoff interfaces before a WhatsApp provider is connected.',
+    examples: ['Template planning', 'Consent rules', 'Provider-neutral handoff'],
+    availability: 'Consultation available. WhatsApp is inactive until the customer configures an approved provider.',
+  },
+  {
+    slug: 'custom-ai-employee',
+    name: 'Custom AI Employee',
+    outcome: 'Scope a role around your workflow',
+    group: 'Custom and future',
+    status: 'consultation_available',
+    description: 'Start with the problem, measurable outcome, systems and human controls—not a generic agent promise.',
+    examples: ['Workflow discovery', 'Scoped proposal', 'Controlled implementation'],
+    availability: 'Consultation first. Typical setup estimate is 1–2 weeks after scope confirmation.',
+  },
+  {
+    slug: 'phone-voice',
+    name: 'Phone and voice employee',
+    outcome: 'Handle inbound calls with approved knowledge',
+    group: 'Custom and future',
+    status: 'coming_later',
+    description: 'A future inbound-call option with disclosure, call limits and human transfer safeguards.',
+    examples: ['Inbound calls', 'Spoken answers', 'Human transfer'],
+    availability: 'Coming later. Telephone providers, numbers and live calling are not active.',
+  },
+];
+
+export const SOLUTION_GROUPS = ['Growth', 'Customer experience', 'Business operations', 'People and finance', 'Custom and future'] as const;
+
+export function getSolution(slug: string | null | undefined) {
+  return BUSINESS_SOLUTIONS.find((solution) => solution.slug === slug) || null;
+}
