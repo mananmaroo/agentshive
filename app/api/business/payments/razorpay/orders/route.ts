@@ -13,7 +13,8 @@ export async function POST(request: NextRequest) {
     if (!body || !validProposalId(body.proposalId) || !validIdempotencyKey(idempotencyKey)) {
       return Response.json({ error: 'A valid proposal and idempotency key are required.' }, { status: 400 });
     }
-    const { proposal, organization } = await requireProposal(admin, user, body.proposalId);
+    const proposalId = String(body.proposalId);
+    const { proposal, organization } = await requireProposal(admin, user, proposalId);
     const price = resolveServerPrice(organization.billing_country, proposal.price_book_id);
 
     const since = new Date(Date.now() - 60_000).toISOString();
