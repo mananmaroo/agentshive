@@ -17,7 +17,7 @@ export default function EmployeeDashboardPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [attention, setAttention] = useState<Attention[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [accessDenied, setAccessDenied] = useState(false);
 
@@ -95,10 +95,14 @@ export default function EmployeeDashboardPage() {
     return <main className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400"><Loader2 className="h-5 w-5 animate-spin" aria-label="Loading dashboard" /></main>;
   }
 
+  if (loading && user && !organization && !error) {
+    return <main className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-300"><div className="text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-emerald-400" aria-label="Loading employee dashboard" /><p className="mt-3 text-sm">Loading your employee dashboard…</p></div></main>;
+  }
+
   if (!user) {
     return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white"><div className="text-center"><h1 className="text-2xl font-bold">Business login required</h1><p className="mt-2 text-slate-400">Sign in to view your employee workspace.</p><Link href="/employees/login" className="mt-6 inline-flex rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Business login</Link></div></main>;
   }
-  if (accessDenied) return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white"><section className="max-w-lg rounded-2xl border border-rose-500/30 bg-slate-900 p-8 text-center"><h1 className="text-2xl font-bold">Workspace access unavailable</h1><p role="alert" className="mt-3 text-slate-300">{error}</p><Link href="/employees" className="mt-6 inline-block rounded-lg border border-slate-700 px-5 py-3 font-semibold">Return to AgentsHive Business</Link></section></main>;
+  if (accessDenied) return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white"><section className="max-w-lg rounded-2xl border border-rose-500/30 bg-slate-900 p-8 text-center"><h1 className="text-2xl font-bold">Workspace access unavailable</h1><p role="alert" className="mt-3 text-slate-300">{error}</p><div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row"><button type="button" onClick={async () => { await signOut(); window.location.assign('/employees/login'); }} className="rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Use another account</button><Link href="/employees" className="rounded-lg border border-slate-700 px-5 py-3 font-semibold">Return to AgentsHive Business</Link></div></section></main>;
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -107,7 +111,7 @@ export default function EmployeeDashboardPage() {
           <Link href="/employees" className="font-semibold text-emerald-300 hover:text-emerald-200">AgentsHive Business</Link>
           <nav className="flex items-center gap-2 text-sm">
             <Link href="/employees/setup" className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-slate-500 hover:text-white">Knowledge settings</Link>
-            <button onClick={() => void signOut()} className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-slate-500 hover:text-white"><LogOut className="h-4 w-4" /> Log out</button>
+            <button onClick={async () => { await signOut(); window.location.assign('/employees/login'); }} className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-slate-500 hover:text-white"><LogOut className="h-4 w-4" /> Log out</button>
           </nav>
         </div>
       </header>
