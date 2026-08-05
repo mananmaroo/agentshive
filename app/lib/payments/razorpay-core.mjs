@@ -2,10 +2,10 @@ import { createHmac, timingSafeEqual } from 'node:crypto';
 
 export const PRICE_BOOK = Object.freeze({
   IN: Object.freeze({
-    starter_6m: Object.freeze({ amount: 2849400, currency: 'INR', label: 'Starter · 6 months' }),
-    starter_12m: Object.freeze({ amount: 5398900, currency: 'INR', label: 'Starter · 12 months' }),
-    growth_6m: Object.freeze({ amount: 8549400, currency: 'INR', label: 'Growth · 6 months' }),
-    growth_12m: Object.freeze({ amount: 16198900, currency: 'INR', label: 'Growth · 12 months' }),
+    starter_6m: Object.freeze({ amount: 2849430, currency: 'INR', label: 'Starter · 6 months' }),
+    starter_12m: Object.freeze({ amount: 5398920, currency: 'INR', label: 'Starter · 12 months' }),
+    growth_6m: Object.freeze({ amount: 8549430, currency: 'INR', label: 'Growth · 6 months' }),
+    growth_12m: Object.freeze({ amount: 16198920, currency: 'INR', label: 'Growth · 12 months' }),
   }),
   US: Object.freeze({
     starter_6m: Object.freeze({ amount: 84930, currency: 'USD', label: 'Starter · 6 months' }),
