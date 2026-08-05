@@ -22,7 +22,11 @@ export default function BlogPage() {
         const response = await fetch(`/api/blog/posts${query}`);
         if (response.ok) {
           const data = await response.json();
-          setPosts(data);
+          if (Array.isArray(data.posts) && data.posts.length > 0) {
+            setPosts(data.posts);
+          } else {
+            setPosts(sharedSamplePosts);
+          }
         }
       } catch (error) {
         console.error('Failed to fetch posts:', error);
