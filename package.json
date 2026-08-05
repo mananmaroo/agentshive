@@ -1,3 +1,4 @@
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 {
   "name": "agentstack",
   "version": "0.1.0",
@@ -5,7 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test:payments": "node --test tests/razorpay-core.test.mjs"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.15.0",
@@ -14,6 +16,7 @@
     "date-fns": "^4.3.0",
     "lucide-react": "^1.16.0",
     "next": "16.2.6",
+    "razorpay": "^2.9.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "zustand": "^5.0.13"
