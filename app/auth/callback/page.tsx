@@ -9,8 +9,6 @@ export default function AuthCallback() {
   const exchangeStarted = useRef(false);
 
   useEffect(() => {
-    // React Strict Mode can invoke effects twice in development-like runtimes.
-    // An OAuth PKCE authorization code is single-use, so guard the whole exchange.
     if (exchangeStarted.current) return;
     exchangeStarted.current = true;
 
@@ -23,8 +21,13 @@ export default function AuthCallback() {
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
         if (error) {
-          router.replace(`${errorDestination}?message=${encodeURIComponent(error.message)}`);
-          return;
+          // Supabase's browser client may already have consumed the URL code.
+          // Continue only when the server-backed auth check confirms a real session.
+          const { data: { user: existingSessionUser } } = await supabase.auth.getUser();
+          if (!existingSessionUser) {
+            router.replace(`${errorDestination}?message=${encodeURIComponent(error.message)}`);
+            return;
+          }
         }
       }
 
