@@ -87,6 +87,16 @@ export default function EmployeeDashboardPage() {
 
   useEffect(() => { void loadDashboard(); }, [loadDashboard]);
 
+  const logout = async () => {
+    setError('');
+    try {
+      await signOut();
+      window.location.replace('/employees/login');
+    } catch {
+      setError('Could not log out. Please try again.');
+    }
+  };
+
   if (authLoading) {
     return <main className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400"><Loader2 className="h-5 w-5 animate-spin" aria-label="Loading dashboard" /></main>;
   }
@@ -102,7 +112,7 @@ export default function EmployeeDashboardPage() {
           <Link href="/employees" className="font-semibold text-emerald-300 hover:text-emerald-200">AgentsHive Business</Link>
           <nav className="flex items-center gap-2 text-sm">
             <Link href="/employees/setup" className="rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-slate-500 hover:text-white">Knowledge settings</Link>
-            <button onClick={() => void signOut()} className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-slate-500 hover:text-white"><LogOut className="h-4 w-4" /> Log out</button>
+            <button onClick={() => void logout()} className="inline-flex items-center gap-2 rounded-lg border border-slate-700 px-3 py-2 text-slate-300 hover:border-slate-500 hover:text-white"><LogOut className="h-4 w-4" /> Log out</button>
           </nav>
         </div>
       </header>
