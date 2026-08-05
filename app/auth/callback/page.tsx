@@ -1,30 +1,38 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase-client';
 
 export default function AuthCallback() {
   const router = useRouter();
+  const exchangeStarted = useRef(false);
 
   useEffect(() => {
+    // React Strict Mode can invoke effects twice in development-like runtimes.
+    // An OAuth PKCE authorization code is single-use, so guard the whole exchange.
+    if (exchangeStarted.current) return;
+    exchangeStarted.current = true;
+
     const run = async () => {
+      const stored = localStorage.getItem('post_auth_redirect');
+      const isBusinessLogin = stored === '/employees/login';
+      const errorDestination = isBusinessLogin ? '/employees/login' : '/auth/login';
       const code = new URLSearchParams(window.location.search).get('code');
+
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
         if (error) {
-          router.replace(`/auth/login?message=${encodeURIComponent(error.message)}`);
+          router.replace(`${errorDestination}?message=${encodeURIComponent(error.message)}`);
           return;
         }
       }
 
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.replace('/auth/login?message=Sign-in failed');
+        router.replace(`${errorDestination}?message=${encodeURIComponent('Sign-in failed')}`);
         return;
       }
-
-      const stored = localStorage.getItem('post_auth_redirect');
 
       const { data: existing } = await supabase
         .from('users')
@@ -49,15 +57,15 @@ export default function AuthCallback() {
         });
 
         localStorage.removeItem('post_auth_redirect');
-        // Business OAuth must return to the business router even on first sign-in.
-        router.replace(stored === '/employees/login' ? stored : '/profile');
+        router.replace(isBusinessLogin ? '/employees/login' : '/profile');
         return;
       }
 
       localStorage.removeItem('post_auth_redirect');
-      router.replace(stored && stored.startsWith('/') ? stored : '/');
+      router.replace(isBusinessLogin ? '/employees/login' : '/');
     };
-    run();
+
+    void run();
   }, [router]);
 
   return (
