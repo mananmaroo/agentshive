@@ -272,6 +272,7 @@ export default function AgentDetail() {
                 {agent.featured && (
                   <span className="bg-yellow-600 text-white text-xs px-3 py-1 rounded-full">⭐ Featured</span>
                 )}
+                <span title="The AgentsHive template itself is free to copy; connected services may have separate costs." className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">Free template</span>
                 <span className="text-xs text-slate-500">v{agent.version}</span>
                 {user && creator && user.id === creator.id && (
                   <Link
@@ -513,6 +514,7 @@ export default function AgentDetail() {
                   {[1, 2, 3, 4, 5].map((rating) => (
                     <button
                       key={rating}
+                      aria-label={`Rate ${rating} out of 5`}
                       onClick={() => handleRating(rating)}
                       onMouseEnter={() => setHoverRating(rating)}
                       onMouseLeave={() => setHoverRating(0)}
@@ -579,10 +581,10 @@ export default function AgentDetail() {
                         <p className="text-xs text-slate-400">{new Date(comment.created_at).toLocaleDateString()}</p>
                       </div>
                       <p className="text-slate-300 mb-3">{comment.content}</p>
-                      <button className="flex items-center gap-1 text-slate-400 hover:text-slate-300 transition text-sm">
+                      <span className="flex items-center gap-1 text-sm text-slate-500" aria-label={`${comment.upvotes} upvotes`}>
                         <Heart className="w-4 h-4" />
                         {comment.upvotes}
-                      </button>
+                      </span>
                     </div>
                   ))
                 )}
@@ -631,10 +633,10 @@ export default function AgentDetail() {
                     <p className="text-white text-sm">{new Date(agent.updated_at).toLocaleDateString()}</p>
                   </div>
                 </div>
-                <button className="w-full mt-6 flex items-center justify-center gap-2 text-red-400 hover:text-red-300 py-2 border border-red-600/30 rounded-lg transition">
+                <a href={`mailto:info@agentshive.net?subject=${encodeURIComponent(`Report agent: ${agent.title}`)}`} className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg border border-red-600/30 py-2 text-red-400 transition hover:text-red-300">
                   <Flag className="w-4 h-4" />
                   Report
-                </button>
+                </a>
               </div>
             )}
           </div>
