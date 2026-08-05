@@ -1,4 +1,3 @@
-/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 -- Depends on 20260801143000_business_admin_access.sql.
 -- Razorpay credentials and live transactions are never stored in Postgres.
 
