@@ -50,11 +50,11 @@ export default function RazorpayCheckout({ proposalId }: { proposalId: string })
   }
 
   return <section className="rounded-3xl border border-slate-800 bg-slate-950/60 p-6">
-    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">Approved proposal</p>
+    <div className="mb-5 inline-flex rounded-full border border-amber-400/50 bg-amber-400/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-amber-200">Razorpay TEST MODE · No live charge</div>\n    <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-400">Approved proposal</p>
     <h1 className="mt-3 text-3xl font-bold">Complete secure payment</h1>
     <p className="mt-3 text-slate-400">The amount and currency come from your approved proposal and verified billing country. They cannot be changed here.</p>
     <button onClick={begin} disabled={state === 'loading' || state === 'success'} className="mt-6 rounded-xl bg-emerald-600 px-5 py-3 font-semibold disabled:opacity-60">{state === 'loading' ? 'Preparing…' : 'Continue to Razorpay'}</button>
     <p role="status" className={`mt-4 text-sm ${state === 'failed' ? 'text-rose-300' : state === 'success' ? 'text-emerald-300' : 'text-slate-400'}`}>{message}</p>
-    <p className="mt-5 text-xs text-slate-500">Test integration only. Production checkout remains disabled until keys are rotated, webhooks are verified, and deployment is approved.</p>
+    <p className="mt-5 text-xs text-slate-500">TEST MODE uses Razorpay test credentials and test cards only. Do not enter a real card. Live payments remain disabled until separately approved.</p>
   </section>;
 }
