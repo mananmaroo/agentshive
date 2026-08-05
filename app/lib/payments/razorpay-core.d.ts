@@ -1,4 +1,3 @@
-/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 export type ServerPrice = { amount: number; currency: string; label: string; billingCountry: string; priceBookId: string };
 export const PRICE_BOOK: Readonly<Record<string, Readonly<Record<string, Readonly<{ amount: number; currency: string; label: string }>>>>>;
 export function resolveServerPrice(country: string, priceBookId: string): ServerPrice;
