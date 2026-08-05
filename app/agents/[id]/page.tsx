@@ -6,6 +6,7 @@ import { useParams } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase-client';
 import { useAuth } from '@/app/lib/auth-context';
 import { sortBadges, BadgeChip } from '@/app/lib/badges';
+import { isFreeAgent, freeAgentBadgeTitle } from '@/app/lib/free-agent';
 import { restInsert, restUpdate } from '@/app/lib/rest';
 import {
   Download,
@@ -266,6 +267,9 @@ export default function AgentDetail() {
             <div className="flex-1 min-w-0">
               <div className="flex flex-wrap items-center gap-3 mb-3">
                 <h1 className="text-2xl sm:text-4xl font-bold text-white break-words">{agent.title}</h1>
+                {isFreeAgent(agent) && (
+                  <span title={freeAgentBadgeTitle} className="bg-emerald-500/15 text-emerald-300 text-xs font-semibold px-3 py-1 rounded-full">Free</span>
+                )}
                 {agent.verified && (
                   <span className="bg-blue-600 text-white text-xs px-3 py-1 rounded-full">✓ Verified</span>
                 )}
@@ -335,6 +339,7 @@ export default function AgentDetail() {
 
           <p className="text-sm text-slate-500 mt-4">
             Works with ChatGPT, Claude, Perplexity, and any other AI tool — no coding required.
+            {isFreeAgent(agent) && ' The Free badge is based on the listing metadata; separate integrations may have their own costs.'}
           </p>
 
           <div className="flex gap-4 text-sm text-slate-400 border-t border-slate-700 pt-6">
