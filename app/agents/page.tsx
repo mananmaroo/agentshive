@@ -32,6 +32,7 @@ const categoryColors: Record<string, string> = {
 const getCategoryColor = (categories: string[]) =>
   categoryColors[categories?.[0]] || 'text-slate-400 bg-slate-500/10';
 import { supabaseAnon as supabase } from '@/app/lib/supabase-anon';
+import { isFreeAgent, freeAgentBadgeTitle } from '@/app/lib/free-agent';
 
 interface Agent {
   id: string;
@@ -403,9 +404,16 @@ export default function BrowseAgents() {
                     );
                   })()}
                   <div className="flex-1">
-                    <h3 className="text-base font-semibold text-white group-hover:text-indigo-400 transition mb-1">
-                      {agent.title}
-                    </h3>
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <h3 className="text-base font-semibold text-white group-hover:text-indigo-400 transition">
+                        {agent.title}
+                      </h3>
+                      {isFreeAgent(agent) && (
+                        <span title={freeAgentBadgeTitle} className="inline-block rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-semibold text-emerald-300">
+                          Free
+                        </span>
+                      )}
+                    </div>
                     {agent.verified && (
                       <span className="inline-block bg-slate-800/60 text-slate-400 text-xs px-2 py-0.5 rounded">
                         ✓ Verified
