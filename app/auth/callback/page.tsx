@@ -24,6 +24,8 @@ export default function AuthCallback() {
         return;
       }
 
+      const stored = localStorage.getItem('post_auth_redirect');
+
       const { data: existing } = await supabase
         .from('users')
         .select('id')
@@ -46,13 +48,12 @@ export default function AuthCallback() {
           github_username: meta.user_name ?? null,
         });
 
-        // First-time user: send them through onboarding.
         localStorage.removeItem('post_auth_redirect');
-        router.replace('/profile');
+        // Business OAuth must return to the business router even on first sign-in.
+        router.replace(stored === '/employees/login' ? stored : '/profile');
         return;
       }
 
-      const stored = localStorage.getItem('post_auth_redirect');
       localStorage.removeItem('post_auth_redirect');
       router.replace(stored && stored.startsWith('/') ? stored : '/');
     };
