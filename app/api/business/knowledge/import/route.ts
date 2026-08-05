@@ -128,19 +128,27 @@ async function fetchHtml(url: URL, root: URL) {
   throw new Error('The website redirected too many times.');
 }
 
-async function authenticatedUser(request: NextRequest) {
+async function authorizedWorkspace(request: NextRequest) {
   const token = request.headers.get('authorization')?.replace(/^Bearer\s+/i, '');
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!token || !url || !key) return null;
-  const supabase = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
+  if (!token || !url || !key) return { status: 401 as const, error: 'Please sign in before importing a website.' };
+  const supabase = createClient(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: { headers: { Authorization: `Bearer ${token}` } },
+  });
   const { data, error } = await supabase.auth.getUser(token);
-  return error ? null : data.user;
+  if (error || !data.user) return { status: 401 as const, error: 'Please sign in before importing a website.' };
+  const { data: organizationId, error: accessError } = await supabase.rpc('business_require_current_organization');
+  if (accessError || !organizationId) {
+    return { status: 403 as const, error: 'Business access is inactive, unpaid, revoked, or expired.' };
+  }
+  return { status: 200 as const, organizationId };
 }
 
 export async function POST(request: NextRequest) {
-  const user = await authenticatedUser(request);
-  if (!user) return NextResponse.json({ error: 'Please sign in before importing a website.' }, { status: 401 });
+  const access = await authorizedWorkspace(request);
+  if (access.status !== 200) return NextResponse.json({ error: access.error }, { status: access.status });
 
   try {
     const body = (await request.json()) as { website?: string };
