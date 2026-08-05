@@ -205,7 +205,7 @@ export default function EmployeeDemoPage() {
           <p className="mt-3 max-w-2xl text-slate-400">The consultation form will open with Social Media Automation already selected. Submitting it does not activate billing.</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href="/embed/admissions-demo" className="rounded-xl border border-slate-700 px-5 py-3 font-semibold hover:border-emerald-400">Try Aarya admissions demo</Link>
+          <Link href="/embed/admissions-demo" className="rounded-xl border border-slate-700 px-5 py-3 font-semibold hover:border-emerald-400">Preview Aarya · Access-gated</Link>
           <Link href="/employees/custom?solution=social-media-automation" className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">
             Request consultation <ArrowRight className="h-4 w-4" />
           </Link>
