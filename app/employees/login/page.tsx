@@ -67,13 +67,17 @@ export default function BusinessLoginPage() {
 
   const signInWithGoogle = async () => {
     setError('');
-    localStorage.setItem('post_auth_redirect', '/employees/setup');
+    localStorage.setItem('post_auth_redirect', '/employees/login');
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}/auth/callback` },
     });
     if (oauthError) setError(oauthError.message);
   };
+
+  if (checkingSession || user) {
+    return <main className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-300"><div className="text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-emerald-400" aria-label="Opening business workspace" /><p className="mt-3 text-sm">Opening your business workspace…</p></div></main>;
+  }
 
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,#064e3b_0%,#020617_52%)] px-4 py-10 text-white">
