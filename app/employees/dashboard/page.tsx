@@ -17,13 +17,15 @@ export default function EmployeeDashboardPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [attention, setAttention] = useState<Attention[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [accessDenied, setAccessDenied] = useState(false);
 
   const loadDashboard = useCallback(async () => {
     if (!user) return;
     setLoading(true);
     setError('');
+    setAccessDenied(false);
 
     try {
       const { data: membership, error: membershipError } = await supabaseAnon
@@ -39,7 +41,8 @@ export default function EmployeeDashboardPage() {
         setConversations([]);
         setLeads([]);
         setAttention([]);
-        setError('No business workspace is linked to this account yet. Complete business setup first.');
+        setError('Business access is inactive, unpaid, revoked, expired, or not linked to this account.');
+        setAccessDenied(true);
         return;
       }
 
@@ -79,6 +82,7 @@ export default function EmployeeDashboardPage() {
       setLeads((leadResult.data || []) as Lead[]);
       setAttention((attentionResult.data || []) as Attention[]);
     } catch (loadError) {
+      setAccessDenied(true);
       setError(loadError instanceof Error ? loadError.message : 'Dashboard failed to load.');
     } finally {
       setLoading(false);
@@ -101,9 +105,15 @@ export default function EmployeeDashboardPage() {
     return <main className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400"><Loader2 className="h-5 w-5 animate-spin" aria-label="Loading dashboard" /></main>;
   }
 
+  if (loading && user && !organization && !error) {
+    return <main className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-300"><div className="text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-emerald-400" aria-label="Loading employee dashboard" /><p className="mt-3 text-sm">Loading your employee dashboard…</p></div></main>;
+  }
+
   if (!user) {
     return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white"><div className="text-center"><h1 className="text-2xl font-bold">Business login required</h1><p className="mt-2 text-slate-400">Sign in to view your employee workspace.</p><Link href="/employees/login" className="mt-6 inline-flex rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Business login</Link></div></main>;
   }
+
+  if (accessDenied) return <main className="flex min-h-screen items-center justify-center bg-slate-950 px-4 text-white"><section className="max-w-lg rounded-2xl border border-rose-500/30 bg-slate-900 p-8 text-center"><h1 className="text-2xl font-bold">Workspace access unavailable</h1><p role="alert" className="mt-3 text-slate-300">{error}</p><div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row"><button type="button" onClick={() => void logout()} className="rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500">Use another account</button><Link href="/employees" className="rounded-lg border border-slate-700 px-5 py-3 font-semibold">Return to AgentsHive Business</Link></div></section></main>;
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
