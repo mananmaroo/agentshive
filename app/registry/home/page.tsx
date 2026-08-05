@@ -6,11 +6,14 @@ import { useRouter } from 'next/navigation';
 import { Download, Search, Star } from 'lucide-react';
 import { useAuth } from '@/app/lib/auth-context';
 import { supabaseAnon } from '@/app/lib/supabase-anon';
+import { isFreeAgent, freeAgentBadgeTitle } from '@/app/lib/free-agent';
 
 type Agent = {
   id: string;
   title: string;
   description: string;
+  tags: string[] | null;
+  category: string[] | null;
   downloads_count: number;
   average_rating: number | null;
   verified: boolean;
@@ -29,7 +32,7 @@ export default function RegistryHome() {
     const loadAgents = async () => {
       const { data, error } = await supabaseAnon
         .from('agents')
-        .select('id,title,description,downloads_count,average_rating,verified,creator:users(username)')
+        .select('id,title,description,tags,category,downloads_count,average_rating,verified,creator:users(username)')
         .order('created_at', { ascending: false })
         .limit(9);
 
@@ -92,7 +95,10 @@ export default function RegistryHome() {
               <Link key={agent.id} href={`/agents/${agent.id}`} className="group flex flex-col rounded-lg border border-slate-800 bg-slate-900/40 p-6 transition-colors hover:border-indigo-500">
                 <div className="flex-1">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-lg font-bold group-hover:text-indigo-300">{agent.title}</h3>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-lg font-bold group-hover:text-indigo-300">{agent.title}</h3>
+                      {isFreeAgent(agent) && <span title={freeAgentBadgeTitle} className="rounded-full bg-emerald-500/15 px-2 py-1 text-xs font-semibold text-emerald-300">Free</span>}
+                    </div>
                     {agent.verified && <span className="rounded bg-indigo-900/50 px-2 py-1 text-xs text-indigo-300">✓</span>}
                   </div>
                   <p className="mt-3 line-clamp-2 text-sm text-slate-400">{agent.description}</p>
