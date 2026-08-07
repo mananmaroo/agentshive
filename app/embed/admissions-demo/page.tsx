@@ -21,10 +21,25 @@ export default function AdmissionsDemo() {
 
   const speak = (text: string) => {
     if (!('speechSynthesis' in window)) return;
+
+    const language = /[\u0900-\u097F]/.test(text) ? 'hi-IN' : 'en-IN';
+    const voices = window.speechSynthesis.getVoices();
+    const languageVoices = voices.filter((voice) =>
+      voice.lang.toLowerCase().startsWith(language.slice(0, 2).toLowerCase()),
+    );
+    const naturalName = /natural|neural|premium|samantha|veena|rishi|google|microsoft/i;
+    const preferredVoice =
+      languageVoices.find((voice) => naturalName.test(voice.name)) ??
+      languageVoices.find((voice) => voice.localService) ??
+      languageVoices[0];
+
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = /[\u0900-\u097F]/.test(text) ? 'hi-IN' : 'en-IN';
-    utterance.rate = 0.95;
+    utterance.lang = preferredVoice?.lang || language;
+    utterance.voice = preferredVoice || null;
+    utterance.rate = 0.9;
+    utterance.pitch = 1.02;
+    utterance.volume = 1;
     window.speechSynthesis.speak(utterance);
   };
 
