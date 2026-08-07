@@ -209,16 +209,6 @@ export const BUSINESS_SOLUTIONS: readonly BusinessSolution[] = [
     examples: ['Workflow discovery', 'Scoped proposal', 'Controlled implementation'],
     availability: 'Consultation first. Typical setup estimate is 1–2 weeks after scope confirmation.',
   },
-  {
-    slug: 'phone-voice',
-    name: 'Phone and voice employee',
-    outcome: 'Handle inbound calls with approved knowledge',
-    group: 'Custom and future',
-    status: 'coming_later',
-    description: 'A future inbound-call option with disclosure, call limits and human transfer safeguards.',
-    examples: ['Inbound calls', 'Spoken answers', 'Human transfer'],
-    availability: 'Coming later. Telephone providers, numbers and live calling are not active.',
-  },
 ];
 
 export const SOLUTION_GROUPS = ['Growth', 'Customer experience', 'Business operations', 'People and finance', 'Custom and future'] as const;
