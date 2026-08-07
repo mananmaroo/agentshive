@@ -20,6 +20,16 @@ export const STATUS_LABELS: Record<SolutionStatus, string> = {
 
 export const BUSINESS_SOLUTIONS: readonly BusinessSolution[] = [
   {
+    slug: 'phone-voice',
+    name: 'AI Voice Assistant for Clinics',
+    outcome: 'Prepare a safe inbound-call workflow for patients',
+    group: 'Growth',
+    status: 'consultation_available',
+    description: 'Scopes an inbound clinic assistant for approved information, appointment intake and human transfer through a supported provider.',
+    examples: ['Approved clinic answers', 'Appointment intake', 'Human transfer'],
+    availability: 'Consultation-led and integration-dependent. Live calling is not available today and requires an approved provider, number and safety review.',
+  },
+  {
     slug: 'aarya-admissions',
     name: 'Aarya · Admissions',
     outcome: 'Respond to prospective students consistently',
@@ -208,16 +218,6 @@ export const BUSINESS_SOLUTIONS: readonly BusinessSolution[] = [
     description: 'Start with the problem, measurable outcome, systems and human controls—not a generic agent promise.',
     examples: ['Workflow discovery', 'Scoped proposal', 'Controlled implementation'],
     availability: 'Consultation first. Typical setup estimate is 1–2 weeks after scope confirmation.',
-  },
-  {
-    slug: 'phone-voice',
-    name: 'Phone and voice employee',
-    outcome: 'Handle inbound calls with approved knowledge',
-    group: 'Custom and future',
-    status: 'coming_later',
-    description: 'A future inbound-call option with disclosure, call limits and human transfer safeguards.',
-    examples: ['Inbound calls', 'Spoken answers', 'Human transfer'],
-    availability: 'Coming later. Telephone providers, numbers and live calling are not active.',
   },
 ];
 
