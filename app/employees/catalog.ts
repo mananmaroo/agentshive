@@ -20,6 +20,16 @@ export const STATUS_LABELS: Record<SolutionStatus, string> = {
 
 export const BUSINESS_SOLUTIONS: readonly BusinessSolution[] = [
   {
+    slug: 'phone-voice',
+    name: 'AI Voice Assistant for Clinics',
+    outcome: 'Prepare a safe inbound-call workflow for patients',
+    group: 'Growth',
+    status: 'consultation_available',
+    description: 'Scopes an inbound clinic assistant for approved information, appointment intake and human transfer through a supported provider.',
+    examples: ['Approved clinic answers', 'Appointment intake', 'Human transfer'],
+    availability: 'Consultation-led and integration-dependent. Live calling is not available today and requires an approved provider, number and safety review.',
+  },
+  {
     slug: 'aarya-admissions',
     name: 'Aarya · Admissions',
     outcome: 'Respond to prospective students consistently',
