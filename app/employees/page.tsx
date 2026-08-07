@@ -122,10 +122,17 @@ export default function EmployeesMarketplacePage() {
                       <p className="mt-2 text-sm font-semibold text-emerald-300">{solution.outcome}</p>
                       <p className="mt-3 text-sm leading-6 text-slate-400">{solution.description}</p>
                       <div className="mt-5 space-y-2">
-                        {solution.examples.map((example) => <p key={example} className="flex items-center gap-2 text-sm text-slate-300"><Check className="h-4 w-4 text-emerald-400" /> {example}</p[...]
+                        {solution.examples.map((example) => (
+                          <p key={example} className="flex items-center gap-2 text-sm text-slate-300">
+                            <Check className="h-4 w-4 text-emerald-400" /> {example}
+                          </p>
+                        ))}
                       </div>
                       <p className="mt-5 border-t border-slate-800 pt-4 text-xs leading-5 text-slate-500">{solution.availability}</p>
-                      <Link href={`/employees/custom?solution=${solution.slug}`} className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-3 text-sm[...]
+                      <Link
+                        href={`/employees/custom?solution=${solution.slug}`}
+                        className="mt-6 inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:border-emerald-500 hover:text-white"
+                      >
                         {solution.status === 'coming_later' ? 'Register future interest' : 'Request consultation'} <ArrowRight className="h-4 w-4" />
                       </Link>
                     </article>
@@ -178,7 +185,13 @@ export default function EmployeesMarketplacePage() {
                   ].map(([kind, action, time]) => (
                     <div key={action} className="flex items-center justify-between gap-4 rounded-lg border border-slate-800 bg-slate-900/60 p-4">
                       <div className="flex items-center gap-3">
-                        {kind === 'UserCheck' ? <UserCheck className="h-5 w-5 text-emerald-400" /> : kind === 'Clock3' ? <Clock3 className="h-5 w-5 text-indigo-400" /> : <MessageSquareText classN[...]
+                        {kind === 'UserCheck' ? (
+                          <UserCheck className="h-5 w-5 text-emerald-400" />
+                        ) : kind === 'Clock3' ? (
+                          <Clock3 className="h-5 w-5 text-indigo-400" />
+                        ) : (
+                          <MessageSquareText className="h-5 w-5 text-sky-400" />
+                        )}
                         <span className="text-sm text-slate-200">{action}</span>
                       </div>
                       <span className="text-xs text-slate-500">{time}</span>
