@@ -1,34 +1,62 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
-export const PRICE_BOOK = Object.freeze({
-  IN: Object.freeze({
-    starter_6m: Object.freeze({ amount: 2849430, currency: 'INR', label: 'Starter · 6 months' }),
-    starter_12m: Object.freeze({ amount: 5398920, currency: 'INR', label: 'Starter · 12 months' }),
-    growth_6m: Object.freeze({ amount: 8549430, currency: 'INR', label: 'Growth · 6 months' }),
-    growth_12m: Object.freeze({ amount: 16198920, currency: 'INR', label: 'Growth · 12 months' }),
-  }),
-  US: Object.freeze({
-    starter_6m: Object.freeze({ amount: 84930, currency: 'USD', label: 'Starter · 6 months' }),
-    starter_12m: Object.freeze({ amount: 160920, currency: 'USD', label: 'Starter · 12 months' }),
-    growth_6m: Object.freeze({ amount: 255930, currency: 'USD', label: 'Growth · 6 months' }),
-    growth_12m: Object.freeze({ amount: 484920, currency: 'USD', label: 'Growth · 12 months' }),
-  }),
-  GB: Object.freeze({
-    starter_6m: Object.freeze({ amount: 67830, currency: 'GBP', label: 'Starter · 6 months' }),
-    starter_12m: Object.freeze({ amount: 128520, currency: 'GBP', label: 'Starter · 12 months' }),
-    growth_6m: Object.freeze({ amount: 198930, currency: 'GBP', label: 'Growth · 6 months' }),
-    growth_12m: Object.freeze({ amount: 376920, currency: 'GBP', label: 'Growth · 12 months' }),
-  }),
+const EURO_AREA = new Set([
+  'AT', 'BE', 'HR', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE',
+  'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PT', 'SK', 'SI', 'ES',
+]);
+
+const DIRECT_MARKETS = Object.freeze({
+  IN: 'IN',
+  US: 'US',
+  CA: 'CA',
+  GB: 'GB',
+  AU: 'AU',
+  SG: 'SG',
+  AE: 'AE',
 });
+
+function discountedTotal(monthlyMinor, months, discountPercent) {
+  const undiscounted = monthlyMinor * months;
+  return Math.round((undiscounted * (100 - discountPercent)) / 100);
+}
+
+function planPrices(starterMinor, premiumMinor, currency) {
+  return Object.freeze({
+    starter_monthly: Object.freeze({ amount: starterMinor, currency, label: 'Starter · Monthly' }),
+    starter_6m: Object.freeze({ amount: discountedTotal(starterMinor, 6, 5), currency, label: 'Starter · 6 months' }),
+    starter_12m: Object.freeze({ amount: discountedTotal(starterMinor, 12, 10), currency, label: 'Starter · 12 months' }),
+    premium_monthly: Object.freeze({ amount: premiumMinor, currency, label: 'Premium · Monthly' }),
+    premium_6m: Object.freeze({ amount: discountedTotal(premiumMinor, 6, 5), currency, label: 'Premium · 6 months' }),
+    premium_12m: Object.freeze({ amount: discountedTotal(premiumMinor, 12, 10), currency, label: 'Premium · 12 months' }),
+  });
+}
+
+export const PRICE_BOOK = Object.freeze({
+  IN: planPrices(299900, 599900, 'INR'),
+  US: planPrices(9900, 29900, 'USD'),
+  CA: planPrices(13900, 41900, 'CAD'),
+  GB: planPrices(7900, 23900, 'GBP'),
+  EU: planPrices(8900, 26900, 'EUR'),
+  AU: planPrices(14900, 44900, 'AUD'),
+  SG: planPrices(12900, 38900, 'SGD'),
+  AE: planPrices(36900, 109900, 'AED'),
+  ROW: planPrices(9900, 29900, 'USD'),
+});
+
+export function marketForBillingCountry(country) {
+  const normalizedCountry = String(country || '').trim().toUpperCase();
+  return DIRECT_MARKETS[normalizedCountry] ?? (EURO_AREA.has(normalizedCountry) ? 'EU' : 'ROW');
+}
 
 export function resolveServerPrice(country, priceBookId) {
   const normalizedCountry = String(country || '').trim().toUpperCase();
   const normalizedId = String(priceBookId || '').trim();
-  const price = PRICE_BOOK[normalizedCountry]?.[normalizedId];
+  const market = marketForBillingCountry(normalizedCountry);
+  const price = PRICE_BOOK[market]?.[normalizedId];
   if (!price || !Number.isSafeInteger(price.amount) || price.amount < 100) {
     throw new Error('No approved regional price exists for this proposal.');
   }
-  return { ...price, billingCountry: normalizedCountry, priceBookId: normalizedId };
+  return { ...price, billingCountry: normalizedCountry, market, priceBookId: normalizedId };
 }
 
 export function validProposalId(value) {
