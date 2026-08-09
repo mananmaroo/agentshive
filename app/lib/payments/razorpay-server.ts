@@ -24,7 +24,7 @@ export function requirePaymentEnvironment() {
     }));
     throw Object.assign(new Error('Payment preview is not configured.'), { status: 503, code: 'PAYMENT_ENV_MISSING' });
   }
-  return { url, anon, service, keyId, keySecret };
+  return { url: url!, anon: anon!, service: service!, keyId: keyId!, keySecret: keySecret! };
 }
 
 export async function requirePaymentUser(request: NextRequest) {
