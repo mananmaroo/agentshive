@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase-client';
+import { validatedBusinessReturn } from '@/app/lib/business-auth-return';
 
 export default function AuthCallback() {
   const router = useRouter();
@@ -14,8 +15,12 @@ export default function AuthCallback() {
 
     const run = async () => {
       const stored = localStorage.getItem('post_auth_redirect');
-      const isBusinessLogin = stored === '/employees/login';
-      const errorDestination = isBusinessLogin ? '/employees/login' : '/auth/login';
+      const businessReturn = validatedBusinessReturn(stored);
+      const isBusinessLogin = stored === '/employees/login' || Boolean(businessReturn);
+      const successDestination = businessReturn ?? (isBusinessLogin ? '/employees/login' : '/');
+      const errorDestination = businessReturn
+        ? `/employees/login?returnTo=${encodeURIComponent(businessReturn)}`
+        : isBusinessLogin ? '/employees/login' : '/auth/login';
       const code = new URLSearchParams(window.location.search).get('code');
 
       if (code) {
@@ -60,12 +65,12 @@ export default function AuthCallback() {
         });
 
         localStorage.removeItem('post_auth_redirect');
-        router.replace(isBusinessLogin ? '/employees/login' : '/profile');
+        router.replace(businessReturn ?? (isBusinessLogin ? '/employees/login' : '/profile'));
         return;
       }
 
       localStorage.removeItem('post_auth_redirect');
-      router.replace(isBusinessLogin ? '/employees/login' : '/');
+      router.replace(successDestination);
     };
 
     void run();
