@@ -9,8 +9,22 @@ export function requirePaymentEnvironment() {
   const service = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
-  if (!url || !anon || !service || !keyId || !keySecret) throw new Error('Payment preview is not configured.');
-  return { url, anon, service, keyId, keySecret };
+  const missing = [
+    !url && 'NEXT_PUBLIC_SUPABASE_URL',
+    !anon && 'NEXT_PUBLIC_SUPABASE_ANON_KEY',
+    !service && 'SUPABASE_SERVICE_ROLE_KEY',
+    !keyId && 'RAZORPAY_KEY_ID',
+    !keySecret && 'RAZORPAY_KEY_SECRET',
+  ].filter(Boolean);
+  if (missing.length > 0) {
+    console.error(JSON.stringify({
+      level: 'error',
+      event: 'payment_environment_missing',
+      missing,
+    }));
+    throw Object.assign(new Error('Payment preview is not configured.'), { status: 503, code: 'PAYMENT_ENV_MISSING' });
+  }
+  return { url: url!, anon: anon!, service: service!, keyId: keyId!, keySecret: keySecret! };
 }
 
 export async function requirePaymentUser(request: NextRequest) {
@@ -56,6 +70,21 @@ export async function requireProposal(admin: SupabaseClient, user: User, proposa
 
 export function routeError(error: unknown) {
   const status = typeof error === 'object' && error && 'status' in error ? Number((error as { status: unknown }).status) : 500;
+  const providerStatus = typeof error === 'object' && error && 'statusCode' in error ? Number((error as { statusCode: unknown }).statusCode) : null;
+  const code = typeof error === 'object' && error && 'code' in error ? String((error as { code: unknown }).code) : null;
+  console.error(JSON.stringify({
+    level: 'error',
+    event: 'payment_route_failed',
+    category: code === 'PAYMENT_ENV_MISSING'
+      ? 'environment_missing'
+      : providerStatus === 401
+        ? 'provider_authentication'
+        : status < 500
+          ? 'request_rejected'
+          : 'unexpected',
+    status,
+    providerStatus,
+  }));
   const message = error instanceof Error && status < 500 ? error.message : 'Payment request could not be completed.';
   return Response.json({ error: message }, { status: Number.isInteger(status) ? status : 500, headers: { 'cache-control': 'no-store' } });
 }

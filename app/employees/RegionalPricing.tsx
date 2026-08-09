@@ -11,8 +11,8 @@ type PriceBook = {
   currencyLabel: string;
   currency: string;
   locale: string;
-  starter: number;
-  growth: number;
+  starterMinor: number;
+  premiumMinor: number;
   comparison: string;
 };
 
@@ -22,8 +22,8 @@ const PRICE_BOOKS: Record<Market, PriceBook> = {
     currencyLabel: 'INR',
     currency: 'INR',
     locale: 'en-IN',
-    starter: 4999,
-    growth: 14999,
+    starterMinor: 299900,
+    premiumMinor: 599900,
     comparison: 'India keeps simple monthly pricing for local SMEs.',
   },
   US: {
@@ -31,71 +31,71 @@ const PRICE_BOOKS: Record<Market, PriceBook> = {
     currencyLabel: 'USD',
     currency: 'USD',
     locale: 'en-US',
-    starter: 149,
-    growth: 449,
-    comparison: 'Growth is positioned at a fraction of one US junior employee’s monthly cost.',
+    starterMinor: 9900,
+    premiumMinor: 29900,
+    comparison: 'Premium is positioned at a fraction of one US junior employee’s monthly cost.',
   },
   CA: {
     label: 'Canada',
     currencyLabel: 'CAD',
     currency: 'CAD',
     locale: 'en-CA',
-    starter: 199,
-    growth: 599,
-    comparison: 'Growth is positioned at a fraction of one Canadian junior employee’s monthly cost.',
+    starterMinor: 13900,
+    premiumMinor: 41900,
+    comparison: 'Premium is positioned at a fraction of one Canadian junior employee’s monthly cost.',
   },
   GB: {
     label: 'United Kingdom',
     currencyLabel: 'GBP',
     currency: 'GBP',
     locale: 'en-GB',
-    starter: 119,
-    growth: 349,
-    comparison: 'Growth is positioned at a fraction of one UK junior employee’s monthly cost.',
+    starterMinor: 7900,
+    premiumMinor: 23900,
+    comparison: 'Premium is positioned at a fraction of one UK junior employee’s monthly cost.',
   },
   EU: {
     label: 'Euro area',
     currencyLabel: 'EUR',
     currency: 'EUR',
     locale: 'en-IE',
-    starter: 129,
-    growth: 379,
-    comparison: 'Growth is positioned below typical junior staffing costs across euro-area markets.',
+    starterMinor: 8900,
+    premiumMinor: 26900,
+    comparison: 'Premium is positioned below typical junior staffing costs across euro-area markets.',
   },
   AU: {
     label: 'Australia',
     currencyLabel: 'AUD',
     currency: 'AUD',
     locale: 'en-AU',
-    starter: 229,
-    growth: 699,
-    comparison: 'Growth is positioned at a fraction of one Australian junior employee’s monthly cost.',
+    starterMinor: 14900,
+    premiumMinor: 44900,
+    comparison: 'Premium is positioned at a fraction of one Australian junior employee’s monthly cost.',
   },
   SG: {
     label: 'Singapore',
     currencyLabel: 'SGD',
     currency: 'SGD',
     locale: 'en-SG',
-    starter: 199,
-    growth: 599,
-    comparison: 'Growth is positioned at a fraction of one Singapore junior employee’s monthly cost.',
+    starterMinor: 12900,
+    premiumMinor: 38900,
+    comparison: 'Premium is positioned at a fraction of one Singapore junior employee’s monthly cost.',
   },
   AE: {
     label: 'United Arab Emirates',
     currencyLabel: 'AED',
     currency: 'AED',
     locale: 'en-AE',
-    starter: 549,
-    growth: 1649,
-    comparison: 'Growth is positioned at a fraction of one UAE junior employee’s monthly cost.',
+    starterMinor: 36900,
+    premiumMinor: 109900,
+    comparison: 'Premium is positioned at a fraction of one UAE junior employee’s monthly cost.',
   },
   ROW: {
     label: 'Other countries',
     currencyLabel: 'USD',
     currency: 'USD',
     locale: 'en-US',
-    starter: 129,
-    growth: 399,
+    starterMinor: 9900,
+    premiumMinor: 29900,
     comparison: 'International pricing is set above India while remaining well below the cost of a hire.',
   },
 };
@@ -129,12 +129,12 @@ function cycleDetails(cycle: BillingCycle) {
   return { months: 1, discount: 0, label: 'Monthly' };
 }
 
-function formatMoney(value: number, book: PriceBook) {
+function formatMoney(minorUnits: number, book: PriceBook) {
   return new Intl.NumberFormat(book.locale, {
     style: 'currency',
     currency: book.currency,
     maximumFractionDigits: 0,
-  }).format(Math.round(value));
+  }).format(minorUnits / 100);
 }
 
 const PLAN_DETAILS = [
@@ -145,12 +145,12 @@ const PLAN_DETAILS = [
   },
   {
     name: 'Starter',
-    priceKey: 'starter' as const,
+    priceKey: 'starterMinor' as const,
     features: ['One AI employee', '1,000 monthly tasks', 'Knowledge setup', 'Email support'],
   },
   {
-    name: 'Growth',
-    priceKey: 'growth' as const,
+    name: 'Premium',
+    priceKey: 'premiumMinor' as const,
     features: ['Up to three employees', 'Approval workflows', 'CRM/calendar connections', 'Advanced reporting'],
   },
 ] as const;
@@ -176,7 +176,7 @@ export default function RegionalPricing() {
   }, []);
 
   const priceBook = PRICE_BOOKS[market];
-  const selectedCycle = market === 'IN' ? 'monthly' : billingCycle;
+  const selectedCycle = billingCycle;
   const cycle = cycleDetails(selectedCycle);
 
   const plans = useMemo(
@@ -192,13 +192,15 @@ export default function RegionalPricing() {
           };
         }
 
-        const monthlyPrice = priceBook[plan.priceKey];
-        const fullTotal = monthlyPrice * cycle.months;
-        const discountedTotal = fullTotal * (1 - cycle.discount);
+        const monthlyMinor = priceBook[plan.priceKey];
+        const fullTotalMinor = monthlyMinor * cycle.months;
+        const discountPercent = Math.round(cycle.discount * 100);
+        const discountedTotalMinor = Math.round((fullTotalMinor * (100 - discountPercent)) / 100);
+        const savingsMinor = fullTotalMinor - discountedTotalMinor;
 
         return {
           ...plan,
-          price: formatMoney(selectedCycle === 'monthly' ? monthlyPrice : discountedTotal, priceBook),
+          price: formatMoney(selectedCycle === 'monthly' ? monthlyMinor : discountedTotalMinor, priceBook),
           note:
             selectedCycle === 'monthly'
               ? 'per month — proposed regional price'
@@ -206,10 +208,10 @@ export default function RegionalPricing() {
           effectiveMonthly:
             selectedCycle === 'monthly'
               ? null
-              : `${formatMoney(discountedTotal / cycle.months, priceBook)} effective monthly`,
+              : `${formatMoney(Math.round(discountedTotalMinor / cycle.months), priceBook)} effective monthly`,
           savings:
             cycle.discount > 0
-              ? `Save ${formatMoney(fullTotal - discountedTotal, priceBook)} · ${Math.round(cycle.discount * 100)}% off`
+              ? `Save ${formatMoney(savingsMinor, priceBook)} · ${discountPercent}% off`
               : null,
         };
       }),
@@ -229,7 +231,7 @@ export default function RegionalPricing() {
           <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">Display-only pricing</p>
           <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Simple plans, priced for your market</h2>
           <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-            India keeps monthly pricing. International customers can save 5% with six months or 10% with one year.
+            Choose monthly billing, save 5% with six months, or save 10% with one year.
           </p>
         </div>
 
@@ -260,33 +262,27 @@ export default function RegionalPricing() {
           </label>
         </div>
 
-        {market === 'IN' ? (
-          <p className="mx-auto mt-5 max-w-3xl text-center text-sm text-slate-400">
-            India currently uses monthly plans only.
-          </p>
-        ) : (
-          <div className="mx-auto mt-6 flex w-fit flex-wrap justify-center gap-2 rounded-xl border border-slate-700 bg-slate-950 p-1.5" aria-label="Billing period">
-            {[
-              ['monthly', 'Monthly'],
-              ['six_month', '6 months · Save 5%'],
-              ['annual', '12 months · Save 10%'],
-            ].map(([value, label]) => (
-              <button
-                key={value}
-                type="button"
-                onClick={() => setBillingCycle(value as BillingCycle)}
-                aria-pressed={billingCycle === value}
-                className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
-                  billingCycle === value
-                    ? 'bg-emerald-600 text-white'
-                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="mx-auto mt-6 flex w-fit flex-wrap justify-center gap-2 rounded-xl border border-slate-700 bg-slate-950 p-1.5" aria-label="Billing period">
+          {[
+            ['monthly', 'Monthly'],
+            ['six_month', '6 months · Save 5%'],
+            ['annual', '12 months · Save 10%'],
+          ].map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setBillingCycle(value as BillingCycle)}
+              aria-pressed={billingCycle === value}
+              className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
+                billingCycle === value
+                  ? 'bg-emerald-600 text-white'
+                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
 
         <div className="mt-8 grid gap-6 lg:grid-cols-3">
           {plans.map((plan) => (

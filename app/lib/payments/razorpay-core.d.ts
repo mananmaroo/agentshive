@@ -1,5 +1,6 @@
-export type ServerPrice = { amount: number; currency: string; label: string; billingCountry: string; priceBookId: string };
+export type ServerPrice = { amount: number; currency: string; label: string; billingCountry: string; market: string; priceBookId: string };
 export const PRICE_BOOK: Readonly<Record<string, Readonly<Record<string, Readonly<{ amount: number; currency: string; label: string }>>>>>;
+export function marketForBillingCountry(country: string): string;
 export function resolveServerPrice(country: string, priceBookId: string): ServerPrice;
 export function validProposalId(value: unknown): value is string;
 export function validIdempotencyKey(value: unknown): value is string;
