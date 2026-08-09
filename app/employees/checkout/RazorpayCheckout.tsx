@@ -34,6 +34,9 @@ export default function RazorpayCheckout({ proposalId }: { proposalId: string })
   const [summaryError, setSummaryError] = useState('');
   const [state, setState] = useState<'idle'|'loading'|'cancelled'|'failed'|'success'>('idle');
   const [message, setMessage] = useState('No charge has been started.');
+  const safeProposalId = /^[0-9a-f]{8}-[0-9a-f-]{27,36}$/i.test(proposalId) ? proposalId : '';
+  const returnPath = safeProposalId ? `/employees/checkout?proposal=${encodeURIComponent(safeProposalId)}` : '';
+  const signInHref = returnPath ? `/employees/login?returnTo=${encodeURIComponent(returnPath)}` : '/employees/login';
 
   useEffect(() => {
     let active = true;
@@ -99,7 +102,10 @@ export default function RazorpayCheckout({ proposalId }: { proposalId: string })
       <div><dt className="text-slate-500">Customer</dt><dd className="mt-1 font-semibold">{summary.customerEmail}</dd></div>
       <div><dt className="text-slate-500">Plan</dt><dd className="mt-1 font-semibold">{summary.description}</dd></div>
       <div><dt className="text-slate-500">TEST amount</dt><dd className="mt-1 text-xl font-bold text-emerald-300">{new Intl.NumberFormat('en-IN', { style: 'currency', currency: summary.currency, maximumFractionDigits: 0 }).format(summary.amount / 100)}</dd></div>
-    </dl> : <p role="status" className="mt-5 text-sm text-slate-400">{summaryError || 'Verifying proposal identity and amount…'}</p>}
+    </dl> : <div className="mt-5">
+      <p role="status" className="text-sm text-slate-400">{summaryError || 'Verifying proposal identity and amount…'}</p>
+      {summaryError === 'Please sign in to your Business account first.' && <a href={signInHref} className="mt-4 inline-flex rounded-xl border border-emerald-500/50 bg-emerald-500/10 px-4 py-2.5 text-sm font-semibold text-emerald-200 hover:bg-emerald-500/20">Sign in to continue</a>}
+    </div>}
     <button onClick={begin} disabled={!summary || state === 'loading' || state === 'success'} className="mt-6 rounded-xl bg-emerald-600 px-5 py-3 font-semibold disabled:opacity-60">{state === 'loading' ? 'Preparing…' : 'Continue to Razorpay'}</button>
     <p role="status" className={`mt-4 text-sm ${state === 'failed' ? 'text-rose-300' : state === 'success' ? 'text-emerald-300' : 'text-slate-400'}`}>{message}</p>
     <p className="mt-5 text-xs text-slate-500">TEST MODE uses Razorpay test credentials and test cards only. Do not enter a real card. Live payments remain disabled until separately approved.</p>
