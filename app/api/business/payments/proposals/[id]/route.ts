@@ -4,7 +4,7 @@ import { requirePaymentUser, requireProposal, routeError } from '@/app/lib/payme
 
 export const runtime = 'nodejs';
 
-export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+export async function POST(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
     if (!validProposalId(id)) {
