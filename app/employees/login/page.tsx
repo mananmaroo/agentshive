@@ -20,8 +20,9 @@ const getBusinessDestination = async (userId: string) => {
   return membership?.organization_id ? '/employees/dashboard' : '/employees/setup';
 };
 
+const requestedBusinessReturn = () => validatedBusinessReturn(typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('returnTo'));
+
 export default function BusinessLoginPage() {
-  const requestedReturn = () => validatedBusinessReturn(typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('returnTo'));
   const { user, loading: checkingSession } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState('');
@@ -35,7 +36,7 @@ export default function BusinessLoginPage() {
     let cancelled = false;
     void getBusinessDestination(user.id)
       .then((destination) => {
-        if (!cancelled) router.replace(requestedReturn() ?? destination);
+        if (!cancelled) router.replace(requestedBusinessReturn() ?? destination);
       })
       .catch((destinationError) => {
         if (!cancelled) setError(destinationError instanceof Error ? destinationError.message : 'Could not open your business workspace.');
@@ -59,7 +60,7 @@ export default function BusinessLoginPage() {
       const destination = signInData.user
         ? await getBusinessDestination(signInData.user.id)
         : '/employees/setup';
-      router.replace(requestedReturn() ?? destination);
+      router.replace(requestedBusinessReturn() ?? destination);
       router.refresh();
     } catch (destinationError) {
       setError(destinationError instanceof Error ? destinationError.message : 'Could not open your business workspace.');
@@ -69,7 +70,7 @@ export default function BusinessLoginPage() {
 
   const signInWithGoogle = async () => {
     setError('');
-    localStorage.setItem('post_auth_redirect', requestedReturn() ?? '/employees/login');
+    localStorage.setItem('post_auth_redirect', requestedBusinessReturn() ?? '/employees/login');
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}/auth/callback` },
