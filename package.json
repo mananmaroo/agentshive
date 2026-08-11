@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test:payments": "node --test tests/razorpay-core.test.mjs"
+    "test:payments": "node --test tests/razorpay-core.test.mjs tests/payment-routing.test.mjs"
   },
   "dependencies": {
     "@supabase/auth-helpers-nextjs": "^0.15.0",
