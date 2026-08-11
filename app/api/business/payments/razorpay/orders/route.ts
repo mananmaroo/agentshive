@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import type { NextRequest } from 'next/server';
-import { receiptFor, resolveServerPrice, validIdempotencyKey, validProposalId } from '@/app/lib/payments/razorpay-core.mjs';
+import { receiptFor, validIdempotencyKey, validProposalId } from '@/app/lib/payments/razorpay-core.mjs';
+import { PAYMENT_PROVIDER, requirePaymentProvider, resolvePaymentContract } from '@/app/lib/payments/payment-routing.mjs';
 import { razorpayClient, requirePaymentUser, requireProposal, routeError } from '@/app/lib/payments/razorpay-server';
 
 export const runtime = 'nodejs';
@@ -15,7 +16,10 @@ export async function POST(request: NextRequest) {
     }
     const proposalId = String(body.proposalId);
     const { proposal, organization } = await requireProposal(admin, user, proposalId);
-    const price = resolveServerPrice(organization.billing_country, proposal.price_book_id);
+    const price = requirePaymentProvider(
+      resolvePaymentContract(organization.billing_country, proposal.billing_country, proposal.price_book_id),
+      PAYMENT_PROVIDER.RAZORPAY,
+    );
 
     const since = new Date(Date.now() - 60_000).toISOString();
     const { count } = await admin.from('business_payment_orders').select('id', { count: 'exact', head: true })
