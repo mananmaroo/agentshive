@@ -2,7 +2,7 @@
 -- docs/paypal-sandbox-setup.md. All fixtures roll back.
 begin;
 
-select plan(26);
+select plan(28);
 
 select has_table('public','users','profile table exists');
 select col_is_pk('public','users','id','profile id is the primary key');
