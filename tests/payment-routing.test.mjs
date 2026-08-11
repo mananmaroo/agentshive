@@ -2,14 +2,23 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   PAYMENT_PROVIDER,
-  providerForBillingCountry,
+  providerForPayment,
   requirePaymentProvider,
   resolvePaymentContract,
 } from '../app/lib/payments/payment-routing.mjs';
 
-const internationalCases = [
+const paypalCases = [
   ['US', 'USD'], ['CA', 'CAD'], ['GB', 'GBP'], ['DE', 'EUR'],
-  ['AU', 'AUD'], ['SG', 'SGD'], ['AE', 'AED'], ['BR', 'USD'],
+  ['AU', 'AUD'], ['SG', 'SGD'], ['BR', 'USD'],
+];
+
+const plans = [
+  'starter_monthly',
+  'starter_6m',
+  'starter_12m',
+  'premium_monthly',
+  'premium_6m',
+  'premium_12m',
 ];
 
 test('routes verified India proposals to Razorpay in INR', () => {
@@ -19,16 +28,23 @@ test('routes verified India proposals to Razorpay in INR', () => {
   assert.equal(contract.amount, 299900);
 });
 
-test('routes every supported international market to Stripe in localized currency', () => {
-  for (const [country, currency] of internationalCases) {
-    for (const plan of ['starter_monthly', 'starter_6m', 'starter_12m', 'premium_monthly', 'premium_6m', 'premium_12m']) {
+test('routes PayPal-supported international price books to PayPal', () => {
+  for (const [country, currency] of paypalCases) {
+    for (const plan of plans) {
       const contract = resolvePaymentContract(country, country, plan);
-      assert.equal(contract.provider, PAYMENT_PROVIDER.STRIPE);
+      assert.equal(contract.provider, PAYMENT_PROVIDER.PAYPAL);
       assert.equal(contract.currency, currency);
       assert.ok(Number.isSafeInteger(contract.amount));
       assert.ok(contract.amount >= 100);
     }
   }
+});
+
+test('holds UAE AED checkout until an active provider supports AED', () => {
+  assert.throws(
+    () => resolvePaymentContract('AE', 'AE', 'starter_monthly'),
+    (error) => error?.code === 'PAYMENT_CURRENCY_UNSUPPORTED' && /AED/.test(error.message),
+  );
 });
 
 test('rejects proposal and organization country mismatches', () => {
@@ -41,11 +57,20 @@ test('rejects proposal and organization country mismatches', () => {
 test('blocks a provider endpoint from handling the other provider contract', () => {
   const india = resolvePaymentContract('IN', 'IN', 'starter_monthly');
   const us = resolvePaymentContract('US', 'US', 'starter_monthly');
-  assert.throws(() => requirePaymentProvider(us, PAYMENT_PROVIDER.RAZORPAY), /must be paid through stripe/);
-  assert.throws(() => requirePaymentProvider(india, PAYMENT_PROVIDER.STRIPE), /must be paid through razorpay/);
+  assert.throws(() => requirePaymentProvider(us, PAYMENT_PROVIDER.RAZORPAY), /must be paid through paypal/);
+  assert.throws(() => requirePaymentProvider(india, PAYMENT_PROVIDER.PAYPAL), /must be paid through razorpay/);
 });
 
-test('normalizes billing country only on the server contract', () => {
-  assert.equal(providerForBillingCountry(' in '), PAYMENT_PROVIDER.RAZORPAY);
-  assert.equal(providerForBillingCountry('ca'), PAYMENT_PROVIDER.STRIPE);
+test('normalizes country and currency only in the server contract', () => {
+  assert.equal(providerForPayment(' in ', ' inr '), PAYMENT_PROVIDER.RAZORPAY);
+  assert.equal(providerForPayment('ca', 'cad'), PAYMENT_PROVIDER.PAYPAL);
+});
+
+test('keeps Stripe reserved but inactive for every current price book', () => {
+  const countries = ['IN', ...paypalCases.map(([country]) => country)];
+  for (const country of countries) {
+    for (const plan of plans) {
+      assert.notEqual(resolvePaymentContract(country, country, plan).provider, PAYMENT_PROVIDER.STRIPE);
+    }
+  }
 });
