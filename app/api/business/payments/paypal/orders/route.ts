@@ -19,9 +19,9 @@ export async function POST(request: NextRequest) {
     requirePayPalSandboxEnvironment();
     const { user, admin } = await requirePaymentUser(request);
     const body = await request.json().catch(() => null) as { proposalId?: unknown } | null;
-    const idempotencyKey = request.headers.get('idempotency-key');
+    const suppliedIdempotencyKey = request.headers.get('idempotency-key');
 
-    if (!body || !validProposalId(body.proposalId) || !validIdempotencyKey(idempotencyKey)) {
+    if (!body || !validProposalId(body.proposalId) || !validIdempotencyKey(suppliedIdempotencyKey)) {
       return Response.json(
         { error: 'A valid proposal and idempotency key are required.' },
         { status: 400 },
@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
     }
 
     const proposalId = String(body.proposalId);
+    const idempotencyKey = String(suppliedIdempotencyKey);
     const { proposal, organization } = await requireProposal(admin, user, proposalId);
     const contract = requirePaymentProvider(
       resolvePaymentContract(
