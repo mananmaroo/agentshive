@@ -12,9 +12,9 @@ export async function POST(request: NextRequest) {
     requirePayPalSandboxEnvironment();
     const { user, admin } = await requirePaymentUser(request);
     const body = await request.json().catch(() => null) as { orderId?: unknown } | null;
-    const idempotencyKey = request.headers.get('idempotency-key');
+    const suppliedIdempotencyKey = request.headers.get('idempotency-key');
 
-    if (!body || !validPayPalProviderId(body.orderId) || !validIdempotencyKey(idempotencyKey)) {
+    if (!body || !validPayPalProviderId(body.orderId) || !validIdempotencyKey(suppliedIdempotencyKey)) {
       return Response.json(
         { error: 'A valid PayPal Sandbox order and idempotency key are required.' },
         { status: 400 },
@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     const orderId = String(body.orderId);
+    const idempotencyKey = String(suppliedIdempotencyKey);
     const { data: local } = await admin.from('business_payment_orders')
       .select('id,organization_id,proposal_id,provider_order_id,amount,currency,status')
       .eq('provider', PAYMENT_PROVIDER.PAYPAL)
@@ -32,11 +33,7 @@ export async function POST(request: NextRequest) {
 
     const { proposal, organization } = await requireProposal(admin, user, local.proposal_id);
     const contract = requirePaymentProvider(
-      resolvePaymentContract(
-        organization.billing_country,
-        proposal.billing_country,
-        proposal.price_book_id,
-      ),
+      resolvePaymentContract(organization.billing_country, proposal.billing_country, proposal.price_book_id),
       PAYMENT_PROVIDER.PAYPAL,
     );
 
