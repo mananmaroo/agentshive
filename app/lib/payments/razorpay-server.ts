@@ -1,12 +1,13 @@
 import Razorpay from 'razorpay';
+import type { NextRequest } from 'next/server';
 import {
   requirePaymentBackendEnvironment,
-  requirePaymentUser,
+  requirePaymentUser as requireSharedPaymentUser,
   requireProposal,
   routeError,
 } from './payment-server';
 
-export { requirePaymentUser, requireProposal, routeError };
+export { requireProposal, routeError };
 
 export function requirePaymentEnvironment() {
   const base = requirePaymentBackendEnvironment();
@@ -28,6 +29,11 @@ export function requirePaymentEnvironment() {
     });
   }
   return { ...base, keyId: keyId!, keySecret: keySecret! };
+}
+
+export async function requirePaymentUser(request: NextRequest) {
+  const session = await requireSharedPaymentUser(request);
+  return { ...session, env: requirePaymentEnvironment() };
 }
 
 export function razorpayClient() {
