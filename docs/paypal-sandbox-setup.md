@@ -73,6 +73,23 @@ Do not add subscription events yet. They belong to the later recurring-billing w
 - Merging either the routing or PayPal branch.
 - Adding Production or live credentials.
 
+
+## Preview database bootstrap order
+
+For a blank, isolated non-production Supabase project, apply only this exact chronological chain:
+
+1. `supabase/migrations/20260722230000_public_users_profile_baseline.sql`
+2. `supabase/migrations/20260722233000_aarya_pilot_runtime.sql`
+3. `supabase/migrations/20260801143000_business_admin_access.sql`
+4. `supabase/migrations/20260805120000_razorpay_payment_integrity.sql`
+5. `supabase/migrations/20260811121500_provider_neutral_payment_ledger.sql`
+
+The first file is a schema-only reproduction of the production `public.users` profile contract and its signup trigger. It contains no production row data or secrets. The historical helper `scripts/fix_signup_profile.sql` assumes `public.users` already exists, so it is not a blank-project baseline and must not be applied in addition to the baseline migration.
+
+Explicitly exclude `supabase/migrations/20260804110000_business_solution_requests.sql` from this narrow auth, organization, access and payment bootstrap. That consultation-marketplace migration is unrelated to the PayPal Sandbox ledger dependency chain.
+
+After applying the five files to an approved isolated database, run `supabase/tests/public_users_profile_baseline.sql`. The test is transactional and rolls back its synthetic authentication/profile fixtures. No file in this list is approved for Preview or Production application merely because it is documented here.
+
 ## Exact migration approval gate
 
 Migration application requires a new explicit message that identifies the file:
