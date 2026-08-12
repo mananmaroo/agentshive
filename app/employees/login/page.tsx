@@ -6,6 +6,7 @@ import { ArrowLeft, BookOpenCheck, Building2, Loader2, Lock, Mail, ShieldCheck }
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/app/lib/supabase-client';
 import { useAuth } from '@/app/lib/auth-context';
+import { validatedBusinessReturn } from '@/app/lib/business-auth-return';
 
 const getBusinessDestination = async (userId: string) => {
   const { data: membership, error } = await supabase
@@ -18,6 +19,8 @@ const getBusinessDestination = async (userId: string) => {
   if (error) throw error;
   return membership?.organization_id ? '/employees/dashboard' : '/employees/setup';
 };
+
+const requestedBusinessReturn = () => validatedBusinessReturn(typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('returnTo'));
 
 export default function BusinessLoginPage() {
   const { user, loading: checkingSession } = useAuth();
@@ -33,7 +36,7 @@ export default function BusinessLoginPage() {
     let cancelled = false;
     void getBusinessDestination(user.id)
       .then((destination) => {
-        if (!cancelled) router.replace(destination);
+        if (!cancelled) router.replace(requestedBusinessReturn() ?? destination);
       })
       .catch((destinationError) => {
         if (!cancelled) setError(destinationError instanceof Error ? destinationError.message : 'Could not open your business workspace.');
@@ -57,7 +60,7 @@ export default function BusinessLoginPage() {
       const destination = signInData.user
         ? await getBusinessDestination(signInData.user.id)
         : '/employees/setup';
-      router.replace(destination);
+      router.replace(requestedBusinessReturn() ?? destination);
       router.refresh();
     } catch (destinationError) {
       setError(destinationError instanceof Error ? destinationError.message : 'Could not open your business workspace.');
@@ -67,7 +70,7 @@ export default function BusinessLoginPage() {
 
   const signInWithGoogle = async () => {
     setError('');
-    localStorage.setItem('post_auth_redirect', '/employees/login');
+    localStorage.setItem('post_auth_redirect', requestedBusinessReturn() ?? '/employees/login');
     const { error: oauthError } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${window.location.origin}/auth/callback` },
