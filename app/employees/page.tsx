@@ -47,7 +47,6 @@ export default function EmployeesMarketplacePage() {
             <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>
             <Link href="/employees/demo" className="text-violet-300 hover:text-violet-200">Try demo</Link>
             <Link href="/employees/custom" className="text-slate-300 hover:text-white">Request a solution</Link>
-            <Link href="/employees/waitlist" className="text-emerald-300 hover:text-emerald-200">Join waitlist</Link>
             <Link href="/employees/login" className="text-emerald-300 hover:text-emerald-200">Business login</Link>
             <Link href="/registry/home" className="text-indigo-300 hover:text-indigo-200">Agent Registry</Link>
           </div>
@@ -60,7 +59,6 @@ export default function EmployeesMarketplacePage() {
               <a href="#pricing" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Pricing</a>
               <Link href="/employees/demo" className="rounded-lg px-3 py-2 text-violet-300 hover:bg-slate-800">Try demo</Link>
               <Link href="/employees/custom" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Request a solution</Link>
-              <Link href="/employees/waitlist" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Join waitlist</Link>
               <Link href="/employees/login" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Business login</Link>
               <Link href="/registry/home" className="rounded-lg px-3 py-2 text-indigo-300 hover:bg-slate-800">Agent Registry</Link>
             </div>
