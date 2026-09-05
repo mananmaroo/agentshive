@@ -1,3 +1,4 @@
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 export type SolutionStatus = 'controlled_pilot' | 'consultation_available' | 'custom_build' | 'coming_later';
 
 export type BusinessSolution = {
@@ -19,6 +20,46 @@ export const STATUS_LABELS: Record<SolutionStatus, string> = {
 };
 
 export const BUSINESS_SOLUTIONS: readonly BusinessSolution[] = [
+  {
+    slug: 'billing-invoicing', name: 'Billing and invoicing system', outcome: 'Replace scattered billing steps with one controlled workflow', group: 'People and finance', status: 'custom_build',
+    description: 'A scoped system for estimates, invoice preparation, approvals, payment status, reminders and reporting.', examples: ['Invoice workflow', 'Approval controls', 'Payment-status reporting'], availability: 'Custom software service; tax, accounting and payment requirements are reviewed during discovery.',
+  },
+  {
+    slug: 'inventory-stock-management', name: 'Inventory and stock-management system', outcome: 'Make stock movements and exceptions easier to track', group: 'Business operations', status: 'custom_build',
+    description: 'A scoped inventory workspace for products, locations, receipts, transfers, controlled adjustments and reorder signals.', examples: ['Stock movements', 'Location tracking', 'Reconciliation reports'], availability: 'Custom software service; accuracy depends on source data and operating procedures.',
+  },
+  {
+    slug: 'business-process-automation', name: 'Business process automation', outcome: 'Connect repeatable work across business systems', group: 'Business operations', status: 'consultation_available',
+    description: 'Maps and connects approved steps across email, CRM, spreadsheets, forms, support and internal operations.', examples: ['Intake routing', 'System handoffs', 'Exception queues'], availability: 'Consultation-led service; connections depend on customer systems, APIs and permissions.',
+  },
+  {
+    slug: 'ai-workflow-automation', name: 'AI workflow automation', outcome: 'Add controlled AI assistance to repeatable work', group: 'Business operations', status: 'consultation_available',
+    description: 'Scopes AI-assisted triage, extraction, drafting, routing and follow-up with validation and human review.', examples: ['Classification', 'Document extraction', 'Approval-based drafting'], availability: 'Consultation-led service; AI outputs require testing, validation and escalation rules.',
+  },
+  {
+    slug: 'ai-voice-agents', name: 'AI voice agent', outcome: 'Design a controlled call-handling workflow', group: 'Customer experience', status: 'consultation_available',
+    description: 'Scopes inbound calls, outbound follow-up, appointment requests, qualification and support with human escalation.', examples: ['Call intake', 'Approved scripts', 'Human transfer'], availability: 'Calling stays inactive until provider access, consent requirements, scripts, escalation and testing are approved.',
+  },
+  {
+    slug: 'business-website-development', name: 'Custom business website', outcome: 'Turn business interest into clear next steps', group: 'Custom and future', status: 'custom_build',
+    description: 'Conversion-focused service websites with responsive pages, intake, booking or consultation handoffs.', examples: ['Service website', 'Mobile-friendly forms', 'Lead routing'], availability: 'Custom build after content, platform, integrations and launch scope are agreed.',
+  },
+  {
+    slug: 'custom-web-application', name: 'Custom web application', outcome: 'Build software around the way your team works', group: 'Custom and future', status: 'custom_build',
+    description: 'Web applications, customer portals and operational dashboards for a scoped business workflow.', examples: ['Customer portals', 'Operational dashboards', 'Installable web apps'], availability: 'Custom build; platform support, integrations and delivery terms are confirmed in the proposal.',
+  },
+  {
+    slug: 'ai-enabled-application', name: 'AI-enabled application', outcome: 'Add approved AI capabilities to a useful application', group: 'Custom and future', status: 'custom_build',
+    description: 'Scopes chat, voice, document processing, search, recommendations or automation with human oversight.', examples: ['Approved search', 'Document review', 'Workflow handoff'], availability: 'Custom build; provider, data, evaluation and review requirements are scoped first.',
+  },
+  {
+    slug: 'internal-business-tools', name: 'Internal business tool or dashboard', outcome: 'Give teams one view of work and exceptions', group: 'Business operations', status: 'custom_build',
+    description: 'Internal tools, dashboards and reporting experiences that modernize spreadsheet-heavy processes.', examples: ['Staff workspace', 'Approval queue', 'Reporting dashboard'], availability: 'Custom build after roles, data, migration and export needs are reviewed.',
+  },
+  {
+    slug: 'custom-integrations', name: 'Custom integrations and workflow implementation', outcome: 'Connect approved tools without losing human control', group: 'Custom and future', status: 'consultation_available',
+    description: 'Discovery and implementation for approved system connections, handoffs and exception paths.', examples: ['Integration mapping', 'Controlled data flow', 'Failure handling'], availability: 'Connections depend on the customer’s systems, available APIs, permissions and provider terms.',
+  },
   {
     slug: 'aarya-admissions',
     name: 'Aarya · Admissions',
@@ -207,7 +248,7 @@ export const BUSINESS_SOLUTIONS: readonly BusinessSolution[] = [
     status: 'consultation_available',
     description: 'Start with the problem, measurable outcome, systems and human controls—not a generic agent promise.',
     examples: ['Workflow discovery', 'Scoped proposal', 'Controlled implementation'],
-    availability: 'Consultation first. Typical setup estimate is 1–2 weeks after scope confirmation.',
+    availability: 'Consultation first. Features, controls and delivery terms are confirmed in a scoped proposal.',
   },
   {
     slug: 'phone-voice',

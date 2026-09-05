@@ -1,3 +1,4 @@
+/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 'use client';
 
 import Link from 'next/link';
@@ -35,7 +36,11 @@ export default function ConsultationForm({
       workflowProblem: form.get('workflow_problem'),
       monthlyVolume: form.get('monthly_volume'),
       systems: form.getAll('systems'),
-      otherSystems: form.get('other_systems'),
+      otherSystems: [
+        `US state: ${String(form.get('state') || '')}`,
+        `Company size: ${String(form.get('company_size') || '')}`,
+        String(form.get('other_systems') || ''),
+      ].filter(Boolean).join(' | '),
       languages: form.get('languages'),
       targetOutcome: form.get('target_outcome'),
       timeline: form.get('timeline'),
@@ -70,8 +75,7 @@ export default function ConsultationForm({
           <CheckCircle2 className="mx-auto h-12 w-12 text-emerald-400" />
           <h1 className="mt-6 text-3xl font-bold">Consultation request received</h1>
           <p className="mt-4 leading-7 text-slate-400">
-            We will review the workflow and contact you about discovery. A scoped setup estimate is usually 1–2 weeks,
-            but timing is confirmed only after the consultation.
+            We will review the workflow and contact you about discovery. Features, integrations, controls and delivery terms are confirmed only after consultation.
           </p>
           <p className="mt-4 text-sm text-slate-500">
             Need to add context? Email <a className="text-emerald-300" href="mailto:info@agentshive.net">info@agentshive.net</a>.
@@ -127,9 +131,11 @@ export default function ConsultationForm({
               <label className="text-sm font-semibold">Contact name *<input required name="contact_name" minLength={2} maxLength={120} className={inputClass} /></label>
               <label className="text-sm font-semibold">Company *<input required name="company" minLength={2} maxLength={160} className={inputClass} /></label>
               <label className="text-sm font-semibold">Work email *<input required name="work_email" type="email" maxLength={254} className={inputClass} /></label>
-              <label className="text-sm font-semibold">Phone<input name="phone" type="tel" maxLength={32} placeholder="+91…" className={inputClass} /></label>
-              <label className="text-sm font-semibold">Country *<input required name="country" minLength={2} maxLength={100} className={inputClass} /></label>
-              <label className="text-sm font-semibold">Timezone *<input required name="timezone" maxLength={100} placeholder="Asia/Kolkata" className={inputClass} /></label>
+              <label className="text-sm font-semibold">Phone<input name="phone" type="tel" maxLength={32} placeholder="+1 555 555 0123" className={inputClass} /></label>
+              <label className="text-sm font-semibold">Country *<input required name="country" value="United States" readOnly className={inputClass} /></label>
+              <label className="text-sm font-semibold">State *<input required name="state" minLength={2} maxLength={60} placeholder="State" className={inputClass} /></label>
+              <label className="text-sm font-semibold">US time zone *<select required name="timezone" defaultValue="" className={inputClass}><option value="" disabled>Select one</option><option>Eastern</option><option>Central</option><option>Mountain</option><option>Pacific</option><option>Alaska</option><option>Hawaii</option><option>Other US time zone</option></select></label>
+              <label className="text-sm font-semibold">Company size *<select required name="company_size" defaultValue="" className={inputClass}><option value="" disabled>Select one</option><option value="1_9">1–9 employees</option><option value="10_49">10–49</option><option value="50_249">50–249</option><option value="250_plus">250+</option></select></label>
               <label className="text-sm font-semibold">Preferred contact *
                 <select required name="preferred_contact" defaultValue="email" className={inputClass}>
                   <option value="email">Email</option><option value="phone">Phone</option><option value="whatsapp">WhatsApp, if mutually configured</option><option value="video_call">Video call</option>
@@ -156,7 +162,7 @@ export default function ConsultationForm({
                   <option value="" disabled>Select one</option><option value="exploring">Exploring</option><option value="within_30_days">Within 30 days</option><option value="one_to_three_months">1–3 months</option><option value="later">Later</option>
                 </select>
               </label>
-              <label className="text-sm font-semibold">Languages *<input required name="languages" maxLength={300} placeholder="English, Hindi, Hinglish" className={inputClass} /></label>
+              <label className="text-sm font-semibold">Languages *<input required name="languages" maxLength={300} placeholder="English, Spanish, or others" className={inputClass} /></label>
               <label className="text-sm font-semibold">Target outcome *<input required name="target_outcome" minLength={10} maxLength={500} placeholder="Faster first response…" className={inputClass} /></label>
               <label className="text-sm font-semibold">Budget band *
                 <select required name="budget_band" defaultValue="" className={inputClass}>
@@ -169,7 +175,7 @@ export default function ConsultationForm({
             <fieldset>
               <legend className="text-sm font-semibold">Systems or integrations</legend>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                {['Website','Email','Google Sheets','CRM','Calendar','WhatsApp (not yet connected)','Other'].map((system) => (
+                {['Website','Email','Spreadsheets','CRM','Calendar','Forms','Support platform','Accounting or billing system','Inventory or order system','Phone or telephony','Other'].map((system) => (
                   <label key={system} className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-950 p-3 text-sm text-slate-300">
                     <input name="systems" value={system} type="checkbox" className="h-4 w-4 accent-emerald-500" /> {system}
                   </label>
