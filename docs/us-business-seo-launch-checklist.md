@@ -1,4 +1,3 @@
-/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 # AgentsHive Business US SEO launch checklist
 
 1. Confirm production canonicals, titles, descriptions, Open Graph tags and JSON-LD on every service URL.

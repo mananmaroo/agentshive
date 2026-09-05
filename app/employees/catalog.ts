@@ -1,4 +1,3 @@
-/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 export type SolutionStatus = 'controlled_pilot' | 'consultation_available' | 'custom_build' | 'coming_later';
 
 export type BusinessSolution = {

@@ -1,4 +1,3 @@
-/opt/homebrew/Library/Homebrew/cmd/shellenv.sh: line 18: /bin/ps: Operation not permitted
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowRight, Bot, Boxes, FileText, Globe2, Mic2, Workflow } from 'lucide-react';
