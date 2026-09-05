@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
         // so users can paste the install command directly into their AI tool.
         userAgent: '*',
         allow: ['/api/agents/'],
-        disallow: ['/dashboard', '/profile', '/auth/', '/agents/upload'],
+        disallow: ['/dashboard', '/profile', '/auth/', '/agents/upload', '/employees/dashboard', '/employees/admin', '/employees/setup', '/employees/checkout'],
       },
     ],
     sitemap: 'https://agentshive.net/sitemap.xml',

@@ -2,8 +2,9 @@ import ConsultationForm from './ConsultationForm';
 import { BUSINESS_SOLUTIONS, getSolution } from '../catalog';
 
 export const metadata = {
-  title: 'Request an AI solution consultation | AgentsHive Business',
-  description: 'Tell AgentsHive about the workflow, outcome and systems you want to improve.',
+  title: 'Request a US Business Software & AI Consultation | AgentsHive',
+  description: 'Tell AgentsHive about the software, website, automation, AI workflow or voice-agent service your US business wants to scope.',
+  alternates: { canonical: '/employees/custom' },
 };
 
 export default async function CustomEmployeeRequestPage({

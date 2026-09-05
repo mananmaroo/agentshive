@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import RegionalPricing from './RegionalPricing';
 import { BUSINESS_SOLUTIONS, SOLUTION_GROUPS, STATUS_LABELS, type SolutionStatus } from './catalog';
 export const metadata: Metadata = {
-  title: 'AgentsHive Business — AI Employees for SMEs',
-  description: 'AI employees for admissions, lead follow-up and practical SME workflows with approved knowledge and human control.',
+  title: 'AgentsHive Business — Custom Software & AI Automation USA',
+  description: 'Consultation-led AI employees, custom software, websites, applications and workflow automation for US businesses.',
+  alternates: { canonical: '/employees' },
+  openGraph: { title: 'AgentsHive Business — Custom Software & AI Automation USA', description: 'Custom software, AI automation and controlled AI employee services for US businesses.', url: '/employees', type: 'website' },
 };
 
 import {
@@ -43,8 +44,7 @@ export default function EmployeesMarketplacePage() {
             <span className="truncate">AgentsHive Business</span>
           </Link>
           <div className="hidden items-center gap-5 text-sm font-semibold md:flex">
-            <a href="#employees" className="text-slate-300 hover:text-white">Employees</a>
-            <a href="#pricing" className="text-slate-300 hover:text-white">Pricing</a>
+            <Link href="/employees/services" className="text-slate-300 hover:text-white">Services</Link>
             <Link href="/employees/demo" className="text-violet-300 hover:text-violet-200">Try demo</Link>
             <Link href="/employees/custom" className="text-slate-300 hover:text-white">Request a solution</Link>
             <Link href="/employees/login" className="text-emerald-300 hover:text-emerald-200">Business login</Link>
@@ -55,8 +55,7 @@ export default function EmployeesMarketplacePage() {
               <Menu className="h-4 w-4" /> Menu
             </summary>
             <div className="absolute right-0 top-12 z-50 flex w-56 flex-col rounded-xl border border-slate-700 bg-slate-950 p-2 text-sm font-semibold shadow-2xl">
-              <a href="#employees" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Employees</a>
-              <a href="#pricing" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Pricing</a>
+              <Link href="/employees/services" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Services</Link>
               <Link href="/employees/demo" className="rounded-lg px-3 py-2 text-violet-300 hover:bg-slate-800">Try demo</Link>
               <Link href="/employees/custom" className="rounded-lg px-3 py-2 text-slate-300 hover:bg-slate-800 hover:text-white">Request a solution</Link>
               <Link href="/employees/login" className="rounded-lg px-3 py-2 text-emerald-300 hover:bg-slate-800">Business login</Link>
@@ -70,19 +69,18 @@ export default function EmployeesMarketplacePage() {
         <div className="mx-auto max-w-7xl px-4 py-20 sm:py-28">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-200">
             <Sparkles className="h-4 w-4" />
-            AI employees for all type of businesses
+            Built for United States businesses
           </div>
           <h1 className="max-w-4xl text-4xl font-bold leading-tight sm:text-6xl">
-            Follow up with every student and every lead.
+            Custom software, automation and AI employees for practical business work.
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            Start with a measurable workflow, then configure the knowledge, systems, languages and human controls it needs.
-            Every unbuilt capability is scoped through consultation before we make a delivery promise.
+            AgentsHive Business helps US small and midsize businesses, agencies and professional-services teams scope billing, inventory, websites, applications, connected automations and controlled AI workflows.
+            Every capability is agreed through consultation before we make a delivery promise.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
-            <a href="#employees" className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold transition hover:bg-emerald-500">
-              Explore solutions <ArrowRight className="h-4 w-4" />
-            </a>
+            <Link href="/employees/custom" className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold transition hover:bg-emerald-500">Request consultation <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/employees/services" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-emerald-500">Explore services</Link>
             <Link href="/employees/setup" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-emerald-500">
               Configure a pilot employee
             </Link>
@@ -228,8 +226,6 @@ export default function EmployeesMarketplacePage() {
           );
         })}
       </section>
-
-      <RegionalPricing />
 
       <footer className="bg-slate-950">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-4 py-10 text-center sm:flex-row sm:text-left">

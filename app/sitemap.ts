@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { createClient } from '@supabase/supabase-js';
 
 const BASE_URL = 'https://agentshive.net';
+const BUSINESS_SERVICE_SLUGS = ['billing-invoicing-software','inventory-management-software','business-process-automation','ai-workflow-automation','ai-voice-agents','small-business-website-development','custom-web-application-development','ai-app-development','internal-business-tools'];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -18,6 +19,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/about`, changeFrequency: 'monthly', priority: 0.5 },
     { url: `${BASE_URL}/request-agent`, changeFrequency: 'monthly', priority: 0.4 },
     { url: `${BASE_URL}/donate`, changeFrequency: 'monthly', priority: 0.3 },
+    { url: `${BASE_URL}/employees`, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE_URL}/employees/services`, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${BASE_URL}/employees/custom`, changeFrequency: 'monthly', priority: 0.8 },
+    ...BUSINESS_SERVICE_SLUGS.map((slug) => ({ url: `${BASE_URL}/employees/services/${slug}`, changeFrequency: 'monthly' as const, priority: 0.8 })),
   ];
 
   try {
