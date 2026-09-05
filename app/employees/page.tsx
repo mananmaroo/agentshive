@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BUSINESS_SOLUTIONS, SOLUTION_GROUPS, STATUS_LABELS, type SolutionStatus } from './catalog';
+import { SERVICE_PAGES } from './services/service-data';
 export const metadata: Metadata = {
   title: 'AgentsHive Business — Custom Software & AI Automation USA',
   description: 'Consultation-led AI employees, custom software, websites, applications and workflow automation for US businesses.',
@@ -86,6 +87,51 @@ export default function EmployeesMarketplacePage() {
             </Link>
             <Link href="/employees/dashboard" className="rounded-lg border border-slate-700 bg-slate-900/70 px-6 py-3 font-semibold text-slate-200 transition hover:border-slate-500">
               Open client dashboard
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section id="business-services" className="border-b border-slate-800 bg-slate-900/30">
+        <div className="mx-auto max-w-7xl px-4 py-20">
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div className="max-w-3xl">
+              <p className="text-sm font-semibold uppercase tracking-wider text-sky-400">Business software and automation</p>
+              <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Explore everything AgentsHive Business can build</h2>
+              <p className="mt-4 leading-7 text-slate-400">
+                Start with the business problem. We scope the software, workflow, controls and integrations after discovery, then provide a clear proposal before implementation begins.
+              </p>
+            </div>
+            <Link href="/employees/services" className="inline-flex items-center gap-2 font-semibold text-sky-300 hover:text-sky-200">
+              View all business services <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {SERVICE_PAGES.map((service) => (
+              <article key={service.slug} className="flex flex-col rounded-2xl border border-slate-800 bg-slate-950/70 p-6">
+                <div className="w-fit rounded-xl bg-sky-500/10 p-3 text-sky-300">
+                  <Bot className="h-6 w-6" />
+                </div>
+                <h3 className="mt-5 text-xl font-bold">{service.h1}</h3>
+                <p className="mt-3 flex-1 text-sm leading-6 text-slate-400">{service.summary}</p>
+                <Link
+                  href={`/employees/services/${service.slug}`}
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-sky-300 hover:text-sky-200"
+                >
+                  See scope and safeguards <ArrowRight className="h-4 w-4" />
+                </Link>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-10 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6 sm:flex sm:items-center sm:justify-between sm:gap-6">
+            <div>
+              <h3 className="text-xl font-bold">Need a combination of services?</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-400">Request one consultation for a website, application, automation, AI employee, voice workflow or connected internal system.</p>
+            </div>
+            <Link href="/employees/custom" className="mt-5 inline-flex shrink-0 items-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 font-semibold hover:bg-emerald-500 sm:mt-0">
+              Discuss your business <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
