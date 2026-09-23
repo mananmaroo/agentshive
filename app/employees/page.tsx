@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { BUSINESS_SOLUTIONS, SOLUTION_GROUPS, STATUS_LABELS, type SolutionStatus } from './catalog';
 import { SERVICE_PAGES } from './services/service-data';
 export const metadata: Metadata = {
-  title: 'AgentsHive Business — Custom Software & AI Automation USA',
-  description: 'Consultation-led AI employees, custom software, websites, applications and workflow automation for US businesses.',
+  title: 'AgentsHive Business — Custom Software & AI Automation',
+  description: 'Consultation-led AI employees, custom software, websites, applications and workflow automation for businesses worldwide.',
   alternates: { canonical: '/employees' },
-  openGraph: { title: 'AgentsHive Business — Custom Software & AI Automation USA', description: 'Custom software, AI automation and controlled AI employee services for US businesses.', url: '/employees', type: 'website' },
+  openGraph: { title: 'AgentsHive Business — Custom Software & AI Automation', description: 'Consultation-led custom software, AI automation and controlled AI employee services for businesses worldwide.', url: '/employees', type: 'website' },
 };
 
 import {
@@ -70,13 +70,13 @@ export default function EmployeesMarketplacePage() {
         <div className="mx-auto max-w-7xl px-4 py-20 sm:py-28">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-sm text-emerald-200">
             <Sparkles className="h-4 w-4" />
-            Built for United States businesses
+            Consultation-led services for businesses worldwide
           </div>
           <h1 className="max-w-4xl text-4xl font-bold leading-tight sm:text-6xl">
             Custom software, automation and AI employees for practical business work.
           </h1>
           <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-            AgentsHive Business helps US small and midsize businesses, agencies and professional-services teams scope billing, inventory, websites, applications, connected automations and controlled AI workflows.
+            AgentsHive Business helps organizations scope billing, inventory, websites, applications, connected automations and controlled AI workflows.
             Every capability is agreed through consultation before we make a delivery promise.
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
@@ -258,7 +258,7 @@ export default function EmployeesMarketplacePage() {
 
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-20 md:grid-cols-3">
         {[
-          [Languages, 'Local communication', 'English, Hindi, Hinglish, regional languages, and dialect preferences are configured per business.'],
+          [Languages, 'Language requirements', 'Languages and communication preferences are scoped per business; availability depends on the selected workflow and providers.'],
           [ShieldCheck, 'Human control', 'Sensitive requests, low-confidence answers, and policy exceptions are sent to a person.'],
           [Users, 'Owner-friendly setup', 'Customers choose outcomes and rules instead of building technical workflows.'],
         ].map(([Icon, title, body]) => {

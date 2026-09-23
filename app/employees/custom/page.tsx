@@ -2,8 +2,8 @@ import ConsultationForm from './ConsultationForm';
 import { BUSINESS_SOLUTIONS, getSolution } from '../catalog';
 
 export const metadata = {
-  title: 'Request a US Business Software & AI Consultation | AgentsHive',
-  description: 'Tell AgentsHive about the software, website, automation, AI workflow or voice-agent service your US business wants to scope.',
+  title: 'Request a Business Software & AI Consultation | AgentsHive',
+  description: 'Tell AgentsHive about the software, website, automation, AI workflow or voice-agent service your business wants to scope.',
   alternates: { canonical: '/employees/custom' },
 };
 
