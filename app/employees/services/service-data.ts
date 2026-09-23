@@ -15,9 +15,9 @@ export type ServicePage = {
 export const SERVICE_PAGES: readonly ServicePage[] = [
   {
     slug: 'billing-invoicing-software', solution: 'billing-invoicing',
-    title: 'Custom Billing & Invoicing Software for US Businesses',
+    title: 'Custom Billing & Invoicing Software for Businesses',
     h1: 'Billing and invoicing software built around your workflow',
-    description: 'Scope custom billing and invoicing software for estimates, invoices, approvals, payment status, reminders and reporting for a US business.',
+    description: 'Scope custom billing and invoicing software for estimates, invoices, approvals, payment status, reminders and reporting.',
     summary: 'AgentsHive can design a billing workspace around the way your team prepares, approves, sends and follows up on invoices.',
     problems: ['Duplicate spreadsheet entry', 'Unclear invoice and payment status', 'Manual approval and reminder handoffs'],
     workflows: ['Customer and item setup', 'Estimate, approval and invoice preparation', 'Payment-status updates, reminders and dispute escalation'],
@@ -27,7 +27,7 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
   {
     slug: 'inventory-management-software', solution: 'inventory-stock-management',
-    title: 'Custom Inventory Management Software for US Businesses',
+    title: 'Custom Inventory Management Software for Businesses',
     h1: 'Inventory management software designed for your stock workflow',
     description: 'Plan a custom inventory and stock-management system for receipts, movements, locations, reorder signals and reporting.',
     summary: 'AgentsHive can scope a stock-control system for teams that have outgrown spreadsheets or poorly matched generic tools.',
@@ -39,7 +39,7 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
   {
     slug: 'business-process-automation', solution: 'business-process-automation',
-    title: 'Business Process Automation Services USA',
+    title: 'Business Process Automation Services',
     h1: 'Business process automation for connected day-to-day operations',
     description: 'Map and automate repeatable work across email, CRM, spreadsheets, forms, support and internal operations with human controls.',
     summary: 'AgentsHive can connect repeatable operational steps while keeping exceptions, approvals and ownership visible to your team.',
@@ -51,7 +51,7 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
   {
     slug: 'ai-workflow-automation', solution: 'ai-workflow-automation',
-    title: 'AI Workflow Automation Services USA',
+    title: 'AI Workflow Automation Services',
     h1: 'AI workflow automation with human oversight',
     description: 'Design AI-assisted workflows for triage, extraction, drafting, routing and follow-up across approved business systems.',
     summary: 'AgentsHive can add AI where judgment support helps and deterministic rules where consistency matters.',
@@ -63,7 +63,7 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
   {
     slug: 'ai-voice-agents', solution: 'ai-voice-agents',
-    title: 'Custom AI Voice Agents for US Businesses',
+    title: 'Custom AI Voice Agents for Businesses',
     h1: 'AI voice agents designed for your call workflow',
     description: 'Scope AI voice agents for inbound calls, outbound follow-up, qualification, appointment requests and support with human escalation.',
     summary: 'AgentsHive can design a controlled voice workflow, but calling remains inactive until the provider, number, scripts, consent requirements and testing are approved.',
@@ -75,9 +75,9 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
   {
     slug: 'small-business-website-development', solution: 'business-website-development',
-    title: 'Small Business Website Development USA',
+    title: 'Small Business Website Development',
     h1: 'Business websites built to turn interest into action',
-    description: 'Scope a mobile-friendly US small-business website with clear services, intake, booking or consultation paths.',
+    description: 'Scope a mobile-friendly small-business website with clear services, intake, booking or consultation paths.',
     summary: 'AgentsHive can design and build a business or service website around your offer, buyer journey and operational handoffs.',
     problems: ['A site that does not explain the offer clearly', 'Leads lost between pages, forms and follow-up', 'Outdated content or disconnected operations'],
     workflows: ['Service discovery and information architecture', 'Conversion-focused page and form flow', 'Lead routing, measurement and content handoff'],
@@ -87,9 +87,9 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
   {
     slug: 'custom-web-application-development', solution: 'custom-web-application',
-    title: 'Custom Web Application Development USA',
+    title: 'Custom Web Application Development',
     h1: 'Custom web applications for real business operations',
-    description: 'Design web applications, portals, dashboards and installable web experiences around a US business workflow.',
+    description: 'Design web applications, portals, dashboards and installable web experiences around a business workflow.',
     summary: 'AgentsHive can scope customer portals, internal tools and operational web applications instead of forcing the workflow into generic software.',
     problems: ['Disconnected tools and duplicate entry', 'Manual customer or staff requests', 'Limited visibility into work and exceptions'],
     workflows: ['Intake, roles and approvals', 'Customer portal or internal operations', 'Billing, booking, CRM, inventory or reporting handoffs'],
@@ -99,7 +99,7 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
   {
     slug: 'ai-app-development', solution: 'ai-enabled-application',
-    title: 'Custom AI App Development for US Businesses',
+    title: 'Custom AI App Development for Businesses',
     h1: 'AI-enabled websites and applications with practical controls',
     description: 'Scope AI applications using chat, voice, document processing, search, recommendations or workflow automation with human oversight.',
     summary: 'AgentsHive can design AI-enabled software around approved data, specific tasks and clear review paths.',
@@ -111,9 +111,9 @@ export const SERVICE_PAGES: readonly ServicePage[] = [
   },
   {
     slug: 'internal-business-tools', solution: 'internal-business-tools',
-    title: 'Custom Internal Business Tools & Dashboards USA',
+    title: 'Custom Internal Business Tools & Dashboards',
     h1: 'Internal tools and dashboards shaped around your team',
-    description: 'Build scoped internal tools, operational dashboards, portals and reporting workflows for a US business.',
+    description: 'Build scoped internal tools, operational dashboards, portals and reporting workflows for a business.',
     summary: 'AgentsHive can modernize spreadsheet-heavy processes with a purpose-built workspace and connected handoffs.',
     problems: ['Operational status scattered across files', 'Manual approvals and reporting', 'Legacy systems that are difficult to change'],
     workflows: ['Staff intake and task routing', 'Approvals, exceptions and audit views', 'CRM, billing, inventory and reporting connections'],

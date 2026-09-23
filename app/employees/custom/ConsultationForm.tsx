@@ -36,8 +36,9 @@ export default function ConsultationForm({
       monthlyVolume: form.get('monthly_volume'),
       systems: form.getAll('systems'),
       otherSystems: [
-        `US state: ${String(form.get('state') || '')}`,
+        `Region/state/province: ${String(form.get('region') || '')}`,
         `Company size: ${String(form.get('company_size') || '')}`,
+        `Preferred budget currency: ${String(form.get('budget_currency') || '')}`,
         String(form.get('other_systems') || ''),
       ].filter(Boolean).join(' | '),
       languages: form.get('languages'),
@@ -130,17 +131,17 @@ export default function ConsultationForm({
               <label className="text-sm font-semibold">Contact name *<input required name="contact_name" minLength={2} maxLength={120} className={inputClass} /></label>
               <label className="text-sm font-semibold">Company *<input required name="company" minLength={2} maxLength={160} className={inputClass} /></label>
               <label className="text-sm font-semibold">Work email *<input required name="work_email" type="email" maxLength={254} className={inputClass} /></label>
-              <label className="text-sm font-semibold">Phone<input name="phone" type="tel" maxLength={32} placeholder="+1 555 555 0123" className={inputClass} /></label>
-              <label className="text-sm font-semibold">Country *<input required name="country" value="United States" readOnly className={inputClass} /></label>
-              <label className="text-sm font-semibold">State *<input required name="state" minLength={2} maxLength={60} placeholder="State" className={inputClass} /></label>
-              <label className="text-sm font-semibold">US time zone *<select required name="timezone" defaultValue="" className={inputClass}><option value="" disabled>Select one</option><option>Eastern</option><option>Central</option><option>Mountain</option><option>Pacific</option><option>Alaska</option><option>Hawaii</option><option>Other US time zone</option></select></label>
+              <label className="text-sm font-semibold">Phone<input name="phone" type="tel" maxLength={32} placeholder="Include country code" className={inputClass} /></label>
+              <label className="text-sm font-semibold">Country *<input required name="country" minLength={2} maxLength={100} autoComplete="country-name" placeholder="Country" className={inputClass} /></label>
+              <label className="text-sm font-semibold">Region / state / province *<input required name="region" minLength={2} maxLength={100} placeholder="Region, state or province" className={inputClass} /></label>
+              <label className="text-sm font-semibold">Time zone *<input required name="timezone" maxLength={100} placeholder="e.g. Asia/Kolkata or UTC+5:30" className={inputClass} /></label>
               <label className="text-sm font-semibold">Company size *<select required name="company_size" defaultValue="" className={inputClass}><option value="" disabled>Select one</option><option value="1_9">1–9 employees</option><option value="10_49">10–49</option><option value="50_249">50–249</option><option value="250_plus">250+</option></select></label>
               <label className="text-sm font-semibold">Preferred contact *
                 <select required name="preferred_contact" defaultValue="email" className={inputClass}>
                   <option value="email">Email</option><option value="phone">Phone</option><option value="whatsapp">WhatsApp, if mutually configured</option><option value="video_call">Video call</option>
                 </select>
               </label>
-              <label className="text-sm font-semibold">Best contact time *<input required name="best_contact_time" maxLength={120} placeholder="Weekdays, 2–5 PM" className={inputClass} /></label>
+              <label className="text-sm font-semibold">Best contact time *<input required name="best_contact_time" maxLength={120} placeholder="Weekdays, 2–5 PM in your time zone" className={inputClass} /></label>
             </div>
 
             <label className="block text-sm font-semibold">Selected solution *
@@ -163,9 +164,10 @@ export default function ConsultationForm({
               </label>
               <label className="text-sm font-semibold">Languages *<input required name="languages" maxLength={300} placeholder="English, Spanish, or others" className={inputClass} /></label>
               <label className="text-sm font-semibold">Target outcome *<input required name="target_outcome" minLength={10} maxLength={500} placeholder="Faster first response…" className={inputClass} /></label>
+              <label className="text-sm font-semibold">Preferred budget currency *<input required name="budget_currency" minLength={3} maxLength={40} placeholder="e.g. USD, INR, GBP, EUR" className={inputClass} /></label>
               <label className="text-sm font-semibold">Budget band *
                 <select required name="budget_band" defaultValue="" className={inputClass}>
-                  <option value="" disabled>Select one</option><option value="under_100_usd">Under US$100/month</option><option value="100_300_usd">US$100–300/month</option><option value="301_750_usd">US$301–750/month</option><option value="751_2000_usd">US$751–2,000/month</option><option value="over_2000_usd">Over US$2,000/month</option><option value="custom">Custom / project budget</option><option value="unknown">Not sure yet</option>
+                  <option value="" disabled>Select one</option><option value="under_100_usd">Under 100/month in preferred currency</option><option value="100_300_usd">100–300/month</option><option value="301_750_usd">301–750/month</option><option value="751_2000_usd">751–2,000/month</option><option value="over_2000_usd">Over 2,000/month</option><option value="custom">Custom / project budget</option><option value="unknown">Not sure yet</option>
                 </select>
               </label>
               <label className="text-sm font-semibold">Custom budget details<input name="custom_budget" maxLength={300} className={inputClass} /></label>
